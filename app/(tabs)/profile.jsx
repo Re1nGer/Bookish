@@ -4,7 +4,7 @@ import React from 'react'
 const Profile = () => {
   return (
     <View className="items-center justify-center flex-1">
-      <Text className="text-3xl">Profile</Text>
+      <Text className="text-3xl font-pblack">Profile</Text>
     </View>
   )
 }
