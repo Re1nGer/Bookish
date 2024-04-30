@@ -7,7 +7,7 @@ export default function App() {
         <View style={styles.container}>
             <Text>Update ???</Text>
             <StatusBar style="auto" />
-            <Link href={"/homer"} style={{ color: 'blue' }}>Go to Profile</Link>
+            <Link href={"/home"} style={{ color: 'blue' }}>Go to Profile</Link>
         </View>
     );
 }
