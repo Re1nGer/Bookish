@@ -3,7 +3,6 @@
     "name": "react_native_yarn",
     "slug": "react_native_yarn",
     "version": "1.0.0",
-    "scheme": "test-scheme",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -22,11 +21,13 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.re1nger.react_native_yarn"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "scheme": "test-scheme",
     "plugins": [
       "expo-router"
     ]

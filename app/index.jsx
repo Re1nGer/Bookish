@@ -6,6 +6,9 @@ import { Image } from 'react-native';
 
 import { images } from '../constants'
 import CustomButton from '../components/CustomButton';
+import * as WebBrowser from 'expo-web-browser';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function App() {
     return (

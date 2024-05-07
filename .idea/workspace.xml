@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="531cf3db-c942-4fc4-b267-b525ecbb68ec" name="Changes" comment="tailwind configured">
-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
-    </list>
+    <list default="true" id="531cf3db-c942-4fc4-b267-b525ecbb68ec" name="Changes" comment="tailwind configured" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,6 +52,7 @@
       <updated>1714326061957</updated>
       <workItem from="1714326063026" duration="1787000" />
       <workItem from="1714413707670" duration="1274000" />
+      <workItem from="1714816411045" duration="26000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <created>1714413830816</created>

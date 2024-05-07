@@ -8,6 +8,11 @@ import CustomButton from '../../components/CustomButton';
 import { Link } from 'expo-router';
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from './firebaseConfig';
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+WebBrowser.maybeCompleteAuthSession();
 
 const SignIn = () => {
 
@@ -15,6 +20,10 @@ const SignIn = () => {
     email: '',
     password: ''
   });
+
+  const [request, response, prompt] = Google.useAuthRequest({
+    androidClientId: "691662689785-0sfivp0t331l64r3h8avkoq57uo0g2um.apps.googleusercontent.com"
+  })
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,7 +39,6 @@ const SignIn = () => {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
-
   }
 
   return (
@@ -54,7 +62,7 @@ const SignIn = () => {
           />
           <CustomButton
             title="Sign In"
-            handlePress={submit}
+            handlePress={() => prompt()}
             containerStyles={'mt-7'}
             isLoading={isSubmitting}
           />
