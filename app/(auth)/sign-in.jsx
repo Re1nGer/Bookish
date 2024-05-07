@@ -8,11 +8,15 @@ import CustomButton from '../../components/CustomButton';
 import { Link } from 'expo-router';
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from './firebaseConfig';
-import * as Google from 'expo-auth-session/providers/google';
-import * as WebBrowser from 'expo-web-browser';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 
-WebBrowser.maybeCompleteAuthSession();
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+
+GoogleSignin.configure({
+  scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+  webClientId: '691662689785-pngqudprjbmp2hpl4navnjdull1hrndv.apps.googleusercontent.com'
+});
 
 const SignIn = () => {
 
@@ -21,9 +25,16 @@ const SignIn = () => {
     password: ''
   });
 
-  const [request, response, prompt] = Google.useAuthRequest({
-    androidClientId: "691662689785-0sfivp0t331l64r3h8avkoq57uo0g2um.apps.googleusercontent.com"
-  })
+  const signIn = async () => {
+  try {
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+    console.log(userInfo);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -62,10 +73,23 @@ const SignIn = () => {
           />
           <CustomButton
             title="Sign In"
-            handlePress={() => prompt()}
+            handlePress={() => {}}
             containerStyles={'mt-7'}
             isLoading={isSubmitting}
           />
+          <GoogleSigninButton
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={async () => {
+              try {
+                await GoogleSignin.hasPlayServices();
+                const userInfo = await GoogleSignin.signIn();
+                console.log(userInfo);
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+           />
           <View className="justify-center pt-5 flex-row gap-2">
             <Text className="text-lg text-gray-100 font-pregular">Don't have an account ?</Text>
             <Link href={'/sign-up'} className='text-lg font-psemibold text-secondary-100'>Sign Up</Link>
