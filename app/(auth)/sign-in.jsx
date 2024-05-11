@@ -1,17 +1,16 @@
 import { View, Text, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
 import { images } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from './firebaseConfig';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
-
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
+import { AsyncStorage } from 'react-native';
+import { ref, child, get } from "firebase/database";
 
 GoogleSignin.configure({
   scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
@@ -39,18 +38,20 @@ const SignIn = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = async () => {
-
+  const saveUser = async (email, name) => {
     try {
-      const docRef = await addDoc(collection(db, "test"), {
-        first: "Ada",
-        last: "Lovelace",
-        born: 1815
+      const docRef = await addDoc(collection(db, "users"), {
+        email: email,
+        name: name
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+  }
+
+  const userExistsWith = async (email) => {
+    const usersRef = query(collection(db, "users"), where("email", "==", email));
   }
 
   return (
@@ -78,14 +79,20 @@ const SignIn = () => {
             containerStyles={'mt-7'}
             isLoading={isSubmitting}
           />
+          <Text className="font-pmedium text-base text-center text-gray-100 my-3">Or</Text>
           <GoogleSigninButton
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
+            style={{ alignSelf: 'center' }}
             onPress={async () => {
               try {
                 await GoogleSignin.hasPlayServices();
                 const userInfo = await GoogleSignin.signIn();
+                const { user: { email, name } } = userInfo;
+                await saveUser(email, name);
+                router.push('/home');
                 console.log(userInfo);
+                await AsyncStorage.setItem('email', email);
               } catch (error) {
                 console.error(error);
               }

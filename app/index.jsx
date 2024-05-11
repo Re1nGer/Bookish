@@ -1,4 +1,4 @@
-import { Link, Redirect, router } from 'expo-router';
+import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,9 +6,7 @@ import { Image } from 'react-native';
 
 import { images } from '../constants'
 import CustomButton from '../components/CustomButton';
-import * as WebBrowser from 'expo-web-browser';
 
-WebBrowser.maybeCompleteAuthSession();
 
 export default function App() {
     return (
