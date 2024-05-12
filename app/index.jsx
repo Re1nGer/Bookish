@@ -1,14 +1,23 @@
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'react-native';
 
 import { images } from '../constants'
 import CustomButton from '../components/CustomButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function App() {
+
+    const email = AsyncStorage.getItem("email");
+
+    const handlePress = () => {
+        if (email) router.push('/home')
+        router.push('/sign-in');
+    }
+
     return (
         <SafeAreaView className="bg-primary h-full">
             <ScrollView contentContainerStyle={{ height: '100%' }}>
@@ -24,7 +33,7 @@ export default function App() {
                         <Image source={images.path}  className="w-[136px] h-[15px] absolute -bottom-2 right-0" resizeMode="contain" />
                     </View>
                     <Text className="text-sm text-gray-100 mt-7 text-center font-pregular">Where creativity meets innovation: embark on a journey of limitless exploration with Aora</Text>
-                    <CustomButton title={'Continue with Email'} handlePress={() => router.push('/sign-in')} containerStyles={"w-full mt-7"} />
+                    <CustomButton title={'Continue with Email'} handlePress={handlePress} containerStyles={"w-full mt-7"} />
                 </View>
             </ScrollView>
             <StatusBar backgroundColor='#161622' style='light' />
