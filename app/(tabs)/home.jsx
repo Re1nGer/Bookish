@@ -5,7 +5,7 @@ import { images } from '../../constants';
 import SearchInput from '../../components/SearchInput';
 import Trending from '../../components/Trending';
 import EmptyState from '../../components/EmptyState';
-import { collection, getDocs, limit } from "firebase/firestore"; 
+import { collection, getDocs } from "firebase/firestore"; 
 import { db } from '../(auth)/firebaseConfig';
 import VideoCard from '../../components/VideoCard';
 
@@ -23,7 +23,7 @@ const Home = () => {
     setRefreshing(false);
   }
 
-  const fetchAllVideos = useCallback(async () => {
+  const fetchAllVideos = async () => {
     try {
       setIsLoading(true)
       const queryVideo = await getDocs(collection(db, 'videos'));
@@ -37,7 +37,7 @@ const Home = () => {
     finally {
       setIsLoading(false);
     }
-  }, [])
+  }
 
   useEffect(() => {
     if (videos.length === 0)
@@ -104,7 +104,7 @@ const Home = () => {
     );
   }}
         ListEmptyComponent={renderEmptyState}
-        //refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing} />}
+        refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing} />}
       />
     </SafeAreaView>
   )

@@ -10,6 +10,7 @@ import { db } from './firebaseConfig';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 GoogleSignin.configure({
   scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
@@ -64,6 +65,18 @@ const SignIn = () => {
     }
   }
 
+  const handleEmailSignIn = async () => {
+    try {
+      const auth = getAuth();
+      const user = await signInWithEmailAndPassword(auth, form.email, form.password);
+      router.push('/home');
+      console.log(user)
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
@@ -85,7 +98,7 @@ const SignIn = () => {
           />
           <CustomButton
             title="Sign In"
-            handlePress={() => {}}
+            handlePress={async () => await handleEmailSignIn()}
             containerStyles={'mt-7'}
             isLoading={isSubmitting}
           />

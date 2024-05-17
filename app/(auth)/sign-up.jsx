@@ -5,6 +5,7 @@ import { images } from '../../constants';
 import { Link } from 'expo-router';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignUp = () => {
 
@@ -16,7 +17,15 @@ const SignUp = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {}
+  const handleEmailSignUp = async () => {
+    try {
+      const auth = getAuth();
+      const user = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -45,7 +54,7 @@ const SignUp = () => {
           />
           <CustomButton
             title="Sign Up"
-            handlePress={submit}
+            handlePress={() => handleEmailSignUp()}
             containerStyles={'mt-7'}
             isLoading={isSubmitting}
           />
