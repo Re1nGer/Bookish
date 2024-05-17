@@ -89,7 +89,7 @@ const Home = () => {
             <View className="justify-between item-start flex-row mb-6">
               <View>
                 <Text className="font-pmedium text-sm text-gray-100">Welcome Back</Text>
-                <Text className="font-psemibold text-2xl text-white">JsMastery</Text>
+                <Text className="font-psemibold text-2xl text-white">Dummy User</Text>
               </View>
                <View className="mt-1.5">
                 <Image source={images.logoSmall} className="w-9 h-10" resizeMode="contain"  />
