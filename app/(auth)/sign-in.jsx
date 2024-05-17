@@ -10,7 +10,7 @@ import { db } from './firebaseConfig';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 GoogleSignin.configure({
   scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
@@ -19,21 +19,10 @@ GoogleSignin.configure({
 
 const SignIn = () => {
   
-
   const [form, setForm] = useState({
     email: '',
     password: ''
   });
-
-  const signIn = async () => {
-  try {
-    await GoogleSignin.hasPlayServices();
-    const userInfo = await GoogleSignin.signIn();
-    console.log(userInfo);
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 
   const [isSubmitting, setIsSubmitting] = useState(false);

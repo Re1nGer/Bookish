@@ -35,37 +35,16 @@ const TrendItem = ({activeItem, item}) => {
     )
 }
 
-const Trending = () => {
+const Trending = ({ videos }) => {
 
-  const [latestVideos, setLatestVideos] = useState([]);
-
-  const fetchLatestVideos = useCallback(async () => {
-    try {
-        onSnapshot(query(collection(db, 'videos'), limit(4)), (snapshot) => {
-        const temp = snapshot.docs.map((doc) => {
-            return ({ key: doc.id, id: doc.id, ...doc.data() }); // Include document ID
-        });
-        setLatestVideos(temp);
-    });
-    } catch(error) {
-      //Alert.error(error);
-      console.log(error)
-    }
-  }, [])
-
-
-    useEffect(() => {
-        if (latestVideos.length === 0)
-        fetchLatestVideos();
-    }, []);
 
     //console.log(latestVideos)
 
-    const [activeItem, setActiveItem] = useState(latestVideos[0]);
+    const [activeItem, setActiveItem] = useState(videos[0]);
 
     return (
         <FlatList
-            data={latestVideos}
+            data={videos}
             keyExtractor={(item) => item.id}
             renderItem={({item}) => (
                 <TrendItem activeItem={activeItem} item={item} />

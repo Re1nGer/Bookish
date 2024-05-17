@@ -1,18 +1,20 @@
 import { View, Text, FlatList, Image, RefreshControl } from 'react-native'
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants';
 import SearchInput from '../../components/SearchInput';
 import Trending from '../../components/Trending';
 import EmptyState from '../../components/EmptyState';
-import { collection, getDocs } from "firebase/firestore"; 
+import { collection, getDocs, onSnapshot, query, limit } from "firebase/firestore"; 
 import { db } from '../(auth)/firebaseConfig';
 import VideoCard from '../../components/VideoCard';
 
 const Home = () => {
 
   const [refreshing, setRefreshing] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
+
   const [videos, setVideos] = useState([]);
 
   const [latestVideos, setLatestVideos] = useState([]);
@@ -39,8 +41,26 @@ const Home = () => {
     }
   }
 
+  const fetchLatestVideos = async () => {
+    try {
+        onSnapshot(query(collection(db, 'videos'), limit(4)), (snapshot) => {
+        const temp = snapshot.docs.map((doc) => {
+            return ({ key: doc.id, id: doc.id, ...doc.data() }); // Include document ID
+        });
+        setLatestVideos(temp);
+    });
+    } catch(error) {
+      //Alert.error(error);
+      console.log(error)
+    }
+  }
+
+
   useEffect(() => {
-    if (videos.length === 0)
+    fetchLatestVideos();
+  }, []);
+
+  useEffect(() => {
     fetchAllVideos();
   }, [])
 
@@ -68,7 +88,7 @@ const Home = () => {
             <SearchInput />
             <View className="w-full flex-1 pt-5">
               <Text className="text-gray-100 text-lg font-pregular mb-3">Latest Videos</Text>
-              <Trending />
+              <Trending videos={latestVideos}/>
             </View>
           </View>
     );
@@ -77,32 +97,11 @@ const Home = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        initialNumToRender={3} 
-        windowSize={8}
         data={videos}
-        maxToRenderPerBatch={5}
+        //maxToRenderPerBatch={5}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        ListHeaderComponent={() => {
-          return (
-            <View className="my-6 px-4 sapce-y-6">
-            <View className="justify-between item-start flex-row mb-6">
-              <View>
-                <Text className="font-pmedium text-sm text-gray-100">Welcome Back</Text>
-                <Text className="font-psemibold text-2xl text-white">Dummy User</Text>
-              </View>
-               <View className="mt-1.5">
-                <Image source={images.logoSmall} className="w-9 h-10" resizeMode="contain"  />
-               </View>
-            </View>
-            <SearchInput />
-            <View className="w-full flex-1 pt-5">
-              <Text className="text-gray-100 text-lg font-pregular mb-3">Latest Videos</Text>
-              <Trending />
-            </View>
-          </View>
-    );
-  }}
+        ListHeaderComponent={renderListHeader}
         ListEmptyComponent={renderEmptyState}
         refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing} />}
       />
