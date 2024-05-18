@@ -45,7 +45,9 @@ const Profile = () => {
       //router.push('sign-in');
       //router.push('sign-in');
 
-      router.navigate('sign-in')
+      // a hack to clear router history to prevent logged out users from going back
+      router.dismissAll();
+      router.replace('/sign-in')
 
       setUser({})
     }
