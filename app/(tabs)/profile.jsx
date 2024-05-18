@@ -1,19 +1,23 @@
 import { View, FlatList, RefreshControl, TouchableOpacity, Image } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import { router } from 'expo-router';
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import EmptyState from '../../components/EmptyState';
 import { collection, query, onSnapshot, where, limit  } from "firebase/firestore"; 
-import { db } from '../(auth)/firebaseConfig';
+import {  db } from '../(auth)/firebaseConfig';
 import VideoCard from '../../components/VideoCard';
 import { UserContext } from '../../context/UserContext';
 import { icons } from '../../constants';
 import InfoBox from '../../components/InfoBox';
+import { getAuth } from 'firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Profile = () => {
   const [posts, setPosts] = useState([]);
 
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   console.log(user);
 
@@ -33,9 +37,25 @@ const Profile = () => {
     }
   }
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(async () => {
+    try {
+      await GoogleSignin.signOut();
 
-  }
+      const isLoggedIn = await GoogleSignin.isSignedIn();
+
+      console.log(isLoggedIn)
+      //await GoogleSignin.clearCachedAccessToken();
+      //await GoogleSignin.revokeAccess();
+      await AsyncStorage.clear();
+      //router.push('sign-in');
+      //router.push('sign-in');
+
+      setUser({})
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }, [])
 
   useEffect(() => {
     searchPosts();
@@ -56,7 +76,7 @@ const Profile = () => {
           <Image source={icons.logout} resizeMode='contain' className='w-6 h-6' />
         </TouchableOpacity>
         <View className='w-16 h-16 border border-secondary-100 rounded-lg justify-center items-center'>
-          <Image source={{ uri: user.photo }} className='w-[90%] h-[90%] rounded-lg'  resizeMode='cover' />
+          <Image source={{ uri: user?.photo }} className='w-[90%] h-[90%] rounded-lg' resizeMode='cover' />
         </View>
         <InfoBox
             title={user.name}

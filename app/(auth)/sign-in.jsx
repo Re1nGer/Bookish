@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image } from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants';
 import FormField from '../../components/FormField';
@@ -13,10 +13,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { UserContext } from '../../context/UserContext';
 
-GoogleSignin.configure({
-  scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-  webClientId: '691662689785-pngqudprjbmp2hpl4navnjdull1hrndv.apps.googleusercontent.com'
-});
 
 const SignIn = () => {
   
@@ -68,6 +64,28 @@ const SignIn = () => {
     }
   }
 
+  const handleOnpress = useCallback(async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      if (!isSignedIn) {
+        const userInfo = await GoogleSignin.signIn();
+        const { user: { email, name } } = userInfo;
+        setUser(user);
+        await AsyncStorage.setItem('email', email);
+      }
+      else {
+        const user = await GoogleSignin.getCurrentUser();
+        setUser(user.user);
+        const { user: { email } } = user;
+        await AsyncStorage.setItem('email', email);
+      }
+      router.push('/home');
+    } catch (error) {
+      console.error(error);
+    }
+  }, [])
+
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -99,21 +117,7 @@ const SignIn = () => {
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
             style={{ alignSelf: 'center' }}
-            onPress={async () => {
-              try {
-                await GoogleSignin.hasPlayServices();
-                const userInfo = await GoogleSignin.signIn();
-                const { user: { email, name } } = userInfo;
-                setUser(userInfo.user);
-                if (!userExistsWith(email)) {
-                  await saveUser(email, name);
-                }
-                router.push('/home');
-                await AsyncStorage.setItem('email', email);
-              } catch (error) {
-                console.error(error);
-              }
-            }}
+            onPress={handleOnpress}
            />
           <View className="justify-center pt-5 flex-row gap-2">
             <Text className="text-lg text-gray-100 font-pregular">Don't have an account ?</Text>
