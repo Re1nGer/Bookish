@@ -1,17 +1,16 @@
-import { useLocalSearchParams } from 'expo-router'
-import { View, Text, FlatList, RefreshControl } from 'react-native'
+import { View, FlatList, RefreshControl, TouchableOpacity, Image } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import EmptyState from '../../components/EmptyState';
 import { collection, query, onSnapshot, where, limit  } from "firebase/firestore"; 
 import { db } from '../(auth)/firebaseConfig';
 import VideoCard from '../../components/VideoCard';
-import SearchInput from '../../components/SearchInput';
 import { UserContext } from '../../context/UserContext';
+import { icons } from '../../constants';
+import InfoBox from '../../components/InfoBox';
+
 
 const Profile = () => {
-  const { query: q } = useLocalSearchParams();
-
   const [posts, setPosts] = useState([]);
 
   const { user } = useContext(UserContext);
@@ -34,25 +33,48 @@ const Profile = () => {
     }
   }
 
+  const handleLogout = () => {
+
+  }
+
   useEffect(() => {
     searchPosts();
-  }, [q]);
+  }, []);
 
   const renderItem = ({ item }) => {
     return <VideoCard key={item.id} {...item} />
   }
 
   const renderEmptyState = () => {
-    return <EmptyState title={"No Videos Found"} subtitle={`No videos found for the query: ${q}`} />
+    return <EmptyState title={"No Videos Found"} subtitle={`No videos found created by you `} />
   }
 
   const renderListHeader = () => {
     return (
-      <View className="my-6 px-4">
-        <Text className="font-pmedium text-sm text-gray-100">Search Results</Text>
-        <Text className="font-psemibold text-2xl text-white">{q}</Text>
-        <View  className='mt-6 mb-8'>
-          <SearchInput initialQuery={q} />
+      <View className="w-full justify-center items-center mt-6 mb-12 px-4">
+        <TouchableOpacity className='w-full items-end mb-10' onPress={handleLogout}>
+          <Image source={icons.logout} resizeMode='contain' className='w-6 h-6' />
+        </TouchableOpacity>
+        <View className='w-16 h-16 border border-secondary-100 rounded-lg justify-center items-center'>
+          <Image source={{ uri: user.photo }} className='w-[90%] h-[90%] rounded-lg'  resizeMode='cover' />
+        </View>
+        <InfoBox
+            title={user.name}
+            containerStyles={'mt-5'}
+            titleStyles={'text-lg'}
+         />
+        <View className='mt-5 flex-row'>
+          <InfoBox
+            title={posts.length || 0}
+            subtitle='Posts'
+            containerStyles={'mr-10'}
+            titleStyles={'text-xl'}
+           />
+          <InfoBox
+            title={'1.2k'}
+            titleStyles={'text-xl'}
+            subtitle='Followers'
+           />
         </View>
       </View>
     );
