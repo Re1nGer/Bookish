@@ -70,12 +70,14 @@ const SignIn = () => {
       const isSignedIn = await GoogleSignin.isSignedIn();
       if (!isSignedIn) {
         const userInfo = await GoogleSignin.signIn();
-        const { user: { email, name } } = userInfo;
+        const user = userInfo.user;
+        console.log('signed in user', user);
         setUser(user);
-        await AsyncStorage.setItem('email', email);
+        await AsyncStorage.setItem('email', user.email);
       }
       else {
         const user = await GoogleSignin.getCurrentUser();
+        console.log('current user', user.user);
         setUser(user.user);
         const { user: { email } } = user;
         await AsyncStorage.setItem('email', email);

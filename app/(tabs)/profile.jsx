@@ -9,7 +9,6 @@ import VideoCard from '../../components/VideoCard';
 import { UserContext } from '../../context/UserContext';
 import { icons } from '../../constants';
 import InfoBox from '../../components/InfoBox';
-import { getAuth } from 'firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -40,15 +39,13 @@ const Profile = () => {
   const handleLogout = useCallback(async () => {
     try {
       await GoogleSignin.signOut();
-
-      const isLoggedIn = await GoogleSignin.isSignedIn();
-
-      console.log(isLoggedIn)
       //await GoogleSignin.clearCachedAccessToken();
       //await GoogleSignin.revokeAccess();
       await AsyncStorage.clear();
       //router.push('sign-in');
       //router.push('sign-in');
+
+      router.navigate('sign-in')
 
       setUser({})
     }
