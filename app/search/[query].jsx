@@ -1,11 +1,9 @@
 import { useLocalSearchParams } from 'expo-router'
-
-import { View, Text, FlatList, Image, RefreshControl } from 'react-native'
+import { View, Text, FlatList, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { images } from '../../constants';
 import EmptyState from '../../components/EmptyState';
-import { collection, getDocs, query, onSnapshot, where, limit  } from "firebase/firestore"; 
+import { collection, query, onSnapshot, where, limit  } from "firebase/firestore"; 
 import { db } from '../(auth)/firebaseConfig';
 import VideoCard from '../../components/VideoCard';
 import SearchInput from '../../components/SearchInput';

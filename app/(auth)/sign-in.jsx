@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants';
 import FormField from '../../components/FormField';
@@ -11,6 +11,7 @@ import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { UserContext } from '../../context/UserContext';
 
 GoogleSignin.configure({
   scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
@@ -24,6 +25,7 @@ const SignIn = () => {
     password: ''
   });
 
+  const { setUser, user } = useContext(UserContext);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -58,6 +60,7 @@ const SignIn = () => {
     try {
       const auth = getAuth();
       const user = await signInWithEmailAndPassword(auth, form.email, form.password);
+      setUser(user);
       router.push('/home');
       console.log(user)
     } catch(error) {
@@ -101,6 +104,7 @@ const SignIn = () => {
                 await GoogleSignin.hasPlayServices();
                 const userInfo = await GoogleSignin.signIn();
                 const { user: { email, name } } = userInfo;
+                setUser(userInfo.user);
                 if (!userExistsWith(email)) {
                   await saveUser(email, name);
                 }
