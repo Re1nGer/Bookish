@@ -1,7 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-
 import { icons } from '../constants'
+import { Video } from 'expo-av';
 
 const VideoCard = ({ title, video, thumbnail, creator, id }) => {
 
@@ -26,10 +26,12 @@ const VideoCard = ({ title, video, thumbnail, creator, id }) => {
                 </View>
             </View>
             { play ? (
-                <Text className='text-white'>Playing</Text>
+                <View className='w-full h-60 rounded-xl mt-3 relative justify-center items-center'>
+                    <Video source={{ uri: video }} useNativeControls className='h-full w-full rounded-xl mt-3' resizeMode='cover' />
+                </View>
             ) : (
                 <TouchableOpacity className='w-full h-60 rounded-xl mt-3 relative justify-center items-center' activeOpacity={0.7} onPress={() => setPlay(true)}>
-                    <Image source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/react-native-test-a8948.appspot.com/o/120409_r22060_g2048.webp?alt=media&token=14bacc71-004e-4d3f-97ac-ce1ea16d50bd' }} className='h-full w-full rounded-xl mt-3' resizeMode='cover' />
+                    <Image source={{ uri: thumbnail }} className='h-full w-full rounded-xl mt-3' resizeMode='cover' />
                     <Image source={icons.play} className='w-12 h-12 absolute' resizeMode='contain' />
                 </TouchableOpacity> 
             ) }

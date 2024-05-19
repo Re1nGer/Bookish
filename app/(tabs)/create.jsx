@@ -1,19 +1,23 @@
 import { View, Text, TouchableOpacity, Image, ScrollView, Alert } from 'react-native'
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-
-import React, { useState } from 'react'
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import React, { useContext, useState } from 'react'
+import { addDoc, collection } from 'firebase/firestore';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import FormField from '../../components/FormField'
 import { ResizeMode, Video } from 'expo-av'
 import { icons } from '../../constants'
+import { db } from '../(auth)/firebaseConfig';
 import CustomButton from '../../components/CustomButton'
 import * as DocumentPicker from 'expo-document-picker';
 import { router } from 'expo-router'
 import { app } from '../(auth)/firebaseConfig';
+import { UserContext } from '../../context/UserContext';
 
 const Create = () => {
 
   const [uploading, setUploading] = useState(false);
+
+  const { user } = useContext(UserContext);
 
   const [form, setForm] = useState({
     video: null,
@@ -22,6 +26,7 @@ const Create = () => {
     prompt: ''
   });
 
+  //don't really know if this is secure way of obtaining a blob
   const uriToBlob = (uri) => {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -46,6 +51,8 @@ const Create = () => {
     })
 
     console.log(result.assets[0]);
+
+    //await uploadFile(result.assets[0])
     
     if (!result.canceled) {
       if (selectType === 'image') {
@@ -62,17 +69,34 @@ const Create = () => {
 
       console.log(file);
 
-      const blob = await uriToBlob(result.assets[0].uri);
+      const blob = await uriToBlob(file.uri);
 
       console.log(blob);
 
       const storage = getStorage(app);
 
-      const storageRef = ref(storage, blob.name + blob.blobId);
+      const storageRef = ref(storage, 'files/' + file.name);
 
       await uploadBytes(storageRef, blob);
 
+      return await getDownloadURL(storageRef)
+
     } catch(error) {
+      console.log(error);
+    }
+  }
+
+  const saveMetadata = async (thumbnailPath, videoPath, prompt, title) => {
+    try {
+      await addDoc(collection(db, "videos"), {
+        createdBy: user?.id,
+        video: videoPath,
+        thumbnail: thumbnailPath,
+        prompt: prompt,
+        title: title
+      });
+
+    } catch (error) {
       console.log(error);
     }
   }
@@ -82,10 +106,16 @@ const Create = () => {
       Alert.alert('Please fill in all the fields');
     }
     try {
+      console.log('submit', form)
 
-      await Promise.all([uploadFile(form.thumbnail.uri), uploadFile(form.video.uri)])
+      const [thumbnailPath, videoPath] = await Promise.all([uploadFile(form.thumbnail), uploadFile(form.video)])
+
+      await saveMetadata(thumbnailPath, videoPath, form.prompt, form.title);
+
+      console.log(thumbnailPath, videoPath);
 
       Alert.alert('Success', 'Post uploaded successfully');
+
       router.push('/home');
 
     } catch (error) {
@@ -144,13 +174,13 @@ const Create = () => {
           title={'AI Prompt'}
           value={form.prompt}
           placeholder={'The Prompt you used to create this video'}
-          handleChangeText={(e) => setForm({...form, title: e})}
+          handleChangeText={(e) => setForm({...form, prompt: e})}
           otherStyles={'mt-7'}
         />
 
         <CustomButton
           title={'Submit & Publish'}
-          handlePress={() => {}}
+          handlePress={async () => await submit()}
           containerStyles={'mt-7'}
           isLoading={uploading}
         />
