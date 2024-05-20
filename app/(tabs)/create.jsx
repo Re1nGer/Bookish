@@ -67,11 +67,8 @@ const Create = () => {
   const uploadFile = async (file) => {
     try {
 
-      console.log(file);
 
       const blob = await uriToBlob(file.uri);
-
-      console.log(blob);
 
       const storage = getStorage(app);
 
@@ -104,15 +101,13 @@ const Create = () => {
   const submit = async () => {
     if (!form.video || form.title || form.thumbnail || form.prompt) {
       Alert.alert('Please fill in all the fields');
+      return;
     }
     try {
-      console.log('submit', form)
 
       const [thumbnailPath, videoPath] = await Promise.all([uploadFile(form.thumbnail), uploadFile(form.video)])
 
       await saveMetadata(thumbnailPath, videoPath, form.prompt, form.title);
-
-      console.log(thumbnailPath, videoPath);
 
       Alert.alert('Success', 'Post uploaded successfully');
 
