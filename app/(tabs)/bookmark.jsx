@@ -1,24 +1,47 @@
-import { View, Text, FlatList, Image, RefreshControl } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { View, Text, FlatList, RefreshControl } from 'react-native'
+import React, { useState, useEffect, useContext } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { db } from '../(auth)/firebaseConfig';
+import { getDocs, collection, where, doc } from 'firebase/firestore';
 import VideoCard from '../../components/VideoCard';
 import EmptyState from '../../components/EmptyState';
-import { images } from '../../constants';
 import SearchInput from '../../components/SearchInput';
+import { UserContext } from '../../context/UserContext';
 
 const Bookmark = () => {
 
-  const [savedVideos, setSavedVideos] = useState([]);
+  const [savedVideos, setSavedVideos] = useState({});
+
+  const [videos, setVideos] = useState([]);
 
   const [refreshing, setRefreshing] = useState(false);
+
+  const { user } = useContext(UserContext);
 
   const onRefresh = () => {}
 
   const fetchSavedVideos = async () => {
     try {
-
+      const queryVideo = await getDocs(collection(db, 'saved'), where('userId', '==', user?.id));
+      let tempObj = {};
+      queryVideo.docs.forEach((doc) => {
+        tempObj[doc.data().videoId.trim()] = doc.data()
+      });
+      setSavedVideos(tempObj);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  const fetchAllVideos = async () => {
+    try {
+      const queryVideo = await getDocs(collection(db, 'videos'));
+      const temp = queryVideo.docs.map((doc) => {
+        return ({ id: doc.id, ...doc.data() }); // Include document ID
+      });
+      setVideos(temp);
+    } catch(error) {
+      console.error(error)
     }
   }
 
@@ -26,8 +49,12 @@ const Bookmark = () => {
     fetchSavedVideos();
   }, [])
 
+  useEffect(() => {
+    fetchAllVideos();
+  }, [])
+
   const renderItem = ({ item }) => {
-    return <VideoCard key={item.id} {...item} />
+    if (savedVideos.hasOwnProperty(item.id)) return <VideoCard key={item.id} {...item} />
   }
 
   const renderEmptyState = () => {
@@ -37,12 +64,12 @@ const Bookmark = () => {
   const renderListHeader = () => {
     return (
       <View className="my-6 px-4 sapce-y-6">
-            <View className="justify-start item-start flex-row mb-6">
-              <View>
-                <Text className="font-psemibold text-2xl text-white">Saved Videos</Text>
-              </View>
-            </View>
-            <SearchInput  />
+        <View className="justify-start item-start flex-row mb-6">
+          <View>
+            <Text className="font-psemibold text-2xl text-white">Saved Videos</Text>
+          </View>
+        </View>
+        <SearchInput />
       </View>
     );
   }
@@ -50,8 +77,7 @@ const Bookmark = () => {
   return (
     <SafeAreaView className='bg-primary h-full'>
       <FlatList
-        data={savedVideos}
-        //maxToRenderPerBatch={5}
+        data={videos}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         ListHeaderComponent={renderListHeader}
