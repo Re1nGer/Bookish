@@ -3,10 +3,15 @@ import React, { useState } from 'react'
 import { icons } from '../constants'
 import { Video } from 'expo-av';
 
-const VideoCard = ({ title, video, thumbnail, creator, id }) => {
-
+const VideoCard = ({ title, video, thumbnail, creator, id, isSaved }) => {
 
     const [play, setPlay] = useState(false);
+
+    const [isOptionOpen, setIsOptionOpen] = useState(false);
+
+    const handleDelete = () => {}
+
+    const handleSave = async () => {}
 
     return (
         <View key={id} className='flex-col items-center px-4 mb-14'>
@@ -21,16 +26,33 @@ const VideoCard = ({ title, video, thumbnail, creator, id }) => {
                     </View>
                 </View>
 
-                <View className='pt-2'>
-                    <Image source={icons.menu} className='w-5 h-5' resizeMode='contain'/>
-                </View>
+                <TouchableOpacity className='pt-2 relative z-40'
+                    onPress={() => setIsOptionOpen(!isOptionOpen)}>
+                    <Image source={icons.menu} className='w-5 h-5 relative z-0' resizeMode='contain'/>
+                    { isOptionOpen ? (
+                        <View className='w-40 h-35 flex-col justify-start items-start gap-y-1 absolute right-0 top-10 z-20 border-[.7px] border-gray-600 bg-black-100 rounded-2xl'>
+                            { isSaved ? (
+                                <TouchableOpacity className='gap-x-3 h-10 flex-row items-center justify-center ml-2'>
+                                    <Image source={icons.trash} className='h-4 w-4' />
+                                    <Text className='text-gray-100 text-base '>Delete</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                <TouchableOpacity className='gap-x-3 h-10 flex-row items-center justify-center ml-2'>
+                                    <Image source={icons.bookmark} className='h-4 w-4' />
+                                    <Text className='text-gray-100 text-base'>Save</Text>
+                                </TouchableOpacity>
+                            ) }
+                        </View>
+                    ) : null }
+                </TouchableOpacity>
+
             </View>
             { play ? (
                 <View className='w-full h-60 rounded-xl mt-3 relative justify-center items-center'>
                     <Video source={{ uri: video }} useNativeControls className='h-full w-full rounded-xl mt-3' resizeMode='cover' />
                 </View>
             ) : (
-                <TouchableOpacity className='w-full h-60 rounded-xl mt-3 relative justify-center items-center' activeOpacity={0.7} onPress={() => setPlay(true)}>
+                <TouchableOpacity className='w-full h-60 rounded-xl mt-3 relative justify-center items-center z-0' activeOpacity={0.7} onPress={() => setPlay(true)}>
                     <Image source={{ uri: thumbnail }} className='h-full w-full rounded-xl mt-3' resizeMode='cover' />
                     <Image source={icons.play} className='w-12 h-12 absolute' resizeMode='contain' />
                 </TouchableOpacity> 
