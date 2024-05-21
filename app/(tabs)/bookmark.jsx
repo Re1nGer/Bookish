@@ -2,7 +2,7 @@ import { View, Text, FlatList, RefreshControl } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { db } from '../(auth)/firebaseConfig';
-import { getDocs, collection, where, doc } from 'firebase/firestore';
+import { getDocs, collection, where, doc, onSnapshot, query } from 'firebase/firestore';
 import VideoCard from '../../components/VideoCard';
 import EmptyState from '../../components/EmptyState';
 import SearchInput from '../../components/SearchInput';
@@ -26,12 +26,13 @@ const Bookmark = () => {
 
   const fetchSavedVideos = async () => {
     try {
-      const queryVideo = await getDocs(collection(db, 'saved'), where('userId', '==', user?.id));
-      let tempObj = {};
-      queryVideo.docs.forEach((doc) => {
-        tempObj[doc.data().videoId.trim()] = doc.data()
-      });
-      setSavedVideos(tempObj);
+      onSnapshot(query(collection(db, 'saved'), where('userId', '==', user?.id)), snapshot => {
+        let tempObj = {};
+        snapshot.docs.forEach((doc) => {
+          tempObj[doc.data().videoId.trim()] = doc.data()
+        });
+        setSavedVideos(tempObj);
+      })
     } catch (error) {
       console.log(error);
     }

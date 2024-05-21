@@ -1,7 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { useContext, useState } from 'react'
 import { icons } from '../constants'
-import { setDoc, doc } from "firebase/firestore"; 
+import { setDoc, doc, deleteDoc } from "firebase/firestore"; 
 import { db } from '../app/(auth)/firebaseConfig';
 import { Video } from 'expo-av';
 import { UserContext } from '../context/UserContext';
@@ -14,7 +14,16 @@ const VideoCard = ({ title, video, thumbnail, creator, id, isSaved }) => {
 
     const { user } = useContext(UserContext);
 
-    const handleDelete = async () => {}
+    const handleDelete = async () => {
+        try {
+            await deleteDoc(doc(db, "saved", id), {
+                userId: user?.id,
+                videoId: id
+            });
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
     const handleSave = async () => {
         try {
@@ -46,9 +55,9 @@ const VideoCard = ({ title, video, thumbnail, creator, id, isSaved }) => {
                     { isOptionOpen ? (
                         <View className='w-40 h-35 flex-col justify-start items-start gap-y-1 absolute right-0 top-10 z-20 border-[.7px] border-gray-600 bg-black-100 rounded-2xl'>
                             { isSaved ? (
-                                <TouchableOpacity className='gap-x-3 h-10 flex-row items-center justify-center ml-2'>
+                                <TouchableOpacity className='gap-x-3 h-10 flex-row items-center justify-center ml-2' onPress={async() => await handleDelete()}>
                                     <Image source={icons.trash} className='h-4 w-4' />
-                                    <Text className='text-gray-100 text-base '>Delete</Text>
+                                    <Text className='text-gray-100 text-base'>Delete</Text>
                                 </TouchableOpacity>
                             ) : (
                                 <TouchableOpacity className='gap-x-3 h-10 flex-row items-center justify-center ml-2' onPress={async () => await handleSave()}>
