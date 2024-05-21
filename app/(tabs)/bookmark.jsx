@@ -18,7 +18,11 @@ const Bookmark = () => {
 
   const { user } = useContext(UserContext);
 
-  const onRefresh = () => {}
+  const onRefresh = async () => {
+    setRefreshing(true)
+    await fetchSavedVideos();
+    setRefreshing(false)
+  }
 
   const fetchSavedVideos = async () => {
     try {

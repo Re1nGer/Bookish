@@ -1,7 +1,10 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { icons } from '../constants'
+import { setDoc, doc } from "firebase/firestore"; 
+import { db } from '../app/(auth)/firebaseConfig';
 import { Video } from 'expo-av';
+import { UserContext } from '../context/UserContext';
 
 const VideoCard = ({ title, video, thumbnail, creator, id, isSaved }) => {
 
@@ -9,9 +12,20 @@ const VideoCard = ({ title, video, thumbnail, creator, id, isSaved }) => {
 
     const [isOptionOpen, setIsOptionOpen] = useState(false);
 
-    const handleDelete = () => {}
+    const { user } = useContext(UserContext);
 
-    const handleSave = async () => {}
+    const handleDelete = async () => {}
+
+    const handleSave = async () => {
+        try {
+            await setDoc(doc(db, "saved", id), {
+                userId: user?.id,
+                videoId: id
+            });
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
     return (
         <View key={id} className='flex-col items-center px-4 mb-14'>
@@ -37,7 +51,7 @@ const VideoCard = ({ title, video, thumbnail, creator, id, isSaved }) => {
                                     <Text className='text-gray-100 text-base '>Delete</Text>
                                 </TouchableOpacity>
                             ) : (
-                                <TouchableOpacity className='gap-x-3 h-10 flex-row items-center justify-center ml-2'>
+                                <TouchableOpacity className='gap-x-3 h-10 flex-row items-center justify-center ml-2' onPress={async () => await handleSave()}>
                                     <Image source={icons.bookmark} className='h-4 w-4' />
                                     <Text className='text-gray-100 text-base'>Save</Text>
                                 </TouchableOpacity>
