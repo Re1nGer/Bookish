@@ -44,7 +44,8 @@ const Bookmark = () => {
       const temp = queryVideo.docs.map((doc) => {
         return ({ id: doc.id, ...doc.data() }); // Include document ID
       });
-      setVideos(temp);
+      const saved = temp.filter(item => item.id in savedVideos);
+      setVideos(saved);
     } catch(error) {
       console.error(error)
     }
@@ -56,10 +57,10 @@ const Bookmark = () => {
 
   useEffect(() => {
     fetchAllVideos();
-  }, [])
+  }, [savedVideos])
 
   const renderItem = ({ item }) => {
-    if (savedVideos.hasOwnProperty(item.id)) return <VideoCard key={item.id} {...item} />
+    if (item.id in savedVideos) return <VideoCard key={item.id} {...item} isSaved={true} />
   }
 
   const renderEmptyState = () => {
@@ -87,7 +88,10 @@ const Bookmark = () => {
         renderItem={renderItem}
         ListHeaderComponent={renderListHeader}
         ListEmptyComponent={renderEmptyState}
-        refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing} />}
+        refreshControl={<RefreshControl
+           onRefresh={onRefresh}
+           refreshing={refreshing}
+        />}
       />
     </SafeAreaView>
   )

@@ -18,8 +18,6 @@ const Profile = () => {
 
   const { user, setUser } = useContext(UserContext);
 
-  console.log(user);
-
   const onRefresh = () => {}
 
   const searchPosts = async () => {
@@ -61,7 +59,7 @@ const Profile = () => {
   }, []);
 
   const renderItem = ({ item }) => {
-    return <VideoCard key={item.id} {...item} />
+    return <VideoCard key={item.id} {...item} showOptions={false} />
   }
 
   const renderEmptyState = () => {

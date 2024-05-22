@@ -92,10 +92,9 @@ const SignIn = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
-        <View className='w-full justify-center min-h-[85vh] px-4 my-6'>
+        <View className='w-full justify-between min-h-[50vh] px-4 my-6'>
           <Image source={images.logo} resizeMode='contain' className='w-[115px] h-[35px]'  />
-          <Text className='text-semibold mt-10 font-semibold text-white text-2xl'>Log In to Aora</Text>
-          <FormField
+{/*           <FormField
             title="Email"
             value={form.email}
             handleChangeText={(e) => setForm({...form, email: e})} 
@@ -113,17 +112,20 @@ const SignIn = () => {
             handlePress={async () => await handleEmailSignIn()}
             containerStyles={'mt-7'}
             isLoading={isSubmitting}
-          />
-          <Text className="font-pmedium text-base text-center text-gray-100 my-3">Or</Text>
-          <GoogleSigninButton
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            style={{ alignSelf: 'center' }}
-            onPress={handleOnpress}
-           />
-          <View className="justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">Don't have an account ?</Text>
-            <Link href={'/sign-up'} className='text-lg font-psemibold text-secondary-100'>Sign Up</Link>
+          /> */}
+{/*           <Text className="font-pmedium text-base text-center text-gray-100 my-3">Or</Text> */}
+          <View className="justify-center pt-5 flex-col items-center gap-2">
+           <Text className='text-semibold mt-10 font-semibold text-white text-xl text-center mx-4'>All it takes is one loss to start doubting yourself again</Text>
+            <GoogleSigninButton
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              style={{ alignSelf: 'center' }}
+              onPress={handleOnpress}
+            />
+{/*             <View className='flex-row gap-x-2'>
+              <Text className="text-lg text-gray-100 font-pregular">Don't have an account ?</Text>
+              <Link href={'/sign-up'} className='text-lg font-psemibold text-secondary-100'>Sign Up</Link>
+            </View> */}
           </View>
         </View>
       </ScrollView>
