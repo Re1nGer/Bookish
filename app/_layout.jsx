@@ -21,7 +21,8 @@ const RootLayout = () => {
   "Cygre-Regular": require("../assets/fonts/Cygre-Regular.ttf"),
   "Cygre-SemiBold": require("../assets/fonts/Cygre-SemiBold.ttf"),
   "Inter": require("../assets/fonts/Inter_24pt-Bold.ttf"),
-  "Roboto": require("../assets/fonts/Roboto-Regular.ttf")
+  "Roboto": require("../assets/fonts/Roboto-Regular.ttf"),
+  "Roboto-Black": require("../assets/fonts/Roboto-Black.ttf")
 });
 
 useEffect(() => {
