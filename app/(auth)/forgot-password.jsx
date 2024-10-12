@@ -26,7 +26,7 @@ const ForgotPassword = () => {
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className='w-full flex-1 justify-between'>
           <View className="w-full h-full justify-between max-h-[60%] pt-[23px] items-start">
-            <Text className="font-inter text-[24px] text-[#000000] font-bold px-[25px] pt-10 pb-9">Forgot Password</Text>
+            <Text className="font-inter text-[24px] text-[#000000] font-bold px-[25px] pt-10 pb-9">{curStage !== 1 ? "Verification" : "Forgot Password"}</Text>
             <View className="w-full h-full justify-start px-[31px] max-h-[320px]">
               <View className="w-full flex-row">
                 <Stage active={curStage === 1} />
@@ -73,17 +73,15 @@ const SentTo = ({ email, setEmail }) => {
 
   const inputRef = useRef(null);
 
-  const { formattedTime } = useTimer(0, 25);
+  const { formattedTime, seconds, minutes } = useTimer(0, 25);
 
   const handleEditEmail = (e) => {
     setEmail(e)
   }
 
-  //const [isEmailEditable, setIsEmailEditable] = useState(false);
   const isEmailEditable = useRef(false)
 
   const handleOnEditIconClick = () => {
-    //setIsEmailEditable(prev => !prev);
     isEmailEditable.current = true;
     inputRef.current.focus();
   }
@@ -103,11 +101,28 @@ const SentTo = ({ email, setEmail }) => {
         </View>
       </TouchableOpacity>
     </View>
-    <View className="mt-[50px]">
+    <View className="mt-[50px] items-center">
       <Text className="text-[20px] leading-[20px] tracking-[.1px] text-[#373737] font-robotoblack">Enter Verification Code</Text>
-      <Text className="text-[15px] leading-[20px] tracking-[.1px] text-[#262626] font-robotoblack font-bold text-center">{formattedTime}</Text>
+      <Text className="text-[15px] leading-[20px] tracking-[.1px] text-[#262626] font-robotoblack font-bold text-center mt-[12px]">{formattedTime}</Text>
+      <View className="w-full mt-[24px] flex-row">
+        <DigitSell />
+        <DigitSell />
+        <DigitSell />
+        <DigitSell />
+      </View>
+      { seconds === 0 && minutes === 0 && (
+        <TouchableOpacity className="border border-[#000000] rounded-[100px] mt-[47px] w-[327px] h-[40px] items-center justify-center">
+          <Text className="text-sm leading-[20px] tracking-[.1px] font-medium font-roboto">Resend Code</Text>
+        </TouchableOpacity>
+      ) }
     </View>
+  </View>
+}
 
+
+const DigitSell = ({ value }) => {
+   return <View className="border border-[#000000] items-center justify-center mr-2 rounded-[12px] w-[50px] h-[57px]">
+    <TextInput maxLength={1} value={value} className='text-[18px] leading-[20px] tracking-[.1px] font-roboto text-center' />
   </View>
 }
 
