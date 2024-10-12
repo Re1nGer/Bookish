@@ -28,11 +28,11 @@ const SignUp = () => {
             <FormField title={"Password"}  placeholder={"Enter your password"} hintText={"* At least 8 characters long"}  />
             <PrimaryButton title={"Sign up"}
                 handlePress={() => router.push('(auth)/sign-up')}
-                containerStyles={'max-w-[353px] w-full rounded-3xl'}
+                containerStyles={'max-w-[353px] mt-4 w-full rounded-3xl'}
                 textStyles={'text-center justify-center items-center'}
             />
             </View>
-          <View className="items-center w-full mb-4 ">
+          <View className="items-center w-full mb-4">
             <Text className='text-base font-cygreregular text-[#373737]'>By signing up you agree, to our</Text>
             <View className="flex-row">
               <Text className="underline underline-offset-1 text-base font-cygreregular text-[#373737]">Terms of Service</Text>

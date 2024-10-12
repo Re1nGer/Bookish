@@ -3,19 +3,33 @@ import { useState } from 'react';
 import { icons } from '../constants';
 import React from 'react'
 
-const FormField = ({title, value, placeholder, handleChangeText, otherStyles, error, errorText, hintText, ...rest}) => {
+const FormField = ({
+    title,
+    value,
+    placeholder,
+    handleChangeText,
+    titleStyles,
+    textInputStyles,
+    textInputContainerStyles,
+    placeholderTextColor,
+    otherStyles,
+    error,
+    errorText,
+    hintText,
+    ...rest
+  }) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View className={`space-y-2 ${otherStyles}`}>
-      <Text className="text-base font-cygresemibold text-[#1C1C1C] text-[18px]">{title}</Text>
-      <View className={`border w-full h-14 px-4 bg-white border-[#8A8A8A] rounded-xl items-center flex-row ${error ? 'border-[#DF2626]' : ''}`}>
+    <View className={`${otherStyles}`}>
+      <Text className={`text-base font-cygresemibold text-[#1C1C1C] text-[18px] mb-1 ${titleStyles}`}>{title}</Text>
+      <View className={`border w-full px-4 py-3 h-14 bg-white border-[#8A8A8A] rounded-xl items-center flex-row ${textInputContainerStyles} ${error ? 'border-[#DF2626] border-2' : ''}`}>
         <TextInput
-          className={`flex-1 bg-white font-cygreregular text-base max-h-[54px]`}
+          className={`flex-1 bg-white font-cygreregular h-full text-base max-h-[54px] ${textInputStyles}`}
           value={value}
           placeholder={placeholder}
-          placeholderTextColor={"#49454F"}
+          placeholderTextColor={placeholderTextColor ?? "#49454F"}
           onChangeText={handleChangeText}
           secureTextEntry={title === 'Password' && !showPassword}
          />
@@ -25,7 +39,8 @@ const FormField = ({title, value, placeholder, handleChangeText, otherStyles, er
           </TouchableOpacity>
          ) }
       </View>
-      { (hintText && !error) ? <Text className='font-cygreregular max-h-[90px] text-[12px] h-full text-[#777777]'>{hintText}</Text> : <></> }
+      { (hintText && !error) ? <Text className='font-cygreregular text-[12px] max-h-[40px] h-full text-[#777777]'>{hintText}</Text> : <></> }
+      { (error && errorText) ? <Text className='font-cygreregular max-h-[20px] text-[12px] text-[#DF2626]'>{errorText}</Text> : <></> }
     </View>
   )
 }

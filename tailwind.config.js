@@ -28,6 +28,8 @@ module.exports = {
         cygrebold: ["Cygre-Bold", "sans-serif"],
         cygreregular: ["Cygre-Regular", "sans-serif"],
         cygresemibold: ["Cygre-SemiBold", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"]
       },
     },
   },

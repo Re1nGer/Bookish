@@ -31,7 +31,7 @@ const PrimaryButton = ({ title, handlePress, containerStyles, textStyles }) => {
 }
 
 
-const SignInButton = ({ provider = 'google', title, handlePress, containerStyles, textStyles }) => {
+const SignInWithProvider = ({ provider = 'google', title, handlePress, containerStyles, textStyles }) => {
 
   let sourceImage = '';
 
@@ -57,4 +57,5 @@ const SignInButton = ({ provider = 'google', title, handlePress, containerStyles
   )
 }
 
-export { CustomButton, PrimaryButton, SignInButton }
+
+export { CustomButton, PrimaryButton, SignInWithProvider }

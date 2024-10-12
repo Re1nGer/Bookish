@@ -1,10 +1,10 @@
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'react-native';
 import { images } from '../constants';
-import { PrimaryButton, SignInButton } from '../components/CustomButton';
+import { PrimaryButton, SignInWithProvider } from '../components/CustomButton';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
@@ -36,11 +36,13 @@ export default function App() {
                     />
                 </View>
                 <View className='items-center'>
-                    <SignInButton title={'Continue with Google'} containerStyles={'max-w-[353px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
-                    <SignInButton provider='facebook' title={'Continue with Facebook'} containerStyles={'max-w-[353px] my-[10px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
-                    <SignInButton provider='apple' title={'Continue with Apple'} containerStyles={'max-w-[353px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
+                    <SignInWithProvider title={'Continue with Google'} containerStyles={'max-w-[353px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
+                    <SignInWithProvider provider='facebook' title={'Continue with Facebook'} containerStyles={'max-w-[353px] my-[10px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
+                    <SignInWithProvider provider='apple' title={'Continue with Apple'} containerStyles={'max-w-[353px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
                 </View>
-                <Text className='font-cygreregular text-[#373737] text-[16px] pt-[28px] mb-[30px] text-center'>Sign In</Text>
+                <TouchableOpacity onPress={() => router.push('(auth)/sign-in')} className="pb-[50px]">
+                    <Text className='font-cygreregular text-[#373737] text-[16px] pt-[28px] text-center'>Sign In</Text>
+                </TouchableOpacity>
             </ScrollView>
             <StatusBar backgroundColor='#F7F7F7' style='dark' />
         </SafeAreaView>
