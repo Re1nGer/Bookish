@@ -4,12 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#161622",
-        secondary: {
-          DEFAULT: "#FF9C01",
-          100: "#FF9001",
-          200: "#FF8E01",
-        },
+        primary: "#F7F7F7",
+        secondary: "#6592E3",
         black: {
           DEFAULT: "#000",
           100: "#1E1E2D",
@@ -29,6 +25,9 @@ module.exports = {
         pbold: ["Poppins-Bold", "sans-serif"],
         pextrabold: ["Poppins-ExtraBold", "sans-serif"],
         pblack: ["Poppins-Black", "sans-serif"],
+        cygrebold: ["Cygre-Bold", "sans-serif"],
+        cygreregular: ["Cygre-Regular", "sans-serif"],
+        cygresemibold: ["Cygre-SemiBold", "sans-serif"],
       },
     },
   },

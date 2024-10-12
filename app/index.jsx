@@ -3,10 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'react-native';
-
-import { images } from '../constants'
-import CustomButton from '../components/CustomButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { images } from '../constants';
+import { PrimaryButton, SignInButton } from '../components/CustomButton';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
@@ -16,32 +14,35 @@ GoogleSignin.configure({
 
 export default function App() {
 
-    const email = AsyncStorage.getItem("email");
-
-    const handlePress = () => {
-        if (email) router.push('/home')
-        router.push('/sign-in');
-    }
-
     return (
-        <SafeAreaView className="bg-primary h-full">
+        <SafeAreaView className="bg-[#F7F7F7] h-full">
             <ScrollView contentContainerStyle={{ height: '100%' }}>
-                <View className="w-full justify-center items-center min-h-[85vh] px-4">
-                    <Image source={images.logo} className="w-[130px] h-[84px]" resizeMode="contain" />
-
-                    <Image source={images.cards} className="max-w-[380px] w-full h-[300px]" resizeMode="contain" />
-
-                    <View className="relative mt-5">
-                        <Text className="text-white text-3xl text-center font-bold">Discover Possibilities with {''}
-                            <Text className="text-secondary-200">Aora</Text>
+                <View className="py-[40px] w-full">
+                    <Text className="font-cygrebold color-[#000000] pb-2 text-center text-[24px]">Welcome To Bookish Beasts !</Text>
+                    <Text className="font-cygreregular space-y-0 leading-[120%] text-center px-[80px] text-[16px]"> 
+                            <Text className="p-[15px] color-[#000000] font-cygreregular leading-[120%] text-center text-[16px]">Read. Remember. Enjoy.</Text>
+                            {" "}
+                        Start setting up your account to begin your personolized reading journey.
                         </Text>
-                        <Image source={images.path}  className="w-[136px] h-[15px] absolute -bottom-2 right-0" resizeMode="contain" />
-                    </View>
-                    <Text className="text-sm text-gray-100 mt-7 text-center font-pregular">Where creativity meets innovation: embark on a journey of limitless exploration with Aora</Text>
-                    <CustomButton title={'Continue with Email'} handlePress={handlePress} containerStyles={"w-full mt-7"} />
                 </View>
+                <View className="items-center">
+                    <Image source={images.welcome} resizeMode='contain' className='w-[185px] h-[202px]' />
+                </View>
+                <View className='items-center mb-[28px] mt-[33px]'>
+                    <PrimaryButton title={"Sign up"}
+                        handlePress={() => router.push('(auth)/sign-up')}
+                        containerStyles={'max-w-[353px] w-full rounded-3xl'}
+                        textStyles={'text-center justify-center items-center'}
+                    />
+                </View>
+                <View className='items-center'>
+                    <SignInButton title={'Continue with Google'} containerStyles={'max-w-[353px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
+                    <SignInButton provider='facebook' title={'Continue with Facebook'} containerStyles={'max-w-[353px] my-[10px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
+                    <SignInButton provider='apple' title={'Continue with Apple'} containerStyles={'max-w-[353px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
+                </View>
+                <Text className='font-cygreregular text-[#373737] text-[16px] pt-[28px] mb-[30px] text-center'>Sign In</Text>
             </ScrollView>
-            <StatusBar backgroundColor='#161622' style='light' />
+            <StatusBar backgroundColor='#F7F7F7' style='dark' />
         </SafeAreaView>
     );
 }

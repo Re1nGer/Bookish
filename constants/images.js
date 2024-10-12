@@ -5,5 +5,21 @@ import path from "../assets/images/path.png";
 import logo from "../assets/images/logo.png";
 import logoSmall from "../assets/images/logo-small.png";
 import empty from "../assets/images/empty.png";
+import welcome from "../assets/images/welcome.png";
+import googleIcon from '../assets/icons/google-icon.png';
+import faceBookIcon from '../assets/icons/facebook-icon.png';
+import appleIcon from '../assets/icons/apple-icon.png';
 
-export default { profile, thumbnail, cards, path, logo, logoSmall, empty };
+export default {
+    profile,
+    thumbnail,
+    cards,
+    path,
+    logo,
+    logoSmall,
+    empty,
+    welcome,
+    googleIcon,
+    faceBookIcon,
+    appleIcon
+};
