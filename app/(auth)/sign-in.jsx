@@ -1,10 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { images } from '../../constants';
 import {  router } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserContext } from '../../context/UserContext';
 import FormField from '../../components/FormField';
 
 function isValidEmail(email) {

@@ -10,6 +10,8 @@ const AuthLayout = () => {
         <Stack.Screen name="sign-in" options={{ title: "", headerTransparent: true }} />
         <Stack.Screen name="sign-up" options={{ title: "Sign Up", headerTransparent: true}} /> 
         <Stack.Screen name="forgot-password" options={{ title: "", headerTransparent: true }} />
+        <Stack.Screen name="verification" options={{ title: "", headerTransparent: true }} />
+        <Stack.Screen name="new-password" options={{ title: "", headerTransparent: true }} />
         <Stack.Screen name="welcome" options={{ headerShown: false }}/>
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
