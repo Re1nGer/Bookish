@@ -1,11 +1,12 @@
 import { View, Text, ScrollView, TextInput, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {  router } from 'expo-router';
 import Stage from '../../components/Stage';
 import { icons } from '../../constants';
 import useTimer from '../hooks/useTimer';
+import { UserContext } from '../../context/UserContext';
 
 
 const Verification = () => {
@@ -34,12 +35,12 @@ const Verification = () => {
 
 const SentTo = () => {
 
-  const [email, setEmail] = useState('')
+  const { recoveryEmail, setRecoveryEmail } = useContext(UserContext);
 
   const inputRef = useRef(null);
 
   const handleEditEmail = (e) => {
-    setEmail(e)
+    setRecoveryEmail(e)
   }
 
   //gotta figure out how to share inserted email address
@@ -52,7 +53,7 @@ const SentTo = () => {
     <Text className="font-roboto font-medium leading-[20px] tracking-[.1px] text-[#373737] text-center">Sent To</Text>
     <View className="bg-[#EFEFEF] relative rounded-[5px] h-[36px] w-[247px] flex-row justify-between items-center px-[16px] mt-[16px]">
       <TextInput
-        value={email}
+        value={recoveryEmail}
         onChangeText={handleEditEmail}
         className="font-medium font-roboto text-[#777777] text-[14px] max-w-[180px]"  />
       <TouchableOpacity onPress={handleOnEditIconClick}>
@@ -137,6 +138,7 @@ const DigitSellInput = () => {
     }, [verificationCode, router]);
 
   return  (
+    <>
       <View className="w-full mt-[24px] flex-row">
         <TextInput
           className="opacity-0 w-[1px]"
@@ -168,7 +170,15 @@ const DigitSellInput = () => {
           isError={isVerificationCodeError}
         />
       </View>
-      )
+
+      { isVerificationCodeError ? (
+        <Text className="leading-[20px] tracking-[.1px] font-medium font-roboto mt-[11px] text-[12px] text-[#E86F68]">
+          Wrong Code
+        </Text>
+      ) : <></> } 
+
+    </>
+  );
 }
 
 

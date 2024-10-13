@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { UserContext } from '../../context/UserContext';
 import FormField from '../../components/FormField';
-import { PrimaryButton } from '../../components/CustomButton';
 import { router } from 'expo-router';
 import Stage from '../../components/Stage';
 
@@ -23,6 +22,7 @@ const NewPassword = () => {
           <View className="w-full h-full justify-between max-h-[60%] pt-[23px] items-start">
             <Text className="font-inter text-[24px] text-[#000000] font-bold px-[25px] pt-10 pb-9">New Password</Text>
             <View className="w-full h-full justify-start px-[31px] max-h-[320px]">
+
               <View className="w-full flex-row">
                 <Stage />
                 <Stage styles={'mx-[10px]'} />
@@ -59,8 +59,8 @@ const NewPassword = () => {
                   className="rounded-[100px] bg-[#373737] max-w-[327px] w-full h-[40px] items-center justify-center">
                   <Text className="text-sm font-roboto leading-[20px] tracking-[.1px] text-white text-center">Update</Text>
                 </TouchableOpacity>
-              </View>
 
+              </View>
               </View>
             </View>
           </View>

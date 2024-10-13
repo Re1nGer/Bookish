@@ -1,13 +1,14 @@
 import { View, Text, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {  router } from 'expo-router';
 import FormField from '../../components/FormField';
 import Stage from '../../components/Stage';
+import { UserContext } from '../../context/UserContext';
 
 const ForgotPassword = () => {
   
-  const [email, setEmail] = useState("");
+  const { recoveryEmail, setRecoveryEmail } = useContext(UserContext);
 
   const handleSubmit = () => {
     router.push('/verification')
@@ -35,8 +36,8 @@ const ForgotPassword = () => {
                   textInputStyles={'bg-[#EFEFEF] text-[12px] leading-[20px] tracking-[.1px] font-roboto font-semibold'}
                   textInputContainerStyles={'bg-[#EFEFEF] rounded-[5px] border-0'}
                   otherStyles={'max-h-[52px] h-full mb-[50px]'}
-                  handleChangeText={(e) => setEmail(e) }
-                  value={email}
+                  handleChangeText={(e) => setRecoveryEmail(e) }
+                  value={recoveryEmail}
                 />
                 <TouchableOpacity
                   onPress={handleSubmit}
