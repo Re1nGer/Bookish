@@ -1,11 +1,17 @@
 import { View, ScrollView, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { UserContext } from '../../context/UserContext';
 import FormField from '../../components/FormField';
 import { router } from 'expo-router';
 import Stage from '../../components/Stage';
 
+
+
+// usually if password is requested to be reset, there's some time to do this 
+// we have to handle the case where user has reset password and refused to actually update it 
+// gotta keep the state on the server and redirect to password update screen if user didn't do so 
+
+// also there should be some timeout before user can request password reset again
 
 const NewPassword = () => {
 
@@ -14,7 +20,13 @@ const NewPassword = () => {
     newPassword: ""
   });
 
-  const handleUpdate = () => {}
+  const [isPasswordError, setIsPasswordError] = useState(false);
+
+  const handleUpdate = () => {
+    if (password.newPassword !== password.oldPassword) {
+      setIsPasswordError(true);
+    }
+  }
 
   return <SafeAreaView className="bg-[#F7F7F7] h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -33,7 +45,7 @@ const NewPassword = () => {
                 <FormField
                   title={"Enter New Password"}
                   titleStyles={"font-roboto text-[#373737] font-medium text-[14px] leading-[20px] tracking-[.1px]"}
-                  placeholder={'random@domain.com'}
+                  placeholder={'At least 8 characters'}
                   placeholderTextColor={"#777777"}
                   textInputStyles={'bg-[#EFEFEF] text-[12px] leading-[20px] tracking-[.1px] font-roboto font-semibold'}
                   textInputContainerStyles={'bg-[#EFEFEF] rounded-[5px] border-0'}
@@ -45,14 +57,20 @@ const NewPassword = () => {
                 <FormField
                   title={"Confirm New Password"}
                   titleStyles={"font-roboto text-[#373737] font-medium text-[14px] leading-[20px] tracking-[.1px]"}
-                  placeholder={'random@domain.com'}
+                  placeholder={'Confirm password'}
                   placeholderTextColor={"#777777"}
                   textInputStyles={'bg-[#EFEFEF] text-[12px] leading-[20px] tracking-[.1px] font-roboto font-semibold'}
                   textInputContainerStyles={'bg-[#EFEFEF] rounded-[5px] border-0'}
-                  otherStyles={'max-h-[52px] h-full mb-[50px]'}
+                  otherStyles={'max-h-[52px] h-full mb-[25px]'}
                   handleChangeText={(e) => setNewPassword(prev => ({ ...prev, newPassword: e })) }
                   value={password.newPassword}
                 />
+
+                { isPasswordError ? (
+                  <Text className="leading-[20px] tracking-[.1px] mb-[30px] font-medium font-roboto text-[10px] text-[#E86F68]">
+                    Passwords don’t match! Please try again.
+                  </Text>
+                ) : <></> } 
 
                 <TouchableOpacity
                   onPress={handleUpdate}
