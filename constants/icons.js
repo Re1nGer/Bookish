@@ -13,6 +13,7 @@ import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
 import trash from "../assets/icons/delete.png";
 import edit from "../assets/icons/edit-icon.png";
+import passwordSuccess from "../assets/icons/password-success-icon.png";
 
 export default {
   play,
@@ -29,5 +30,6 @@ export default {
   logout,
   eyeHide,
   eye,
-  edit
+  edit,
+  passwordSuccess
 };

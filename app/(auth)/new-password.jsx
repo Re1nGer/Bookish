@@ -25,6 +25,8 @@ const NewPassword = () => {
   const handleUpdate = () => {
     if (password.newPassword !== password.oldPassword) {
       setIsPasswordError(true);
+    } else {
+      router.push('/password-success');
     }
   }
 
@@ -42,6 +44,7 @@ const NewPassword = () => {
               </View>
 
               <View className="w-full mt-[63px]">
+
                 <FormField
                   title={"Enter New Password"}
                   titleStyles={"font-roboto text-[#373737] font-medium text-[14px] leading-[20px] tracking-[.1px]"}
@@ -74,7 +77,7 @@ const NewPassword = () => {
 
                 <TouchableOpacity
                   onPress={handleUpdate}
-                  className="rounded-[100px] bg-[#373737] max-w-[327px] w-full h-[40px] items-center justify-center">
+                  className="rounded-[100px] bg-[#373737] max-w-[327px] mt-[25px] w-full h-[40px] items-center justify-center">
                   <Text className="text-sm font-roboto leading-[20px] tracking-[.1px] text-white text-center">Update</Text>
                 </TouchableOpacity>
 
