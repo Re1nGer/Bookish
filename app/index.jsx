@@ -18,12 +18,19 @@ export default function App() {
         <SafeAreaView className="bg-[#F7F7F7] h-full">
             <ScrollView contentContainerStyle={{ height: '100%' }}>
                 <View className="py-[40px] w-full">
+
                     <Text className="font-cygrebold color-[#000000] pb-2 text-center text-[24px]">Welcome To Bookish Beasts !</Text>
-                    <Text className="font-cygreregular space-y-0 leading-[120%] text-center px-[80px] text-[16px]"> 
-                            <Text className="p-[15px] color-[#000000] font-cygreregular leading-[120%] text-center text-[16px]">Read. Remember. Enjoy.</Text>
-                            {" "}
-                        Start setting up your account to begin your personolized reading journey.
-                        </Text>
+
+                    <View className="font-cygreregular space-y-0 leading-[20px] text-center px-[50px] w-full"> 
+
+                        <View>
+                            <Text className="text-[#000000] font-cygreregular leading-[20px] text-center w-full text-[16px]">Read. Remember. Enjoy. </Text>
+                        </View>
+                        <View>
+                            <Text className="text-[#000000] font-cygreregular leading-[20px] text-center w-full text-[16px]">Start setting up your account to begin your personolized reading journey.</Text>
+                        </View>
+
+                    </View>
                 </View>
                 <View className="items-center">
                     <Image source={images.welcome} resizeMode='contain' className='w-[185px] h-[202px]' />
@@ -40,8 +47,8 @@ export default function App() {
                     <SignInWithProvider provider='facebook' title={'Continue with Facebook'} containerStyles={'max-w-[353px] my-[10px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
                     <SignInWithProvider provider='apple' title={'Continue with Apple'} containerStyles={'max-w-[353px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
                 </View>
-                <TouchableOpacity onPress={() => router.push('(auth)/sign-in')} className="pb-[50px]">
-                    <Text className='font-cygreregular text-[#373737] text-[16px] pt-[28px] text-center'>Sign In</Text>
+                <TouchableOpacity onPress={() => router.push('(auth)/sign-in')} className="mb-[20px]">
+                    <Text className='font-cygreregular text-[#373737] text-[16px] pt-[15px] text-center'>Sign In</Text>
                 </TouchableOpacity>
             </ScrollView>
             <StatusBar backgroundColor='#F7F7F7' style='dark' />
