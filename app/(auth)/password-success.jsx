@@ -7,19 +7,6 @@ import { icons } from '../../constants';
 
 const PasswordSuccess = () => {
 
-  const [password, setNewPassword] = useState({
-    oldPassword: "",
-    newPassword: ""
-  });
-
-  const [isPasswordError, setIsPasswordError] = useState(false);
-
-  const handleUpdate = () => {
-    if (password.newPassword !== password.oldPassword) {
-      setIsPasswordError(true);
-    }
-  }
-
   return <SafeAreaView className="bg-[#F7F7F7] h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
 
@@ -36,7 +23,7 @@ const PasswordSuccess = () => {
           </Text>
 
           <TouchableOpacity
-            onPress={handleUpdate}
+            onPress={() => router.push('sign-in')}
             className="rounded-[100px] bg-[#373737] max-w-[253px] w-full h-[40px] items-center justify-center">
             <Text className="text-sm font-roboto leading-[20px] tracking-[.1px] text-white text-center">Login</Text>
           </TouchableOpacity>
