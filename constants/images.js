@@ -9,6 +9,9 @@ import welcome from "../assets/images/welcome.png";
 import googleIcon from '../assets/icons/google-icon.png';
 import faceBookIcon from '../assets/icons/facebook-icon.png';
 import appleIcon from '../assets/icons/apple-icon.png';
+import onboardingImage from '../assets/images/onboarding_vector.png';
+import onboardingMonster from '../assets/images/onboarding_monster.png';
+
 
 export default {
     profile,
@@ -21,5 +24,7 @@ export default {
     welcome,
     googleIcon,
     faceBookIcon,
-    appleIcon
+    appleIcon,
+    onboardingImage,
+    onboardingMonster
 };

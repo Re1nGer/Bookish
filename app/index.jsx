@@ -18,9 +18,7 @@ export default function App() {
         <SafeAreaView className="bg-[#F7F7F7] h-full">
             <ScrollView contentContainerStyle={{ height: '100%' }}>
                 <View className="py-[40px] w-full">
-
                     <Text className="font-cygrebold color-[#000000] pb-2 text-center text-[24px]">Welcome To Bookish Beasts !</Text>
-
                     <View className="font-cygreregular space-y-0 leading-[20px] text-center px-[50px] w-full"> 
 
                         <View>
@@ -37,7 +35,7 @@ export default function App() {
                 </View>
                 <View className='items-center mb-[28px] mt-[33px]'>
                     <PrimaryButton title={"Sign up"}
-                        handlePress={() => router.push('(auth)/sign-up')}
+                        handlePress={() => router.push('(auth)/onboarding')}
                         containerStyles={'max-w-[353px] w-full rounded-3xl'}
                         textStyles={'text-center justify-center items-center'}
                     />
