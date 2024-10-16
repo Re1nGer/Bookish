@@ -8,9 +8,13 @@ export const UserProvider = ({ children }) => {
 
     const [recoveryEmail, setRecoveryEmail] = useState('');
 
+    const [verificationCode, setVerificationCode] = useState('');
+
     return <UserContext.Provider value={{
+        verificationCode,
         recoveryEmail,
         setRecoveryEmail,
+        setVerificationCode,
         //TODO: to remove
         user,
         setUser

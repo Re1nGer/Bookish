@@ -1,9 +1,11 @@
 import { View, ScrollView, Text, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import FormField from '../../components/FormField';
 import { router } from 'expo-router';
 import Stage from '../../components/Stage';
+import axios from '../../network/axios';
+import { UserContext } from '../../context/UserContext';
 
 
 
@@ -16,17 +18,33 @@ import Stage from '../../components/Stage';
 const NewPassword = () => {
 
   const [password, setNewPassword] = useState({
-    oldPassword: "",
+    newPasswordRepeated: "",
     newPassword: ""
   });
 
+  const { verificationCode, recoveryEmail } = useContext(UserContext);
+
   const [isPasswordError, setIsPasswordError] = useState(false);
 
-  const handleUpdate = () => {
-    if (password.newPassword !== password.oldPassword) {
+  const handleUpdate = async () => {
+    if (password.newPassword !== password.newPasswordRepeated) {
       setIsPasswordError(true);
     } else {
+      await updatePassword()
+    }
+  }
+
+  const updatePassword = async () => {
+    try {
+      const { newPassword, newPasswordRepeated } = password;
+      await axios.post('/reset-password', {
+          email: recoveryEmail,
+          verificationCode: verificationCode,
+          newPassword, newPasswordRepeated
+      });
       router.push('/password-success');
+    } catch (error) {
+      console.log(error);
     }
   }
 

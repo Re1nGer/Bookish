@@ -69,7 +69,9 @@ const SentTo = () => {
       <TimeLeft
         time={formattedTime} 
       />
-      <DigitSellInput email={recoveryEmail} />
+      <DigitSellInput
+        email={recoveryEmail}
+      />
       <ResendButton
         resetTimer={resetTimer}
         seconds={seconds}
@@ -118,7 +120,7 @@ const DigitSell = ({ value, onFocus, isError }) => {
 
 const DigitSellInput = ({ email }) => {
 
-  const [verificationCode, setVerificationCode] = useState("");
+  const { verificationCode, setVerificationCode } = useContext(UserContext);
 
   const [isVerificationCodeError, setIsVerificationCodeError] = useState(false);
 
@@ -134,6 +136,7 @@ const DigitSellInput = ({ email }) => {
         setIsVerificationCodeError(false);
         router.push('/new-password');
       } catch(error) {
+        //handle code expiration case
         console.log(error);
         setIsVerificationCodeError(true);
       }
