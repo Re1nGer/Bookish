@@ -71,8 +71,8 @@ const NewPassword = () => {
                   textInputStyles={'bg-[#EFEFEF] text-[12px] leading-[20px] tracking-[.1px] font-roboto font-semibold'}
                   textInputContainerStyles={'bg-[#EFEFEF] rounded-[5px] border-0'}
                   otherStyles={'max-h-[52px] h-full mb-[50px]'}
-                  handleChangeText={(e) => setNewPassword(prev => ({ ...prev, oldPassword: e })) }
-                  value={password.oldPassword}
+                  handleChangeText={(e) => setNewPassword(prev => ({ ...prev, newPasswordRepeated: e })) }
+                  value={password.newPasswordRepeated}
                 />
 
                 <FormField

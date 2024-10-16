@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {  router } from 'expo-router';
 import FormField from '../../components/FormField';
+import axios from '../../network/axios';
 
 function isValidEmail(email) {
   // Regular expression for basic email validation
@@ -19,11 +20,22 @@ const SignIn = () => {
     password: ''
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [hasSubmitted, setHasSubmitted] = useState(false)
+  const [errors, setErrors] = useState("");
 
-  const handleSigningIn = () => {
-    setHasSubmitted(true);
+  const handleSigningIn = async () => {
+    await login();
+  }
+
+  const login = async () => {
+    try {
+      await axios.post('/login', { email: form.email, password: form.password })
+      router.push('/onboarding');
+    } catch (error) {
+      if (error.response.data?.error) {
+        setErrors(error.response.data?.error)
+      }
+      console.log(error.response);
+    }
   }
 
   return (
@@ -44,7 +56,6 @@ const SignIn = () => {
                 otherStyles={'max-h-[52px] h-full mb-[50px]'}
                 handleChangeText={(e) => setForm({ ...form, email: e }) }
                 value={form.email}
-                error={hasSubmitted && form.email && !isValidEmail(form.email)}
               />
               <View className='w-full'>
                 <FormField
@@ -55,8 +66,9 @@ const SignIn = () => {
                   textInputStyles={'bg-[#EFEFEF] text-[12px] font-roboto font-semibold'} 
                   textInputContainerStyles={'bg-[#EFEFEF] rounded-[5px] border-0'}
                   otherStyles={"max-h-[90px] h-full space-y-0"}
-                  error={hasSubmitted && form.password.length < 8}
-                  errorText={(hasSubmitted && form.password.length < 8) ? "Wrong password. Please try again" : ""}
+                  handleChangeText={e => setForm({...form, password: e})}
+                  error={errors !== ''}
+                  errorText={errors}
                 />
                 <TouchableOpacity onPress={() => router.push("/forgot-password")}>
                   <Text className='underline underline-offset-4 mt-[10px] max-h-[50px] flex-col justify-end text-[#777] text-[11px] font-medium font-roboto leading-[20px] tracking-[.1px]'>Forgot password?</Text>
