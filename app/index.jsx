@@ -35,7 +35,7 @@ export default function App() {
                 </View>
                 <View className='items-center mb-[28px] mt-[33px]'>
                     <PrimaryButton title={"Sign up"}
-                        handlePress={() => router.push('(auth)/onboarding')}
+                        handlePress={() => router.push('(auth)/sign-up')}
                         containerStyles={'max-w-[353px] w-full rounded-3xl'}
                         textStyles={'text-center justify-center items-center'}
                     />

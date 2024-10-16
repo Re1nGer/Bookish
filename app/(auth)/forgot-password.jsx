@@ -5,13 +5,24 @@ import {  router } from 'expo-router';
 import FormField from '../../components/FormField';
 import Stage from '../../components/Stage';
 import { UserContext } from '../../context/UserContext';
+import axios from '../../network/axios';
 
 const ForgotPassword = () => {
   
   const { recoveryEmail, setRecoveryEmail } = useContext(UserContext);
 
-  const handleSubmit = () => {
-    router.push('/verification')
+  const sendEmail = async () => {
+    try {
+      await axios.post('/forgot-password', { email: recoveryEmail });
+      router.push('/verification')
+    }
+    catch(error) {
+      console.log(error);
+    }
+  }
+
+  const handleSubmit = async () => {
+    await sendEmail();
   }
 
 

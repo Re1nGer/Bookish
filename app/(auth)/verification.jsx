@@ -7,6 +7,7 @@ import Stage from '../../components/Stage';
 import { icons } from '../../constants';
 import useTimer from '../hooks/useTimer';
 import { UserContext } from '../../context/UserContext';
+import axios from '../../network/axios';
 
 
 const Verification = () => {
@@ -37,6 +38,8 @@ const SentTo = () => {
 
   const { recoveryEmail, setRecoveryEmail } = useContext(UserContext);
 
+  const { formattedTime, seconds, minutes, resetTimer } = useTimer(0, 25);
+
   const inputRef = useRef(null);
 
   const handleEditEmail = (e) => {
@@ -63,31 +66,34 @@ const SentTo = () => {
       </TouchableOpacity>
     </View>
     <View className="mt-[50px] items-center">
-      <TimeLeft />
-      <DigitSellInput />
-      <ResendButton />
+      <TimeLeft
+        time={formattedTime} 
+      />
+      <DigitSellInput email={recoveryEmail} />
+      <ResendButton
+        resetTimer={resetTimer}
+        seconds={seconds}
+        minutes={minutes}
+      />
     </View>
   </View>
 }
 
 
-const TimeLeft = () => {
-  const { formattedTime } = useTimer(0, 25);
+const TimeLeft = ({ time }) => {
   return ( 
     <Text className="text-[15px] leading-[20px] tracking-[.1px] text-[#262626] font-robotoblack font-bold text-center mt-[12px]">
-        {formattedTime}
+        {time}
     </Text>
   );
 }
 
 
-const ResendButton = () => {
-
-  const { seconds, minutes } = useTimer(0, 25);
+const ResendButton = ({ minutes, seconds, resetTimer }) => {
 
   return <>
       { seconds === 0 && minutes === 0 && (
-        <TouchableOpacity className="border border-[#000000] rounded-[100px] mt-[47px] w-[327px] h-[40px] items-center justify-center">
+        <TouchableOpacity onPress={() => resetTimer()} className="border border-[#000000] rounded-[100px] mt-[47px] w-[327px] h-[40px] items-center justify-center">
           <Text className="text-sm leading-[20px] tracking-[.1px] font-medium font-roboto">Resend Code</Text>
         </TouchableOpacity>
       ) }
@@ -110,7 +116,7 @@ const DigitSell = ({ value, onFocus, isError }) => {
   );
 }
 
-const DigitSellInput = () => {
+const DigitSellInput = ({ email }) => {
 
   const [verificationCode, setVerificationCode] = useState("");
 
@@ -122,20 +128,26 @@ const DigitSellInput = () => {
     inputRef.current?.focus();
   }
 
+  const verifyCode = async () => {
+      try {
+        await axios.post('/code-verify', { email: email, code: verificationCode })
+        setIsVerificationCodeError(false);
+        router.push('/new-password');
+      } catch(error) {
+        console.log(error);
+        setIsVerificationCodeError(true);
+      }
+  }
+
   useEffect(() => {
     inputRef.current?.focus();
   }, [])
 
   useEffect(() => {
       if (verificationCode.length === 4) {
-        if (verificationCode === "1111") {
-          setIsVerificationCodeError(false);
-          router.push('/new-password');
-        } else {
-          setIsVerificationCodeError(true);
-        }
+        verifyCode()
       }
-    }, [verificationCode, router]);
+    }, [verificationCode]);
 
   return  (
     <>
