@@ -134,7 +134,7 @@ const DigitSellInput = ({ email }) => {
       try {
         await axios.post('/code-verify', { email: email, code: verificationCode })
         setIsVerificationCodeError(false);
-        router.push('/new-password');
+        router.replace('/new-password')
       } catch(error) {
         //handle code expiration case
         console.log(error);

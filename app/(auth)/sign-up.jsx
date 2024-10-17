@@ -18,7 +18,6 @@ const SignUp = () => {
   const [errors, setErrors] = useState({
     email: '',
     password: '',
-    userExists: ''
   });
 
   const handleSignUpClick = async () => {
@@ -38,13 +37,7 @@ const SignUp = () => {
       router.push("onboarding");
     } catch (error) {
       if (error.response) {
-
-/*         if (error.response.data.error?.userExists) {
-          alert(error.response.data.error?.userExists);
-          return;
-        } */
-
-        setErrors(error.response.data.error) //could be a bit more simplified
+        setErrors(error.response.data) //could be a bit more simplified
       } else if (error.request) {
         console.error('Error request:', error.request);
       } else {
