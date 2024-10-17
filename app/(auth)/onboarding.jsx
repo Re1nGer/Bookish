@@ -1,6 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import { images } from "../../constants";
+import { router } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
 
 
@@ -28,7 +29,9 @@ const Onboarding = () => {
 
                     <View className="gap-3 w-full h-full z-20 items-center justify-start mt-[100px]">
 
-                        <TouchableOpacity className="bg-[#6592E3] max-w-[313px] w-full items-center justify-center max-h-[52px] h-full rounded-[47px]">
+                        <TouchableOpacity
+                            onPress={() => router.push('/set-strike')}
+                            className="bg-[#6592E3] max-w-[313px] w-full items-center justify-center max-h-[52px] h-full rounded-[47px]">
                             <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Start The Test</Text>
                         </TouchableOpacity>
 

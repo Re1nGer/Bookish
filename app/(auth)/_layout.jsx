@@ -1,4 +1,3 @@
-import { View, Text } from 'react-native'
 import React from 'react'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
@@ -15,6 +14,8 @@ const AuthLayout = () => {
         <Stack.Screen name="password-success" options={{ title: "", headerShown: false }} />
         <Stack.Screen name="welcome" options={{ headerShown: false }}/>
         <Stack.Screen name="onboarding" options={{ title: "", headerBackVisible: false, headerShown: false }}/>
+        <Stack.Screen name="set-strike" options={{ title: "", headerBackVisible: false, headerShown: false }}/>
+        <Stack.Screen name="keep-strike" options={{ title: "", headerBackVisible: false, headerShown: false }}/>
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
     </>
