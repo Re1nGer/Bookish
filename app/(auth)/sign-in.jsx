@@ -31,10 +31,10 @@ const SignIn = () => {
       await axios.post('/login', { email: form.email, password: form.password })
       router.push('/onboarding');
     } catch (error) {
-      if (error.response.data?.error) {
+      if (error.response.data) {
         setErrors(error.response.data?.error)
       }
-      console.log(error.response);
+      console.log(error.response.data?.error);
     }
   }
 
@@ -56,6 +56,7 @@ const SignIn = () => {
                 otherStyles={'max-h-[52px] h-full mb-[50px]'}
                 handleChangeText={(e) => setForm({ ...form, email: e }) }
                 value={form.email}
+                error={errors !== ""}
               />
               <View className='w-full'>
                 <FormField

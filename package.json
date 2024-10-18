@@ -9,6 +9,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@quidone/react-native-wheel-picker": "^1.0.1",
+    "@quidone/react-native-wheel-picker-feedback": "^1.0.0",
     "@react-native-async-storage/async-storage": "1.21.0",
     "@react-native-google-signin/google-signin": "^11.0.1",
     "axios": "^1.7.7",
