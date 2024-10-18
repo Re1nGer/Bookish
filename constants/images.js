@@ -11,6 +11,13 @@ import faceBookIcon from '../assets/icons/facebook-icon.png';
 import appleIcon from '../assets/icons/apple-icon.png';
 import onboardingImage from '../assets/images/onboarding_vector.png';
 import onboardingMonster from '../assets/images/onboarding_monster.png';
+import monster1 from '../assets/images/monster1.png';
+import monster2 from '../assets/images/monster2.png';
+import monster3 from '../assets/images/monster3.png';
+import monster4 from '../assets/images/monster4.png';
+import monster5 from '../assets/images/monster5.png';
+import monster6 from '../assets/images/monster6.png';
+import question from '../assets/images/question.png';
 
 
 export default {
@@ -26,5 +33,12 @@ export default {
     faceBookIcon,
     appleIcon,
     onboardingImage,
-    onboardingMonster
+    onboardingMonster,
+    monster1,
+    monster2, 
+    monster3,
+    monster4, 
+    monster5,
+    monster6,
+    question
 };
