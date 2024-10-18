@@ -6,7 +6,8 @@ import OnboardingProgress from "../../components/OnboardingProgress";
 import DailyTiming from "../../components/DailyTiming";
 
 
-const SetStrike = () => {
+
+const CommitToGrowing = () => {
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -14,29 +15,25 @@ const SetStrike = () => {
                 <OnboardingProgress />
             </View>
             <View className="w-full mt-[77px] mb-[48px] items-center">
-                <Text className="font-bold max-w-[165px] text-[24px] text-center leading-[23px] font-cygrebold">
-                    Set your daily goal on timing
+                <Text className="font-bold text-[#000000] max-w-[229px] text-[24px] text-center leading-[23px] font-cygrebold">
+                    Commit to growing !
                 </Text>
             </View>
             <View className="items-center flex-1">
-                <DailyTiming times={"20 min/day"} level="Easy" styles={"mb-[14px]"} />
-                <DailyTiming times={"30 min/day"} level="Common" styles={"mb-[14px]"} />
-                <DailyTiming times={"45 min/day"} level="Serious" styles={"mb-[14px]"} />
-                <DailyTiming times={"1 hour/day"} level="Intensive" />
+                <DailyTiming times={"7-day strike"} level="Promising" styles={"mb-[14px]"} />
+                <DailyTiming times={"14-day strike"} level="Determined" styles={"mb-[14px]"} />
+                <DailyTiming times={"30-day strike"} level="Impressive" styles={"mb-[14px]"} />
+                <DailyTiming times={"50-day strike"} level="Unstoppable" />
             </View>
             <TouchableOpacity
-                onPress={() => router.push('/keep-strike')}
+                onPress={() => router.push('/set-strike')}
                 className="bg-[#6592E3] max-w-[313px] w-full self-center mb-[30px] items-center justify-center max-h-[52px] h-full rounded-[47px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Continue</Text>
             </TouchableOpacity>
         </ScrollView>
         <StatusBar backgroundColor='#F7F7F7' style='dark' />
     </SafeAreaView>
-
 }
 
 
-
-//gotta figure out how 
-
-export default SetStrike;
+export default CommitToGrowing;

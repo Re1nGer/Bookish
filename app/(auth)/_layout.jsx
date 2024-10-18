@@ -16,6 +16,7 @@ const AuthLayout = () => {
         <Stack.Screen name="onboarding" options={{ title: "", headerBackVisible: false, headerShown: false }} />
         <Stack.Screen name="set-strike" options={{ title: "", headerBackVisible: false, headerShown: false }} />
         <Stack.Screen name="keep-strike" options={{ title: "", headerBackVisible: false, headerShown: false }} />
+        <Stack.Screen name="commit-to-growing" options={{ title: "", headerBackVisible: false, headerShown: false }} />
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
     </>

@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native'
-import React, { useContext, useState } from 'react'
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import React, { useContext } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {  router } from 'expo-router';
 import FormField from '../../components/FormField';
