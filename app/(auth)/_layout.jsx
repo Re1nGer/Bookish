@@ -2,6 +2,8 @@ import React from 'react'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 
+//never-forget is complicated component 
+
 const AuthLayout = () => {
   return (
     <>
@@ -17,7 +19,8 @@ const AuthLayout = () => {
         <Stack.Screen name="set-strike" options={{ title: "", headerBackVisible: false, headerShown: false }} />
         <Stack.Screen name="keep-strike" options={{ title: "", headerBackVisible: false, headerShown: false }} />
         <Stack.Screen name="commit-to-growing" options={{ title: "", headerBackVisible: false, headerShown: false }} />
-        <Stack.Screen name="never-forget" options={{ title: "", headerBackVisible: false, headerShown: false }} />
+        <Stack.Screen name="never-forget" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
+        <Stack.Screen name="set-books" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
     </>
