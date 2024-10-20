@@ -9,7 +9,6 @@ import VideoCard from '../../components/VideoCard';
 import { UserContext } from '../../context/UserContext';
 import { icons } from '../../constants';
 import InfoBox from '../../components/InfoBox';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
