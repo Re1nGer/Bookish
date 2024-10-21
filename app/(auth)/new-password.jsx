@@ -55,7 +55,7 @@ const NewPassword = () => {
             <Text className="font-inter text-[24px] text-[#000000] font-bold px-[25px] pt-10 pb-9">New Password</Text>
             <View className="w-full h-full justify-start px-[31px] max-h-[320px]">
 
-              <View className="w-full flex-row">
+              <View className="w-full items-center flex-row mx-[35px]">
                 <Stage />
                 <Stage styles={'mx-[10px]'} />
                 <Stage active={true} />
@@ -95,7 +95,7 @@ const NewPassword = () => {
 
                 <TouchableOpacity
                   onPress={handleUpdate}
-                  className="rounded-[100px] bg-[#373737] max-w-[327px] mt-[25px] w-full h-[40px] items-center justify-center">
+                  className="rounded-[100px] mx-[33px] bg-[#373737] self-center mt-[25px] w-full h-[40px] items-center justify-center">
                   <Text className="text-sm font-roboto leading-[20px] tracking-[.1px] text-white text-center">Update</Text>
                 </TouchableOpacity>
 

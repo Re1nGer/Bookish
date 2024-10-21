@@ -79,7 +79,7 @@ const SignUp = () => {
 
             <PrimaryButton title={"Sign up"}
                 handlePress={handleSignUpClick}
-                containerStyles={'max-w-[353px] mt-4 w-full rounded-3xl'}
+                containerStyles={'mx-[20px] self-center mt-4 w-full rounded-3xl'}
                 textStyles={'text-center justify-center items-center'}
             />
 

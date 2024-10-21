@@ -12,6 +12,8 @@ import { images } from "../../constants";
 
 const SetBooks = () => {
 
+  const [value, setValue] = useState(13);
+
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <ScrollView contentContainerStyle={{ height: "100%" }}>
             <View className="w-full px-[20px] mt-[20px]">
@@ -24,11 +26,14 @@ const SetBooks = () => {
             </View>
             <View className="mx-[22px] flex-1">
                 <View className="w-[348px] h-[160px] bg-[#FFFFFF] border-[.8px] rounded-[15px] border-[#8A8A8A]">
-                    <SliderCounter />
+                    <SliderCounter
+                      value={value}
+                      setValue={setValue} 
+                    />
                 </View>
                 <View className="mt-[18px] flex-row rounded-[15px] bg-[#1C1C1C] px-[20px] items-center w-full h-[90px]">
                     <Image source={images.eyes} />
-                    <Text className="text-[14px] leading-[17px] font-cygreregular text-[#fff] ml-[15px] max-w-[224px] w-full">You would need to read 2-3 books per month to achieve it.</Text>
+                    <Text className="text-[14px] leading-[17px] font-cygreregular text-[#fff] ml-[15px] pr-[10px] max-w-[224px] w-full">{`You would need to read ${Math.floor(value / 12)}-${Math.ceil(value / 12)} books per month to achieve it.`}</Text>
                 </View>
             </View>
             
@@ -46,8 +51,7 @@ const SetBooks = () => {
 
 }
 
-const SliderCounter = () => {
-  const [value, setValue] = useState(0);
+const SliderCounter = ({ value, setValue }) => {
 
 
   //Slider's track height isn't customizable
@@ -57,7 +61,7 @@ const SliderCounter = () => {
       <Text className="text-[60px] font-bold font-cygrebold">{value.toFixed(0)}</Text>
       <Slider
         style={{ height: 40, width: '100%' }}
-        minimumValue={0}
+        minimumValue={13}
         maximumValue={100}
         step={1}
         value={value}
