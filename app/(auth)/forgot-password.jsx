@@ -33,7 +33,7 @@ const ForgotPassword = () => {
           <View className="w-full h-full justify-between max-h-[60%] pt-[23px] items-start">
             <Text className="font-inter text-[24px] text-[#000000] font-bold px-[25px] pt-10 pb-9">Forgot Password</Text>
             <View className="w-full h-full justify-start px-[31px] max-h-[320px]">
-              <View className="w-full flex-row">
+              <View className="flex-row items-center justify-center">
                 <Stage active={true} />
                 <Stage styles={'mx-[10px]'} />
                 <Stage />

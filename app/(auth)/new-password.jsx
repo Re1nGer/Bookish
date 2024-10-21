@@ -55,7 +55,7 @@ const NewPassword = () => {
             <Text className="font-inter text-[24px] text-[#000000] font-bold px-[25px] pt-10 pb-9">New Password</Text>
             <View className="w-full h-full justify-start px-[31px] max-h-[320px]">
 
-              <View className="w-full items-center flex-row mx-[35px]">
+              <View className="w-full items-center justify-center flex-row">
                 <Stage />
                 <Stage styles={'mx-[10px]'} />
                 <Stage active={true} />
