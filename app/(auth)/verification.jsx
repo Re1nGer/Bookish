@@ -112,7 +112,7 @@ const DigitSell = ({ value, onFocus, isError }) => {
         showSoftInputOnFocus={false}
         onFocus={() => onFocus()}
         keyboardType='numeric'
-        className={`text-[35px] leading-[50px] tracking-[.1px] font-roboto font-medium text-center ${isError ? 'text-[#E86F68]' : ''}`}
+        className={`text-[35px] leading-[50px] tracking-[.1px] justify-center items-center font-roboto font-medium text-center ${isError ? 'text-[#E86F68]' : ''}`}
       />
     </View>
   );
