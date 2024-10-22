@@ -19,7 +19,7 @@ export default function App() {
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full">
             <ScrollView contentContainerStyle={{ height: '100%' }}>
-                <View className="py-[30px] w-full">
+                <View className="py-[20px] w-full">
                     <Text className="font-cygrebold color-[#000000] pb-2 text-center text-[24px]">Welcome To Bookish Beasts !</Text>
                     <View className="font-cygreregular space-y-0 leading-[20px] text-center px-[50px] w-full"> 
 
@@ -33,7 +33,7 @@ export default function App() {
                     </View>
                 </View>
                 <View className="items-center">
-                    <Image source={images.welcome} resizeMode='contain' className='w-[185px] h-[202px]' />
+                    <Image source={images.welcome} resizeMode='contain' className='max-w-[185px] max-h-[202px]' />
                 </View>
                 <View className='items-center mb-[28px] mt-[33px] px-[20px]'>
                     <PrimaryButton title={"Sign up"}
@@ -47,9 +47,11 @@ export default function App() {
                     <SignInWithProvider provider='facebook' title={'Continue with Facebook'} containerStyles={'max-w-[353px] my-[10px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
                     <SignInWithProvider provider='apple' title={'Continue with Apple'} containerStyles={'max-w-[353px] w-full rounded-3xl'} textStyles={'text-center ml-3'} />
                 </View>
-                <TouchableOpacity onPress={() => router.push('(auth)/sign-in')} className="flex-1 h-full">
-                    <Text className='font-cygreregular text-[#373737] text-[16px] pt-[28px] text-center'>Sign In</Text>
-                </TouchableOpacity>
+                <View className="w-full flex-1 items-center justify-center">
+                    <TouchableOpacity onPress={() => router.push('(auth)/sign-in')}>
+                        <Text className='font-cygreregular text-[#373737] text-[16px] text-center'>Sign In</Text>
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
             <StatusBar backgroundColor='#F7F7F7' style='dark' />
         </SafeAreaView>
