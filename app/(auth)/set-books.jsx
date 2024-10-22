@@ -25,7 +25,7 @@ const SetBooks = () => {
                 </Text>
             </View>
             <View className="mx-[22px] flex-1">
-                <View className="w-[348px] h-[160px] bg-[#FFFFFF] border-[.8px] rounded-[15px] border-[#8A8A8A]">
+                <View className="max-w-[348px] h-[160px] bg-[#FFFFFF] border-[.8px] rounded-[15px] border-[#8A8A8A]">
                     <SliderCounter
                       value={value}
                       setValue={setValue} 
@@ -38,7 +38,7 @@ const SetBooks = () => {
             </View>
             
             <TouchableOpacity
-                onPress={() => router.push('/never-forget')}
+                onPress={() => router.push('/sounds-promising')}
                 className="bg-[#6592E3] max-w-[313px] w-full self-center mb-[11px] items-center justify-center max-h-[52px] h-full rounded-[47px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Continue</Text>
             </TouchableOpacity>

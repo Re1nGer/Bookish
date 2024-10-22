@@ -19,7 +19,7 @@ const CommitToGrowing = () => {
                     Commit to growing !
                 </Text>
             </View>
-            <View className="items-center flex-1">
+            <View className="items-center flex-1 mx-[23px]">
                 <DailyTiming times={"7-day strike"} level="Promising" styles={"mb-[14px]"} />
                 <DailyTiming times={"14-day strike"} level="Determined" styles={"mb-[14px]"} />
                 <DailyTiming times={"30-day strike"} level="Impressive" styles={"mb-[14px]"} />

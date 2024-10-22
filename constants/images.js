@@ -20,6 +20,7 @@ import monster6 from '../assets/images/monster6.png';
 import question from '../assets/images/question.png';
 import pointer from '../assets/images/pointer.png';
 import eyes from '../assets/images/eyes.png';
+import onboardingMonster2 from '../assets/images/onboarding_monster2.png';
 
 
 export default {
@@ -44,5 +45,6 @@ export default {
     monster6,
     question,
     pointer,
-    eyes
+    eyes,
+    onboardingMonster2
 };
