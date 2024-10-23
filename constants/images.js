@@ -21,6 +21,7 @@ import question from '../assets/images/question.png';
 import pointer from '../assets/images/pointer.png';
 import eyes from '../assets/images/eyes.png';
 import onboardingMonster2 from '../assets/images/onboarding_monster2.png';
+import celebrity from '../assets/images/celebrity.png';
 
 
 export default {
@@ -46,5 +47,6 @@ export default {
     question,
     pointer,
     eyes,
-    onboardingMonster2
+    onboardingMonster2,
+    celebrity
 };
