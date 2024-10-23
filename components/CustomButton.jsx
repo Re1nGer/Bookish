@@ -48,7 +48,7 @@ const SignInWithProvider = ({ provider = 'google', title, handlePress, container
     <TouchableOpacity
         onPress={handlePress}
         activeOpacity={0.7}
-        className={`bg-[#FFFFFF] border-[#8A8A8A] border-[1px] min-h-[53px] justify-center ${containerStyles}`}>
+        className={`bg-[#FFFFFF] border-[#8A8A8A] border-[1px] max-h-[52px] h-full justify-center ${containerStyles}`}>
         <View className='items-center flex-row justify-center'>
             <Image source={sourceImage} height={20} width={20} className='' />
             <Text className={`text-[#1C1C1C] font-cygresemibold text-[18px] ${textStyles}`}>{title}</Text>

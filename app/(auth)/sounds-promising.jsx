@@ -26,7 +26,7 @@ const SoundsPromising = () => {
                 </View>
                 <View className="flex-1 w-full">
                     <TouchableOpacity
-                        onPress={() => router.push('/never-forget')}
+                        onPress={() => router.push('/topics-interested')}
                         className="bg-[#6592E3] flex-1 max-w-[313px] w-full self-center mb-[30px] items-center justify-center max-h-[52px] h-full rounded-[47px]">
                         <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Continue</Text>
                     </TouchableOpacity>

@@ -22,6 +22,7 @@ const AuthLayout = () => {
         <Stack.Screen name="never-forget" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
         <Stack.Screen name="set-books" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
         <Stack.Screen name="sounds-promising" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
+        <Stack.Screen name="topics-interested" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
     </>

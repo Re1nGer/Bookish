@@ -13,7 +13,7 @@ const OnboardingProgress = ({ stage1 = 0, stage2 = 0 }) => {
             <Text className="font-bold text-[18px] leading-[18px] text-center text-white font-cygreregular">2</Text>
         </View>
         <View className="bg-[#D8E6FF] rounded-[13px] max-w-[136px] h-[12px] relative w-full flex-1">
-            <View className='absolute bg-[#6592E3]' style={{ width: `${stage2}%` }}></View>
+            <View className='absolute bg-[#6592E3] h-full rounded-[13px]' style={{ width: `${stage2}%` }}></View>
         </View>
     </View>
 }
