@@ -4,6 +4,7 @@ import { router } from "expo-router";
 import OnboardingProgress from "../../components/OnboardingProgress";
 import { StatusBar } from 'expo-status-bar';
 import { images } from "../../constants";
+import { useState } from "react";
 
 
 const TopicsInterested = () => {
@@ -65,9 +66,13 @@ const TopicsInterested = () => {
 
 const Block = ({ name, selected, styles }) => {
 
-    return <View className={`border-[0.9px] border-[#8A8A8A] items-center justify-center max-w-[111px] w-full max-h-[62px] h-full rounded-[8px] ${styles}`}>
+    const [isSelected, setSelected] = useState(false);
+
+    return <TouchableOpacity
+            onPress={() => setSelected(prev => !prev)}
+            className={`border-[0.9px] border-[#8A8A8A] items-center justify-center max-w-[111px] w-full max-h-[62px] h-full rounded-[8px] ${isSelected ? 'border-[#6592E3]' : ''} ${styles}`}>
         <Text className="font-cygrebold font-medium text-[16px] text-center text-[#000] px-[10px] leading-[19.2px]">{name}</Text>
-    </View>
+    </TouchableOpacity>
 }
 
 
