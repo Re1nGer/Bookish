@@ -14,6 +14,11 @@ import play from "../assets/icons/play.png";
 import trash from "../assets/icons/delete.png";
 import edit from "../assets/icons/edit-icon.png";
 import passwordSuccess from "../assets/icons/password-success-icon.png";
+import growth from "../assets/icons/growth_icon.png";
+import entertainment from '../assets/icons/enter_icon.png';
+import inspiration from "../assets/icons/inspiration_icon.png";
+import social from "../assets/icons/social_icon.png";
+import work from "../assets/icons/work_icon.png";
 
 export default {
   play,
@@ -31,5 +36,10 @@ export default {
   eyeHide,
   eye,
   edit,
-  passwordSuccess
+  passwordSuccess,
+  growth,
+  entertainment,
+  inspiration,
+  social,
+  work
 };
