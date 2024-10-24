@@ -22,6 +22,8 @@ import pointer from '../assets/images/pointer.png';
 import eyes from '../assets/images/eyes.png';
 import onboardingMonster2 from '../assets/images/onboarding_monster2.png';
 import celebrity from '../assets/images/celebrity.png';
+import book from '../assets/images/book.png';
+import bookSelected from '../assets/images/book_selected.png';
 
 
 export default {
@@ -48,5 +50,7 @@ export default {
     pointer,
     eyes,
     onboardingMonster2,
-    celebrity
+    celebrity,
+    book,
+    bookSelected
 };
