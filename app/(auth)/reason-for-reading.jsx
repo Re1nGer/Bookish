@@ -11,7 +11,7 @@ const ReasonForReading = () => {
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
             <View className="w-full px-[20px] mt-[20px]">
-                <OnboardingProgress stage1={100} stage2={70} />
+                <OnboardingProgress stage1={100} stage2={85} />
             </View>
             <View className="w-full mt-[65px] mb-[47px] items-center">
                 <Text className="font-bold text-[#000000] max-w-[349px] text-[24px] text-center leading-[28px] px-[60px] font-cygrebold">

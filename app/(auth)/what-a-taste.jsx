@@ -11,7 +11,7 @@ const WhatATaste = () => {
         <ScrollView contentContainerStyle={{ height: "100%" }}>
             <View className="w-full h-full">
                 <View className="w-full px-[20px] mt-[20px]">
-                    <OnboardingProgress stage1={100} />
+                    <OnboardingProgress stage1={100} stage2={100} />
                 </View>
                 <View className="w-full mt-[77px] mb-[48px] items-center">
                     <Text className="text-[#000] max-w-[165px] text-[24px] text-center leading-[28px] font-cygrebold">
@@ -26,7 +26,7 @@ const WhatATaste = () => {
                 </View>
                 <View className="flex-1 w-full">
                     <TouchableOpacity
-                        onPress={() => router.push('/topics-interested')}
+                        onPress={() => router.push('/commitment')}
                         className="bg-[#6592E3] flex-1 max-w-[313px] w-full self-center mb-[30px] items-center justify-center max-h-[52px] h-full rounded-[47px]">
                         <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Continue</Text>
                     </TouchableOpacity>
