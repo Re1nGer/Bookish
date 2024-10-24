@@ -69,7 +69,7 @@ const BooksInterested = () => {
             </ScrollView>
         <View className="w-full flex-[1.5] justify-center items-center">
             <TouchableOpacity
-                onPress={() => router.push('/sounds-promising')}
+                onPress={() => router.push('/what-a-taste')}
                 className="bg-[#6592E3] max-w-[313px] w-full self-center mb-[11px] items-center justify-center max-h-[52px] h-full rounded-[47px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Continue</Text>
             </TouchableOpacity>
