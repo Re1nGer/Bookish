@@ -29,7 +29,7 @@ const Commitment = () => {
       });
 
       if (result.success) {
-        router.push("/commitment")
+        router.push("/preparing-plan")
       }
     } catch (error) {
       console.log('Authentication error:', error);
