@@ -11,7 +11,10 @@ import RadioButton from "../../components/RadioButton";
 
 const SpecialOffer = () => {
 
-    const [selectedComponent, setSelectedComponent] = useState('A'); 
+    const [offerState, setOfferState] = useState({
+        offerCost: '30.99€/year',
+        offerOption: 'A'
+    });
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <View className="items-start mt-6 px-[20px]">
@@ -33,13 +36,13 @@ const SpecialOffer = () => {
 {/*         Potentially fetch these values from flag features */}
         <View className="w-full items-center mt-16 mb-8 flex-[.6]">
             <OfferCardWithDiscount
-                isSelected={selectedComponent === 'A'}
-                setIsSelected={() => setSelectedComponent('A')} 
+                isSelected={offerState.offerOption === 'A'}
+                setIsSelected={() => setOfferState({ offerCost: '30.99€/year', offerOption: 'A' })} 
                 containerStyles={'mb-[15px]'}
             />
             <OfferCard
-                isSelected={selectedComponent === 'B'}
-                setIsSelected={() => setSelectedComponent('B')} 
+                isSelected={offerState.offerOption === 'B'}
+                setIsSelected={() => setOfferState({ offerCost: '3.49 €/month', offerOption: 'B' })} 
             />
         </View>
 
@@ -62,7 +65,7 @@ const SpecialOffer = () => {
                 onPress={() => router.push('/special-offer')}
                 className="bg-[#6592E3] w-full self-center mb-[11px] items-center justify-center max-h-[71px] h-full rounded-[47px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Subscribe Now</Text>
-                <Text className="text-[#FEFEFC] text-[14px] leading-[16.8px] font-cygreregular">30.99€/year</Text>
+                <Text className="text-[#FEFEFC] text-[14px] leading-[16.8px] font-cygreregular">{offerState.offerCost}</Text>
             </TouchableOpacity>
         </View>
 
