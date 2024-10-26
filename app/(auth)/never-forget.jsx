@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import OnboardingProgress from "../../components/OnboardingProgress";
 import WheelPicker from '@quidone/react-native-wheel-picker';
 import WheelPickerFeedback from '@quidone/react-native-wheel-picker-feedback';
+import Switch from "../../components/Switch";
 
 
 const NeverForget = () => {
@@ -23,7 +24,7 @@ const NeverForget = () => {
     const timeFormat = [...['AM', 'PM']].map((val, idx) => ({
         value: val,
         label: val,
-    })) ;
+    }));
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -36,11 +37,17 @@ const NeverForget = () => {
                 </Text>
             </View>
             <View className="border-[2px] mb-[45px] py-[15px] justify-end h-full flex-1 border-[#6592E3] max-h-[80px] bg-white px-[23px] mx-[23px] rounded-[13px]">
-                <View className="flex flex-row justify-between">
-                    <View className="">
-                        <Text className="text-[#000000] text-[18px] font-bold font-cygrebold leading-[22px]">Stay on track</Text>
-                        <Text className="text-[#000000] text-[14px] leading-[22px] font-cygreregular">Never miss your daily reading goal!</Text>
+                <View className="flex flex-row justify-between items-center">
+                    <View>
+                        <Text className="text-[#000000] text-[18px] font-bold font-cygrebold leading-[21.6px]">Stay on track</Text>
+                        <Text className="text-[#000000] text-[14px] leading-[20px] font-cygreregular">Never miss your daily reading goal!</Text>
                     </View>
+                    <Switch
+                        size="medium"
+                        activeColor="#6592E3"
+                        inactiveColor="#767577" 
+                        thumbColor="#ffffff" 
+                    />
                 </View>
             </View>
             <View className="items-center relative gap-6 flex-row justify-center max-h-[247px] border border-[#8A8A8A] rounded-[15px] mx-[23px]">
