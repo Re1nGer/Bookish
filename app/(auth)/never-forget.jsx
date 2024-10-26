@@ -18,7 +18,7 @@ const NeverForget = () => {
 
     const minutes = [...Array(60).keys()].map((index) => ({
         value: index,
-        label: index.toString(),
+        label: index < 10 ? index.toString().padStart('0') : index.toString(),
     }));
 
     const timeFormat = [...['AM', 'PM']].map((val, idx) => ({
@@ -36,9 +36,9 @@ const NeverForget = () => {
                     Never Forget
                 </Text>
             </View>
-            <View className="border-[2px] mb-[45px] py-[15px] justify-end h-full flex-1 border-[#6592E3] max-h-[80px] bg-white px-[23px] mx-[23px] rounded-[13px]">
-                <View className="flex flex-row justify-between items-center">
-                    <View>
+            <View className="border-[2px] mb-[45px] py-[15px] justify-end max-w-[90%] w-[348px] h-full flex-1 border-[#6592E3] max-h-[80px] bg-white self-center rounded-[13px]">
+                <View className="flex flex-row justify-center px-[20px] items-center">
+                    <View className="flex-[.9]">
                         <Text className="text-[#000000] text-[18px] font-bold font-cygrebold leading-[21.6px]">Stay on track</Text>
                         <Text className="text-[#000000] text-[14px] leading-[20px] font-cygreregular">Never miss your daily reading goal!</Text>
                     </View>
@@ -47,6 +47,7 @@ const NeverForget = () => {
                         activeColor="#6592E3"
                         inactiveColor="#767577" 
                         thumbColor="#ffffff" 
+                        containerStyles={'flex-[.2]'}
                     />
                 </View>
             </View>

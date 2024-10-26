@@ -14,6 +14,7 @@ const Switch = ({
   inactiveColor = '#767577',
   thumbColor = '#ffffff',
   disabled = false,
+  containerStyles
 }) => {
   const [isEnabled, setIsEnabled] = useState(initialValue);
   const [thumbAnimation] = useState(new Animated.Value(initialValue ? 1 : 0));
@@ -91,6 +92,7 @@ const Switch = ({
       activeOpacity={0.8}
       onPress={toggleSwitch}
       disabled={disabled}
+      className={containerStyles}
     >
       <View style={styles.container}>
         <Animated.View
