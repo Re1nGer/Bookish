@@ -8,8 +8,6 @@ import images from "../../constants/images";
 const PreparingPlan = () => {
 
 
-
-
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
 
             <View className="w-full mt-[91px] mb-[60px] items-center px-[32px]">
@@ -58,7 +56,7 @@ const PreparingPlan = () => {
 
             <View className="w-full flex-[1.5] justify-center items-center px-[30px]">
                 <TouchableOpacity
-                    onPress={() => router.push('/what-a-taste')}
+                    onPress={() => router.push('/special-offer')}
                     className="bg-[#6592E3] w-full self-center mb-[11px] items-center justify-center max-h-[52px] h-full rounded-[47px]">
                     <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save Plan and Continue</Text>
                 </TouchableOpacity>

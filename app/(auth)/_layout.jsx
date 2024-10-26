@@ -29,6 +29,7 @@ const AuthLayout = () => {
         <Stack.Screen name="what-a-taste" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
         <Stack.Screen name="commitment" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
         <Stack.Screen name="preparing-plan" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
+        <Stack.Screen name="special-offer" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
     </>
