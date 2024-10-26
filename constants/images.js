@@ -25,6 +25,7 @@ import celebrity from '../assets/images/celebrity.png';
 import book from '../assets/images/book.png';
 import bookSelected from '../assets/images/book_selected.png';
 import onboardingMonster3 from '../assets/images/onboarding_monster3.png';
+import plan from '../assets/images/plan.png';
 
 
 export default {
@@ -54,5 +55,6 @@ export default {
     celebrity,
     book,
     bookSelected,
-    onboardingMonster3
+    onboardingMonster3,
+    plan
 };
