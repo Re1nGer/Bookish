@@ -7,29 +7,26 @@ import { StatusBar } from 'expo-status-bar';
 
 const Onboarding = () => {
 
-    //gotta figure out text-center problem
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
-        <ScrollView contentContainerStyle={{ height: "100%" }}>
-            <View className="w-full justify-between mt-[37px] relative h-full">
-                <View className="px-[73px]">
-                    <Text className="font-bold text-center text-[28px] leading-[26px] tracking-wide font-cygrebold my-[23px]">
+            <View className="w-full justify-between relative h-full">
+                <View className="px-[50px] flex-[.2] items-center justify-center">
+                    <Text className="font-bold text-center text-[28px] leading-[26px] max-w-[246px] w-full tracking-wide font-cygrebold">
                         Let’s get to know each other better!
                     </Text>
                 </View>
-                <View className="w-full items-center max-w-[350px] self-center">
-                    <Text className="max-w-[269px] w-full leading-[19.2px] px-2 text-center text-[#000000] font-cygreregular">
+                <View className="w-full items-center max-w-[350px] self-center justify-center flex-[.1]">
+                    <Text className="max-w-[269px] w-full leading-[19.2px] px-4 text-center text-[#000000] font-cygreregular">
                         Starting with a set up of your personalized reading experience.  First, tell us your goals!
                     </Text>
                 </View>
-                <View className="w-full flex-1 items-center mt-[35px] z-10">
-
+                <View className="w-full flex-[.5] items-center mt-[35px] z-10">
                     <Image
                         source={images.onboardingMonster}
                         className="max-w-[261px] self-center max-h-[261px] z-10" />
                 </View>
 
-                <View className="w-full z-20 items-center h-full justify-center flex-1">
+                <View className="w-full z-20 items-center h-full justify-center flex-[.3]">
 
                     <TouchableOpacity
                         onPress={() => router.push('/commit-to-growing')}
@@ -49,8 +46,7 @@ const Onboarding = () => {
                     className="bottom-0 absolute max-h-[650px] max-w-[650px]"
                 />
             </View>
-        </ScrollView>
-        <StatusBar backgroundColor='#F7F7F7' style='dark' />
+            <StatusBar backgroundColor='#F7F7F7' style='dark' />
     </SafeAreaView>
 
 }
