@@ -11,18 +11,18 @@ const TopicsInterested = () => {
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <ScrollView contentContainerStyle={{ height: "100%" }}>
-            <View className="w-full px-[20px] mt-[20px]">
+            <View className="w-full px-[20px] mt-5">
                 <OnboardingProgress stage1={100} stage2={25} />
             </View>
-            <View className="w-full my-10 items-center">
-                <Text className="font-bold text-[#000000] max-w-[349px] text-[24px] text-center leading-[28px] px-[40px] font-cygrebold">
+            <View className="w-full my-12 items-center">
+                <Text className="font-bold text-[#000000] max-w-[349px] w-full text-[24px] text-center leading-[28px] px-16 font-cygrebold">
                     Choose areas you are interested in:
                 </Text>
             </View>
 
 {/*             Potentially fetching these from API */}
 
-            <View className="flex-row justify-center flex-[3] gap-[10px]">
+            <View className="flex-row justify-center items-start flex-1 gap-[10px]">
                 <View className="gap-[9px]">
                     <Block name={'Fiction'} styles={'mb-[9px]'} />
                     <Block name={'Habits'} styles={'mb-[9px]'} />
@@ -46,7 +46,7 @@ const TopicsInterested = () => {
                 </View>
             </View>
 
-            <View className="w-full flex-1">
+            <View className="w-full flex-[.3] justify-center items-center">
                 <TouchableOpacity
                     onPress={() => router.push('/people-interested')}
                     className="bg-[#6592E3] max-w-[313px] w-full self-center mb-[11px] items-center justify-center max-h-[52px] h-full rounded-[47px]">
