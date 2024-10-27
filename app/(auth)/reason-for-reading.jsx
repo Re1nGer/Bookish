@@ -32,6 +32,11 @@ const ReasonForReading = () => {
                         text={'Personal Growth & Self-Improvement'}
                     />
                     <ReasonBlock
+                        src={icons.growth}
+                        styles={'mb-[14px]'}
+                        text={'Personal Growth & Self-Improvement'}
+                    />
+                    <ReasonBlock
                         src={icons.entertainment}
                         styles={'mb-[14px]'}
                         text={'Personal Growth & Self-Improvement'}
@@ -39,22 +44,17 @@ const ReasonForReading = () => {
                     <ReasonBlock
                         src={icons.social}
                         styles={'mb-[14px]'}
-                        text={'Personal Growth & Self-Improvement'}
+                        text={'Social & Connection'}
                     />
                     <ReasonBlock
                         src={icons.work}
-                        styles={'mb-[14px]'}
-                        text={'Personal Growth & Self-Improvement'}
+                        styles={'mb-[14px] pr-12'}
+                        text={'Professional Development'}
                     />
                     <ReasonBlock
                         src={icons.inspiration}
                         styles={'mb-[14px]'}
-                        text={'Personal Growth & Self-Improvement'}
-                    />
-                    <ReasonBlock
-                        src={icons.social}
-                        styles={'mb-[14px]'}
-                        text={'Personal Growth & Self-Improvement'}
+                        text={'Inspiration & Motivation'}
                     />
                     <ReasonBlock
                         src={icons.social}
@@ -84,8 +84,10 @@ const ReasonBlock = ({ src, text, styles }) => {
     const [isSelected, setIsSelected] = useState(false);
 
     return <View className={`max-w-[348px] w-full border flex-row items-center rounded-[15px] border-[#8A8A8A] max-h-[60px] h-full px-8 ${styles}`}>
-            <Image source={src} className="max-h-[40] max-w-[40px] self-center mr-[25px]" resizeMethod="cover" />
-            <Text className="font-bold font-cygrebold leading-[19.2px] text-[#000] pr-[25px]">{text}</Text>
+            <Image source={src} className="max-h-[40] max-w-[40px] self-center mr-9" resizeMethod="cover" />
+            <View className="w-52">
+                <Text className="font-bold font-cygrebold leading-[19.2px] text-[#000] flex-wrap">{text}</Text>
+            </View>
         </View>
 }
 
