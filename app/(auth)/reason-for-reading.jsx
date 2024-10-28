@@ -62,7 +62,7 @@ const ReasonForReading = () => {
                     />
                     <ReasonBlock
                         src={icons.social}
-                        styles={'mb-[14px] self-center'}
+                        styles={'self-center'}
                         text={'Personal Growth & Self-Improvement'}
                     />
             </ScrollView>
