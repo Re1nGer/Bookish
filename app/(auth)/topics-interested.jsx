@@ -14,7 +14,7 @@ const TopicsInterested = () => {
             <View className="w-full px-[20px] mt-5">
                 <OnboardingProgress stage1={100} stage2={25} />
             </View>
-            <View className="w-full my-12 items-center">
+            <View className="w-full my-12 items-center flex-[.2]">
                 <Text className="font-bold text-[#000000] max-w-[349px] w-full text-[24px] text-center leading-[28px] px-16 font-cygrebold">
                     Choose areas you are interested in:
                 </Text>
@@ -22,31 +22,31 @@ const TopicsInterested = () => {
 
 {/*             Potentially fetching these from API */}
 
-            <View className="flex-row justify-center items-start flex-1 gap-[10px]">
-                <View className="gap-[9px]">
+            <View className="flex-row justify-center items-start flex-[1.5] w-full px-[20px]">
+                <View className="mr-[10px]">
                     <Block name={'Fiction'} styles={'mb-[9px]'} />
                     <Block name={'Habits'} styles={'mb-[9px]'} />
                     <Block name={'Self-Help'} styles={'mb-[9px]'} />
                     <Block name={'Mystery'} styles={'mb-[9px]'} />
                     <Block name={'Space'} />
                 </View>
-                <View className="gap-[9px]">
+                <View className="mr-[10px]">
                     <Block name={'Non-Fiction'} styles={'mb-[9px]'} />
                     <Block name={'Mindset'} styles={'mb-[9px]'} />
                     <Block name={'Personal Finance'} styles={'mb-[9px]'} />
                     <Block name={'Nutrition'} styles={'mb-[9px]'} />
                     <Block name={'Art'} />
                 </View>
-                <View className="gap-[9px]">
+                <View className="">
+                    <Block name={'Mindset'} styles={'mb-[9px]'} />
                     <Block name={'History'} styles={'mb-[9px]'} />
                     <Block name={'Sci-Fi'} styles={'mb-[9px]'} />
                     <Block name={'Biology'} styles={'mb-[9px]'} />
-                    <Block name={'Romance'} styles={'mb-[9px]'} />
                     <Block name={'Romance'} />
                 </View>
             </View>
 
-            <View className="w-full flex-[.3] justify-center items-center">
+            <View className="w-full flex-[.5] justify-center items-center">
                 <TouchableOpacity
                     onPress={() => router.push('/people-interested')}
                     className="bg-[#6592E3] max-w-[313px] w-full self-center mb-[11px] items-center justify-center max-h-[52px] h-full rounded-[47px]">
@@ -64,14 +64,14 @@ const TopicsInterested = () => {
 
 
 
-const Block = ({ name, selected, styles }) => {
+const Block = ({ name, styles }) => {
 
     const [isSelected, setSelected] = useState(false);
 
     return <TouchableOpacity
             onPress={() => setSelected(prev => !prev)}
-            className={`border-[0.9px] border-[#8A8A8A] items-center justify-center max-w-[111px] w-full max-h-[62px] h-full rounded-[8px] ${isSelected ? 'border-[#6592E3]' : ''} ${styles}`}>
-        <Text className="font-cygrebold font-medium text-[16px] text-center text-[#000] px-[10px] leading-[19.2px]">{name}</Text>
+            className={`border-[0.9px] border-[#8A8A8A] items-center justify-center w-[111px]  max-h-[62px] h-full rounded-[8px] ${isSelected ? 'border-[#6592E3]' : ''} ${styles}`}>
+        <Text className={`font-cygrebold font-medium text-[16px] text-center ${isSelected ? 'text-[#6592E3]' : 'text-[#000]'} px-[10px] leading-[19.2px]`}>{name}</Text>
     </TouchableOpacity>
 }
 

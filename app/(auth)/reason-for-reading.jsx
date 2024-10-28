@@ -13,57 +13,55 @@ const ReasonForReading = () => {
             <View className="w-full px-[20px] mt-[20px]">
                 <OnboardingProgress stage1={100} stage2={85} />
             </View>
-            <View className="w-full mt-[65px] mb-[47px] items-center">
+
+            <View className="w-full mt-[65px] mb-[27px] items-center flex-[.4]">
+
                 <Text className="font-bold text-[#000000] max-w-[349px] text-[24px] text-center leading-[28px] px-[60px] font-cygrebold">
                     What is your reason for reading?
                 </Text>
+
             </View>
 
 {/*             Potentially fetching these from API */}
+
             <ScrollView
-                className="flex-[3]"
+                className="h-full flex-[2]"
+                contentContainerStyle={{maxHeight: '450px', height: '100%'}}
                 horizontal={false}
                 showsVerticalScrollIndicator={true}
             >
-                <View className="h-full items-center justify-center w-full">
                     <ReasonBlock
                         src={icons.growth}
-                        styles={'mb-[14px]'}
-                        text={'Personal Growth & Self-Improvement'}
-                    />
-                    <ReasonBlock
-                        src={icons.growth}
-                        styles={'mb-[14px]'}
-                        text={'Personal Growth & Self-Improvement'}
-                    />
-                    <ReasonBlock
-                        src={icons.entertainment}
-                        styles={'mb-[14px]'}
+                        styles={'mb-[14px] self-center'}
                         text={'Personal Growth & Self-Improvement'}
                     />
                     <ReasonBlock
                         src={icons.social}
-                        styles={'mb-[14px]'}
+                        styles={'mb-[14px] self-center'}
                         text={'Social & Connection'}
                     />
                     <ReasonBlock
                         src={icons.work}
-                        styles={'mb-[14px] pr-12'}
+                        styles={'mb-[14px] pr-12 self-center'}
                         text={'Professional Development'}
                     />
                     <ReasonBlock
                         src={icons.inspiration}
-                        styles={'mb-[14px]'}
+                        styles={'mb-[14px] self-center'}
                         text={'Inspiration & Motivation'}
                     />
                     <ReasonBlock
                         src={icons.social}
-                        styles={'mb-[14px]'}
+                        styles={'mb-[14px] self-center'}
                         text={'Personal Growth & Self-Improvement'}
                     />
-                </View>
+                    <ReasonBlock
+                        src={icons.social}
+                        styles={'mb-[14px] self-center'}
+                        text={'Personal Growth & Self-Improvement'}
+                    />
             </ScrollView>
-        <View className="w-full flex-[1.5] justify-center items-center">
+        <View className="w-full flex-[.8] justify-center items-center">
             <TouchableOpacity
                 onPress={() => router.push('/what-a-taste')}
                 className="bg-[#6592E3] max-w-[313px] w-full self-center mb-[11px] items-center justify-center max-h-[52px] h-full rounded-[47px]">
