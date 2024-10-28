@@ -26,7 +26,7 @@ const ReasonForReading = () => {
 
             <ScrollView
                 className="h-full flex-[2]"
-                contentContainerStyle={{maxHeight: '450px', height: '100%'}}
+                contentContainerStyle={{maxHeight: '450px' }}
                 horizontal={false}
                 showsVerticalScrollIndicator={true}
             >
@@ -60,8 +60,13 @@ const ReasonForReading = () => {
                         styles={'mb-[14px] self-center'}
                         text={'Personal Growth & Self-Improvement'}
                     />
+                    <ReasonBlock
+                        src={icons.social}
+                        styles={'mb-[14px] self-center'}
+                        text={'Personal Growth & Self-Improvement'}
+                    />
             </ScrollView>
-        <View className="w-full flex-[.8] justify-center items-center">
+        <View className="w-full flex-1 justify-center items-center">
             <TouchableOpacity
                 onPress={() => router.push('/what-a-taste')}
                 className="bg-[#6592E3] max-w-[313px] w-full self-center mb-[11px] items-center justify-center max-h-[52px] h-full rounded-[47px]">
