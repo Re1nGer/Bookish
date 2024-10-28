@@ -3,22 +3,21 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
 import OnboardingProgress from "../../components/OnboardingProgress";
-import WheelPicker from '@quidone/react-native-wheel-picker';
-import WheelPickerFeedback from '@quidone/react-native-wheel-picker-feedback';
 import Switch from "../../components/Switch";
+import WheelPicker from '@quidone/react-native-wheel-picker';
 
 
 const NeverForget = () => {
 
 
-    const hours = [...Array(24).keys()].map((index) => ({
+    const hours = [...Array(24).keys()].map((index, val) => ({
         value: index,
-        label: index.toString(),
+        label: val,
     }));
 
-    const minutes = [...Array(60).keys()].map((index) => ({
+    const minutes = [...Array(60).keys()].map((index, val) => ({
         value: index,
-        label: index < 10 ? index.toString().padStart('0') : index.toString(),
+        label: val < 10 ? val.toString().padStart('0') : val.toString(),
     }));
 
     const timeFormat = [...['AM', 'PM']].map((val, idx) => ({
@@ -55,17 +54,14 @@ const NeverForget = () => {
                 <WheelPicker
                     data={hours}
                     width={40}
-                    onValueChanged={() => WheelPickerFeedback.triggerSoundAndImpact()}
                 />
                 <WheelPicker
                     data={minutes}
                     width={40}
-                    onValueChanged={() => WheelPickerFeedback.triggerSoundAndImpact()}
                 />
                 <WheelPicker
                     data={timeFormat}
                     width={40}
-                    onValueChanged={() => WheelPickerFeedback.triggerSoundAndImpact()}
                 />
             </View>
             <View className="w-full flex-1 justify-end">
