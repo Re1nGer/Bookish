@@ -11,12 +11,12 @@ const NeverForget = () => {
 
 
     const hours = [...Array(24).keys()].map((index, val) => ({
-        value: index,
+        value: val,
         label: val,
     }));
 
     const minutes = [...Array(60).keys()].map((index, val) => ({
-        value: index,
+        value: val < 10 ? val.toString().padStart('0') : val.toString(),
         label: val < 10 ? val.toString().padStart('0') : val.toString(),
     }));
 
