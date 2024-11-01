@@ -42,7 +42,7 @@ const Onboarding = () => {
 
                 <Image
                     source={images.onboardingImage}
-                    resizeMode='contain'
+                    resizeMode="cover"
                     className="bottom-0 absolute max-h-[650px] max-w-[650px]"
                 />
             </View>
