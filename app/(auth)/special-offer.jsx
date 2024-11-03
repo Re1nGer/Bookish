@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { router } from "expo-router";
 import { useState } from "react";
@@ -17,50 +17,90 @@ const SpecialOffer = () => {
     });
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
-        <View className="items-start mt-6 px-[20px]">
-            <MaterialIcons name={'close'} size={24} />
-        </View>
-        <View className="items-center flex-[.7]">
-            <Text className="text-center text-[#1C1C1C] font-bold font-cygrebold text-[80px] leading-[98px]">20%</Text>
-            <Image source={images.specialOffer} />
-            <View>
-                <Text className="text-[#000000] max-w-[328px] font-bold font-cygrebold text-[20px] leading-[24px] text-center">
-                    Special Offer!
-                </Text>
-                <Text className="text-[#000000] max-w-[328px] font-bold font-cygrebold text-[20px] leading-[24px] text-center">
-                    Enjoy Premium Benefits.
-                </Text>
-
+        <ScrollView>
+            <View className="items-start mt-6 px-[20px]">
+                <MaterialIcons name={'close'} size={24} />
             </View>
-        </View>
-{/*         Potentially fetch these values from flag features */}
-        <View className="w-full items-center mt-16 mb-8 flex-[.6]">
-            <OfferCardWithDiscount
-                isSelected={offerState.offerOption === 'A'}
-                setIsSelected={() => setOfferState({ offerCost: '30.99€/year', offerOption: 'A' })} 
-                containerStyles={'mb-[15px]'}
-            />
-            <OfferCard
-                isSelected={offerState.offerOption === 'B'}
-                setIsSelected={() => setOfferState({ offerCost: '3.49 €/month', offerOption: 'B' })} 
-            />
-        </View>
+            <View className="items-center">
+                <Text className="text-center text-[#1C1C1C] font-bold font-cygrebold text-[80px] leading-[98px]">20%</Text>
+                <Image source={images.specialOffer} />
+                <View>
+                    <Text className="text-[#000000] max-w-[328px] font-bold font-cygrebold text-[20px] leading-[24px] text-center">
+                        Special Offer!
+                    </Text>
+                    <Text className="text-[#000000] max-w-[328px] font-bold font-cygrebold text-[20px] leading-[24px] text-center">
+                        Enjoy Premium Benefits.
+                    </Text>
 
-        <View className="w-full items-center justify-center mb-3 flex-row flex-[.1]">
-            <OptionButton text={'Help'} containerStyles={'mr-[10px]'}/>
-            <OptionButton text={'Switch User'} containerStyles={'max-w-[98px] mr-[10px]'} />
-            <OptionButton text={'Restore'} />
-        </View>
-
-        <View className="items-center w-full mb-8 flex-[.1]">
-            <Text className='text-[12px] font-cygreregular text-[##1C1C1C]'>By continuing, you agree to</Text>
-            <View className="flex-row">
-                <Text className="text-[12px] font-cygrebold text-[#1C1C1C]">Terms of Service</Text>
-                <Text className='text-[12px] font-cygreregular text-[#1C1C1C]'> and </Text><Text className="text-[12px] font-cygrebold text-[#1C1C1C]">Privacy Policy</Text>
+                </View>
             </View>
-        </View>
+    {/*         Potentially fetch these values from flag features */}
+            <View className="w-full items-center mt-16 mb-8 max-h-[200px]">
+                <OfferCardWithDiscount
+                    isSelected={offerState.offerOption === 'A'}
+                    setIsSelected={() => setOfferState({ offerCost: '30.99€/year', offerOption: 'A' })} 
+                    containerStyles={'mb-[15px]'}
+                />
+                <OfferCard
+                    isSelected={offerState.offerOption === 'B'}
+                    setIsSelected={() => setOfferState({ offerCost: '3.49 €/month', offerOption: 'B' })} 
+                />
+            </View>
 
-        <View className="w-full flex-[.2] justify-center items-center px-[16px]">
+            <View className="w-full items-center justify-center mb-3 flex-row">
+                <OptionButton text={'Help'} containerStyles={'mr-[10px]'}/>
+                <OptionButton text={'Switch User'} containerStyles={'max-w-[98px] mr-[10px]'} />
+                <OptionButton text={'Restore'} />
+            </View>
+
+            <View className="items-center w-full">
+                <Text className='text-[12px] font-cygreregular text-[##1C1C1C]'>By continuing, you agree to</Text>
+                <View className="flex-row">
+                    <Text className="text-[12px] font-cygrebold text-[#1C1C1C]">Terms of Service</Text>
+                    <Text className='text-[12px] font-cygreregular text-[#1C1C1C]'> and </Text><Text className="text-[12px] font-cygrebold text-[#1C1C1C]">Privacy Policy</Text>
+                </View>
+            </View>
+
+            <View className="mt-8 mb-5">
+                <Text className="text-[#000000] text-[24px] mb-5 font-bold leading-[28.8px] font-cygrebold text-center">Why You Need It?</Text>
+                <View className="mx-[25px]">
+                    <PremiumBenefit
+                        title={'No Ads'}
+                        description={'No need to watch ads anymore.'}
+                        icon={'no-adult-content'}
+                        containerStyles={'mb-6'}
+                    />
+                    <PremiumBenefit
+                        title={'Unlimited Books'}
+                        description={'Add more than 15 books. No more restrictions.'}
+                        descriptionStyles={'max-w-[200px]'}
+                        icon={'menu-book'}
+                        containerStyles={'mb-6'}
+                    />
+                    <PremiumBenefit
+                        title={'More Statistics'}
+                        description={'Get access to more advanced statistics and your Year Wrap Up.'}
+                        icon={'pie-chart'}
+                        containerStyles={'mb-6'}
+                        descriptionStyles={'max-w-[250px]'}
+                    />
+                    <PremiumBenefit
+                        title={'Read and collect'}
+                        description={'Keep your strike and collect interesting creatures.'}
+                        icon={'bug-report'}
+                        containerStyles={'mb-6'}
+                        descriptionStyles={'max-w-[250px]'}
+                    />
+                    <PremiumBenefit
+                        title={'Personalized Experience'}
+                        description={'Unlock full reading plan and journeys specifically for your needs and goals.'}
+                        icon={'my-library-books'}
+                        descriptionStyles={'max-w-[280px]'}
+                    />
+                </View>
+            </View>
+        </ScrollView>
+        <View className="w-full max-h-[100px] justify-center items-center px-[16px]">
             <TouchableOpacity
                 onPress={() => router.push('/special-offer')}
                 className="bg-[#6592E3] w-full self-center mb-[11px] items-center justify-center max-h-[71px] h-full rounded-[47px]">
@@ -75,7 +115,7 @@ const SpecialOffer = () => {
 
 
 const OptionButton = ({ text, containerStyles }) => {
-    return <TouchableOpacity className={`max-w-[72px] max-h-[27px] w-full h-full items-center justify-center rounded-[13px] bg-[#E9E9E9] ${containerStyles}`}>
+    return <TouchableOpacity className={`max-w-[72px] h-[30px] w-full items-center justify-center rounded-[13px] bg-[#E9E9E9] ${containerStyles}`}>
         <Text className="text-[#1C1C1C] font-cygreregular text-sm">{text}</Text>
     </TouchableOpacity>
 }
@@ -118,3 +158,18 @@ const OfferCardWithDiscount = ({ isSelected, setIsSelected, containerStyles }) =
 
 
 export default SpecialOffer;
+
+const PremiumBenefit = ({ title, description, icon, containerStyles, descriptionStyles }) => {
+    return <View className={`flex-row ${containerStyles}`}>
+        <View className="bg-[#6592E3] items-center justify-center h-full w-full rounded-[10px] max-w-[46px] max-h-[45px]">
+            <MaterialIcons
+                name={icon}
+                size={27}
+                color="white" />
+        </View>
+        <View className="ml-5">
+            <Text className="text-[#000000] mb-1 font-bold font-cygrebold text-[18px] leading-[21.6px] text-left">{title}</Text>
+            <Text className={`text-[#000000] font-cygreregular text-[16px] leading-[19.2px] text-left ${descriptionStyles}`}>{description}</Text>
+        </View>
+    </View>;
+}

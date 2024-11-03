@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import OnboardingProgress from "../../components/OnboardingProgress";
 import { StatusBar } from 'expo-status-bar';
@@ -20,8 +20,8 @@ const KeepStrike = () => {
                     And get a new Bookish Beast to your collection.
                 </Text>
             </View>
-            <View className="flex-row justify-between items-start mt-2 flex-[1]">
-                <View className="gap-[16px] relative top-8">
+            <View className="flex-row items-start mt-2 flex-1">
+                <View className="gap-[16px] relative top-8 mr-4">
                     <View className="relative">
                         <Image source={images.monster1} width={139} height={166} />
                         <Image source={images.question} width={45} height={77} className="absolute top-14 left-6" />
@@ -31,7 +31,7 @@ const KeepStrike = () => {
                         <Image source={images.question} width={45} height={77} className="absolute top-14 left-6" />
                     </View>
                 </View>
-                <View className="gap-[16px] self-center mb-2">
+                <View className="gap-[16px] self-center mb-2 mr-4">
                     <View className="relative">
                         <Image source={images.monster3} width={139} height={166} />
                         <Image source={images.question} width={45} height={77} className="absolute top-14 left-12" />
