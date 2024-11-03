@@ -20,7 +20,7 @@ const KeepStrike = () => {
                     And get a new Bookish Beast to your collection.
                 </Text>
             </View>
-            <View className="space-x-1 flex-row justify-center items-start mt-2 flex-[1]">
+            <View className="flex-row justify-between items-start mt-2 flex-[1]">
                 <View className="gap-[16px] relative top-8">
                     <View className="relative">
                         <Image source={images.monster1} width={139} height={166} />
