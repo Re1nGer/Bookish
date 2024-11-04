@@ -63,7 +63,7 @@ const SpecialOffer = () => {
 
             <View className="mt-8 mb-5">
                 <Text className="text-[#000000] text-[24px] mb-5 font-bold leading-[28.8px] font-cygrebold text-center">Why You Need It?</Text>
-                <View className="mx-[25px]">
+                <View className="px-5">
                     <PremiumBenefit
                         title={'No Ads'}
                         description={'No need to watch ads anymore.'}
@@ -92,11 +92,25 @@ const SpecialOffer = () => {
                         descriptionStyles={'max-w-[250px]'}
                     />
                     <PremiumBenefit
-                        title={'Personalized Experience'}
+                        title={'Personalized Experience'}я
                         description={'Unlock full reading plan and journeys specifically for your needs and goals.'}
                         icon={'my-library-books'}
-                        descriptionStyles={'max-w-[280px]'}
+                        descriptionStyles={'max-w-[280px] mb-6'}
                     />
+                </View>
+                <View className="mx-auto max-w-[353px] border relative justify-between flex-row rounded-[30px] border-[#fff] bg-[#fff] z-20  max-h-[137px] w-full h-full">
+
+{/*                     <View className="absolute left-8 h-[137px] rounded-[80px] w-[160px] bg-[#fff]"></View> */}
+                    <View className="absolute bg-[#C1D7FF] -z-10 right-0 h-[137px] rounded-r-[30px] flex-row w-[200px]"></View>
+                    
+                    <View className="z-10 justify-center pl-[17px]">
+                        <Text className="text-[22px] font-cygrebold leading-[22.44px] max-w-[88px]">Treat Yourself</Text>
+                        <Text className="leading-[19.2px] font-cygreregular">Try 7-day free trial!</Text>
+                    </View>
+
+                    <View className="justify-center items-end justify-self-end mr-6">
+                        <Image source={images.specialOfferMonster} className="max-w-[131px] max-h-[121px]" width={131} height={121} />
+                    </View>
                 </View>
             </View>
         </ScrollView>

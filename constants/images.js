@@ -27,6 +27,7 @@ import bookSelected from '../assets/images/book_selected.png';
 import onboardingMonster3 from '../assets/images/onboarding_monster3.png';
 import plan from '../assets/images/plan.png';
 import specialOffer from '../assets/images/special_offer.png';
+import specialOfferMonster from '../assets/images/special_offer_monster.png';
 
 
 export default {
@@ -58,5 +59,6 @@ export default {
     bookSelected,
     onboardingMonster3,
     plan,
-    specialOffer
+    specialOffer,
+    specialOfferMonster
 };
