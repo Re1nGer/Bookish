@@ -1,7 +1,7 @@
 import bookmark from "../assets/icons/bookmark.png";
-import home from "../assets/icons/home.png";
+import home from "../assets/icons/home_icon.png";
 import plus from "../assets/icons/plus.png";
-import profile from "../assets/icons/profile.png";
+import profile from "../assets/icons/profile_icon.png";
 import leftArrow from "../assets/icons/left-arrow.png";
 import menu from "../assets/icons/menu.png";
 import search from "../assets/icons/search.png";
@@ -19,6 +19,9 @@ import entertainment from '../assets/icons/enter_icon.png';
 import inspiration from "../assets/icons/inspiration_icon.png";
 import social from "../assets/icons/social_icon.png";
 import work from "../assets/icons/work_icon.png";
+import book from "../assets/icons/book_icon.png";
+import repetition from "../assets/icons/repetition_icon.png";
+import stats from "../assets/icons/stats_icon.png";
 
 export default {
   play,
@@ -41,5 +44,8 @@ export default {
   entertainment,
   inspiration,
   social,
-  work
+  work,
+  book,
+  repetition,
+  stats
 };

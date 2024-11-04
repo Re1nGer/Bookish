@@ -116,7 +116,7 @@ const SpecialOffer = () => {
         </ScrollView>
         <View className="w-full max-h-[100px] justify-center items-center px-[16px]">
             <TouchableOpacity
-                onPress={() => router.push('/special-offer')}
+                onPress={() => router.push('(tabs)/home')}
                 className="bg-[#6592E3] w-full self-center mb-[11px] items-center justify-center max-h-[71px] h-full rounded-[47px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Subscribe Now</Text>
                 <Text className="text-[#FEFEFC] text-[14px] leading-[16.8px] font-cygreregular">{offerState.offerCost}</Text>
