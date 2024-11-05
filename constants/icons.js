@@ -22,6 +22,7 @@ import work from "../assets/icons/work_icon.png";
 import book from "../assets/icons/book_icon.png";
 import repetition from "../assets/icons/repetition_icon.png";
 import stats from "../assets/icons/stats_icon.png";
+import fire from "../assets/icons/flame.svg";
 
 export default {
   play,
@@ -47,5 +48,6 @@ export default {
   work,
   book,
   repetition,
-  stats
+  stats,
+  fire
 };

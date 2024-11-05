@@ -28,6 +28,8 @@ import onboardingMonster3 from '../assets/images/onboarding_monster3.png';
 import plan from '../assets/images/plan.png';
 import specialOffer from '../assets/images/special_offer.png';
 import specialOfferMonster from '../assets/images/special_offer_monster.png';
+import homeBookCover from '../assets/images/home_book_cover.png';
+import magnifier from '../assets/images/magnifier.png';
 
 
 export default {
@@ -60,5 +62,7 @@ export default {
     onboardingMonster3,
     plan,
     specialOffer,
-    specialOfferMonster
+    specialOfferMonster,
+    homeBookCover,
+    magnifier
 };

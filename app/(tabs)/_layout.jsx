@@ -1,22 +1,26 @@
-import { View, Text, Image } from 'react-native'
+import { Image, View, Text } from 'react-native'
 import React from 'react'
 import { Tabs } from 'expo-router'
 import { icons } from '../../constants';
 
+
 const TabIcon = ({ icon, color, name, focused }) => {
     return <View className='items-center justify-center gap-2'>
-        <View className={`rounded-full transition-colors  ${focused ? 'bg-[#6592E3] p-3' : ''}`}>
-            <Image
-                source={icon}
-                resizeMode='contain'
-                tintColor={color}
-                className="w-5 h-[22px]"
-            />
+            <View className={`rounded-full transition-colors  ${focused ? 'bg-[#6592E3] p-3' : ''}`}>
+                <Image
+                    source={icon}
+                    resizeMode='contain'
+                    tintColor={color}
+                    className="w-5 h-[22px]"
+                />
+            </View>
+            { !focused && (
+                <Text
+                    className={'text-[12px] font-cygreregular'}
+                    style={{color: color}}> {name}
+                </Text>
+            )}
         </View>
-        { name  && !focused  &&
-            <Text className={`${focused ? 'font-psemibold': 'font-pregular'}`} style={{color: color}}>{name}</Text>
-        }
-    </View>
 }
 
 const TabsLayout = () => {
@@ -60,7 +64,7 @@ const TabsLayout = () => {
                         icon={icons.repetition}
                         color={color}
                         focused={focused}
-                        name="Create"
+                        name="Repetition"
                     />
                  }}
             ></Tabs.Screen>
