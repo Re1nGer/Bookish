@@ -31,7 +31,7 @@ export default function App() {
                 </View>
                 <View className='items-center my-7 px-[20px] flex-[.1]'>
                     <PrimaryButton title={"Sign up"}
-                        handlePress={() => router.push('(auth)/sign-up')}
+                        handlePress={() => router.push('(tabs)/home')}
                         containerStyles={'max-w-[353px] w-full rounded-3xl'}
                         textStyles={'text-center justify-center items-center'}
                     />

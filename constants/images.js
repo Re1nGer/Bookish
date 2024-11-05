@@ -30,6 +30,7 @@ import specialOffer from '../assets/images/special_offer.png';
 import specialOfferMonster from '../assets/images/special_offer_monster.png';
 import homeBookCover from '../assets/images/home_book_cover.png';
 import magnifier from '../assets/images/magnifier.png';
+import welcomeSm from '../assets/images/welcome_sm.png';
 
 
 export default {
@@ -64,5 +65,6 @@ export default {
     specialOffer,
     specialOfferMonster,
     homeBookCover,
-    magnifier
+    magnifier,
+    welcomeSm
 };

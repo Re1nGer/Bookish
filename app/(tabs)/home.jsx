@@ -82,8 +82,27 @@ const Home = () => {
               <Image source={images.magnifier} width={132} height={119} />
             </View>
           </View>
-
         </ScrollView>
+
+        <View className="mx-4 mt-5 border-[.5px] p-3 border-[#727272] items-center justify-between flex-row w-full max-w-[361px] rounded-[15px] bg-[#ffffff]">
+            <View className="flex-1">
+              <Text className="text-[28px] leading-[33.6px] font-cygrebold mb-6">Book Calendar</Text>
+              <View className="flex-row">
+                <TouchableOpacity className="rounded-[20px] mr-1.5 bg-[#E6E6E6] items-center justify-center h-[33px] max-w-[88px] w-full">
+                  <Text className="text-[#000000] text-sm leading-[16.8px] text-center font-cygreregular">Memories</Text>
+                </TouchableOpacity>
+                <TouchableOpacity className="rounded-[20px] mr-1.5 bg-[#E6E6E6] h-[33px] items-center justify-center max-w-[122px] w-full">
+                  <Text className="text-[#000000] text-sm leading-[16.8px] text-center font-cygreregular">Monthly View</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Image
+              source={images.welcomeSm}
+              resizeMode='cover'
+              width={103}
+              height={100}
+            />
+        </View>
 
       </ScrollView>
     </SafeAreaView>
