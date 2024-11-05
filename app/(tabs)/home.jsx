@@ -91,7 +91,7 @@ const Home = () => {
                 <TouchableOpacity className="rounded-[20px] mr-1.5 bg-[#E6E6E6] items-center justify-center h-[33px] max-w-[88px] w-full">
                   <Text className="text-[#000000] text-sm leading-[16.8px] text-center font-cygreregular">Memories</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="rounded-[20px] mr-1.5 bg-[#E6E6E6] h-[33px] items-center justify-center max-w-[122px] w-full">
+                <TouchableOpacity className="rounded-[20px] mr-1.5 bg-[#E6E6E6] h-[33px] items-center justify-center max-w-[110px] w-full">
                   <Text className="text-[#000000] text-sm leading-[16.8px] text-center font-cygreregular">Monthly View</Text>
                 </TouchableOpacity>
               </View>
