@@ -84,7 +84,7 @@ const Home = () => {
           </View>
         </ScrollView>
 
-        <View className="mx-4 mt-5 border-[.5px] p-3 border-[#727272] items-center justify-between flex-row w-full max-w-[361px] rounded-[15px] bg-[#ffffff]">
+        <View className="mx-3 mt-5 border-[.5px] p-3 border-[#727272] items-center justify-between flex-row rounded-[15px] bg-[#ffffff]">
             <View className="flex-1">
               <Text className="text-[28px] leading-[33.6px] font-cygrebold mb-6">Book Calendar</Text>
               <View className="flex-row">
