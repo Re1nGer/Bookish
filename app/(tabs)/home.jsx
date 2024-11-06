@@ -44,13 +44,7 @@ const Home = () => {
 
         <CurrentBook />
         <BookCalendar />
-
-        <View className="mt-5 mx-3 flex-row bg-[#1C1C1C] items-center rounded-[15px] max-h-[114px] h-full px-5 justify-center">
-          <Image source={images.personalPlan} width={126} height={69} className='mr-6' />
-          <Text className="text-[#FFFFFF] font-cygrebold text-[22px] leading-[21px] font-bold max-w-[145px]">
-            Your Personal Reading Plan
-          </Text>
-        </View>
+        <PersonalPlan />
 
       </ScrollView>
     </SafeAreaView>
@@ -169,5 +163,14 @@ const CurrentBook = () => {
       </View>
     </View>
   </ScrollView>;
+}
+
+const PersonalPlan = () => {
+  return <View className="mt-5 mx-3 flex-row bg-[#1C1C1C] items-center rounded-[15px] max-h-[114px] h-full px-5 justify-center">
+    <Image source={images.personalPlan} width={126} height={69} className='mr-6' />
+    <Text className="text-[#FFFFFF] font-cygrebold text-[22px] leading-[21px] font-bold max-w-[145px]">
+      Your Personal Reading Plan
+    </Text>
+  </View>;
 }
 
