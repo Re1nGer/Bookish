@@ -1,4 +1,4 @@
-import { Image, View, Text } from 'react-native'
+import { Image, View, Text, Platform } from 'react-native'
 import React from 'react'
 import { Tabs } from 'expo-router'
 import { icons } from '../../constants';
@@ -28,10 +28,33 @@ const TabsLayout = () => {
     <>
         <Tabs
             screenOptions={{ 
-            tabBarShowLabel: false,
-            tabBarActiveTintColor: '#F9F9F9',
-            tabBarInactiveTintColor: '#CDCDE0',
-            tabBarStyle: { backgroundColor: '#0D0C0CD6', borderRadius: 44, borderTopWidth: 1, width: '95%', margin: 'auto', marginBottom: 3,  borderTopColor: '#232533', height: 79 } }}>
+                tabBarShowLabel: false,
+                tabBarActiveTintColor: '#F9F9F9',
+                tabBarInactiveTintColor: '#CDCDE0',
+                tabBarStyle:
+                {
+                    backgroundColor: '#0D0C0CD6', 
+                    borderRadius: 44,
+                    borderTopWidth: 1,
+                    width: '95%',
+                    margin: 'auto',
+                    marginBottom: 3,
+                    borderTopColor: '#232533',
+                    height: Platform.select({
+                        ios: 88, 
+                        android: 79,
+                    }),
+                    paddingBottom: Platform.select({
+                        ios: 28, 
+                        android: 8,
+                    }),
+                    paddingBottom: Platform.select({
+                        ios: 0,
+                        android: 4,
+                    }),
+                }
+            }}>
+
             <Tabs.Screen
                 name='home'
                 options={{ title: "", headerShown: false, 
