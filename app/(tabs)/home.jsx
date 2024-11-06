@@ -8,9 +8,9 @@ import { images } from '../../constants'
 const Home = () => {
 
 
-  return <SafeAreaView className="bg-primary h-full">
+  return <SafeAreaView className="bg-primary" style={{flex: 1}}>
       <ScrollView>
-        <View className="bg-[#FFFFFF] mx-4 mt-9 mb-8 flex-row border-[#727272] border-[.5px] rounded-[15px]">
+        <View className="bg-[#FFFFFF] mx-4 my-8 flex-row border-[#727272] border-[.5px] rounded-[15px]">
           <View className="flex-row justify-center flex-1 items-center rounded-[14px] border-0 max-w-[108px] h-[95px] bg-[#6592E3]">
             <View>
               <Svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 12 16" id="flame">
@@ -42,66 +42,14 @@ const Home = () => {
           </View>
         </View>
 
-        <ScrollView horizontal={true} className="mx-4">
-          <View className="rounded-[15px] mr-4 flex-row bg-[#ffffff] justify-between max-w-[320px] w-full border-[.5px] border-[#8A8A8A] p-3">
-            <Image source={images.homeBookCover} width={111} height={194} className="rounded-[6px] max-w-[111px] max-h-[194px] mr-[10px]" />
-            <View className="bg-[#1C1C1C] rounded-[6px]">
-              <View className="px-3 py-4 flex-row justify-between w-[171px]">
-                <TouchableOpacity className="rounded-full bg-[#8A8A8A] items-center justify-center h-[45px] w-[42px]">
-                  <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">-</Text>
-                </TouchableOpacity>
+        <CurrentBook />
+        <BookCalendar />
 
-                <TouchableOpacity className="rounded-full bg-[#6592E3] items-center justify-center h-[45px] w-[42px]">
-                  <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">+</Text>
-                </TouchableOpacity>
-              </View>
-              <View className="items-center mb-6">
-                <Text className="text-[34px] leading-[40px] font-bold text-[#fff]">40</Text>
-                <Text className="text-sm leading-[16px] font-medium text-[#fff]">of 430</Text>
-              </View>
-            <View className="flex-row justify-center">
-              <TimerIcon />
-              <View className="w-[1px] h-[25px] bg-[#fff] mx-4"></View>
-              <NoteIcon />
-              <View className="w-[1px] h-[25px] bg-[#fff] mx-4"></View>
-              <QuoteIcon />
-            </View>
-            </View>
-          </View>
-
-          <View className="bg-[#1C1C1C] rounded-[15px] w-[320px] px-5 py-3">
-            <Text className="text-[#fff] text-[34px] leading-[40px] font-cygrebold font-bold">
-              Add a book 
-            </Text>
-            <Text className="text-[#fff] text-sm leading-[16px] font-cygreregular font-light">Is there a book you are reading?</Text>
-            <View className="flex-row mt-6">
-              <TouchableOpacity className="bg-[#6592E3] h-[44px] justify-center items-center max-w-[126px] w-full flex-row flex-1 rounded-[25px] ">
-                <MaterialIcons name='add' color='#fff' size={33} />
-                <Text className="text-[18px] text-[#fff] font-cygrebold leading-[21px] font-bold">Add</Text>
-              </TouchableOpacity>
-              <Image source={images.magnifier} width={132} height={119} />
-            </View>
-          </View>
-        </ScrollView>
-
-        <View className="mx-3 mt-5 border-[.5px] p-3 border-[#727272] items-center justify-between flex-row rounded-[15px] bg-[#ffffff]">
-            <View className="flex-1">
-              <Text className="text-[28px] leading-[33.6px] font-cygrebold mb-6">Book Calendar</Text>
-              <View className="flex-row">
-                <TouchableOpacity className="rounded-[20px] mr-1.5 bg-[#E6E6E6] items-center justify-center h-[33px] max-w-[88px] w-full">
-                  <Text className="text-[#000000] text-sm leading-[16.8px] text-center font-cygreregular">Memories</Text>
-                </TouchableOpacity>
-                <TouchableOpacity className="rounded-[20px] mr-1.5 bg-[#E6E6E6] h-[33px] items-center justify-center max-w-[110px] w-full">
-                  <Text className="text-[#000000] text-sm leading-[16.8px] text-center font-cygreregular">Monthly View</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <Image
-              source={images.welcomeSm}
-              resizeMode='cover'
-              width={103}
-              height={100}
-            />
+        <View className="mt-5 mx-3 flex-row bg-[#1C1C1C] items-center rounded-[15px] max-h-[114px] h-full px-5 justify-center">
+          <Image source={images.personalPlan} width={126} height={69} className='mr-6' />
+          <Text className="text-[#FFFFFF] font-cygrebold text-[22px] leading-[21px] font-bold max-w-[145px]">
+            Your Personal Reading Plan
+          </Text>
         </View>
 
       </ScrollView>
@@ -152,3 +100,74 @@ const QuoteIcon = () => {
     </Svg>
   </TouchableOpacity> 
 }
+
+const BookCalendar = () => {
+
+  return <View className="mx-3 mt-5 border-[.5px] p-3 border-[#727272] items-center justify-between flex-row rounded-[15px] bg-[#ffffff]">
+    <View className="flex-1">
+      <Text className="text-[28px] leading-[33.6px] font-cygrebold mb-6">Book Calendar</Text>
+      <View className="flex-row">
+        <TouchableOpacity className="rounded-[20px] mr-1.5 bg-[#E6E6E6] items-center justify-center h-[33px] max-w-[88px] w-full">
+          <Text className="text-[#000000] text-sm leading-[16.8px] text-center font-cygreregular">Memories</Text>
+        </TouchableOpacity>
+        <TouchableOpacity className="rounded-[20px] mr-1.5 bg-[#E6E6E6] h-[33px] items-center justify-center max-w-[110px] w-full">
+          <Text className="text-[#000000] text-sm leading-[16.8px] text-center font-cygreregular">Monthly View</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+    <Image
+      source={images.welcomeSm}
+      resizeMode='cover'
+      width={103}
+      height={100} />
+  </View>;
+}
+const CurrentBook = () => {
+  return <ScrollView
+    horizontal={true}
+    contentContainerStyle={{height: 270 }}
+    className="mx-4"
+    showsHorizontalScrollIndicator={false}
+  >
+    <View className="rounded-[15px] mr-4 flex-row bg-[#ffffff] justify-between max-w-[320px] w-full max-h-[220px] h-full mb-5 border-[.5px] border-[#8A8A8A] p-3">
+      <Image source={images.homeBookCover} width={111} height={194} className="rounded-[6px] max-w-[111px] max-h-[194px] mr-[10px]" />
+      <View className="bg-[#1C1C1C] rounded-[6px] max-h-[194px] h-full">
+        <View className="px-3 py-4 flex-row justify-between w-[171px]">
+          <TouchableOpacity className="rounded-full bg-[#8A8A8A] items-center justify-center h-[45px] w-[42px]">
+            <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">-</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity className="rounded-full bg-[#6592E3] items-center justify-center h-[45px] w-[42px]">
+            <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">+</Text>
+          </TouchableOpacity>
+        </View>
+        <View className="items-center mb-6">
+          <Text className="text-[34px] leading-[40px] font-bold text-[#fff]">40</Text>
+          <Text className="text-sm leading-[16px] font-medium text-[#fff]">of 430</Text>
+        </View>
+        <View className="flex-row justify-center">
+          <TimerIcon />
+          <View className="w-[1px] h-[25px] bg-[#fff] mx-4"></View>
+          <NoteIcon />
+          <View className="w-[1px] h-[25px] bg-[#fff] mx-4"></View>
+          <QuoteIcon />
+        </View>
+      </View>
+    </View>
+
+    <View className="bg-[#1C1C1C] rounded-[15px] max-h-[220px] h-full w-[320px] px-5 py-3">
+      <Text className="text-[#fff] text-[34px] leading-[40px] font-cygrebold font-bold">
+        Add a book
+      </Text>
+      <Text className="text-[#fff] text-sm leading-[16px] font-cygreregular font-light">Is there a book you are reading?</Text>
+      <View className="flex-row mt-6">
+        <TouchableOpacity className="bg-[#6592E3] h-[44px] justify-center items-center max-w-[126px] w-full flex-row flex-1 rounded-[25px] ">
+          <MaterialIcons name='add' color='#fff' size={33} />
+          <Text className="text-[18px] text-[#fff] font-cygrebold leading-[21px] font-bold">Add</Text>
+        </TouchableOpacity>
+        <Image source={images.magnifier} width={132} height={119} />
+      </View>
+    </View>
+  </ScrollView>;
+}
+
