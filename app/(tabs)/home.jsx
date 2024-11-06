@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Svg, G, Path, Rect, ClipPath, Defs } from 'react-native-svg'
@@ -8,51 +8,44 @@ import { images } from '../../constants'
 const Home = () => {
 
 
-  return <SafeAreaView className="bg-primary" style={{flex: 1}}>
+  return <SafeAreaView className="bg-primary" style={{ flex: 1 }}>
       <ScrollView>
-        <View className="bg-[#FFFFFF] mx-4 my-8 flex-row border-[#727272] border-[.5px] rounded-[15px]">
-          <View className="flex-row justify-center flex-1 items-center rounded-[14px] border-0 max-w-[108px] h-[95px] bg-[#6592E3]">
-            <View>
-              <Svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 12 16" id="flame">
-                <G id="Octicons" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
-                  <G id="flame" fill="#fff">
-                    <Path id="Shape" d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"></Path>
-                  </G>
-                </G>
-              </Svg>
-            </View>
-            <Text className="text-[#FFFFFF] font-cygrebold font-extrabold text-[26px] leading-[32px]">12</Text>
-          </View>
-          <View className="py-2 flex-1">
-            <Text className="text-[18px] font-cygresemibold leading-[21.6px] text-center">This Week</Text>
-            <View className="flex-row justify-center flex-1 items-center">
-              <View className='mr-10 justify-center items-center'>
-                  <Text className="text-[#000000] text-[22px] leading-[26.4px] font-cygrebold">60</Text>
-                  <Text className="text-[#000000] font-cygreregular text-sm leading-[16.8px]">pages</Text>
-              </View>
-              <View className='mr-10 items-center'>
-                  <Text className="text-[#000000] text-[22px] leading-[26.4px] font-cygrebold">13</Text>
-                  <Text className="font-cygreregular text-sm leading-[16.8px]">hours</Text>
-              </View>
-              <View className="items-center">
-                  <Text className="text-[#000000] text-[22px] leading-[26.4px] font-cygrebold">32</Text>
-                  <Text className="font-cygreregular text-sm leading-[16.8px]">notes</Text>
-              </View>
-            </View>
-          </View>
-        </View>
 
+        <ThisWeekStatistics />
         <CurrentBook />
         <BookCalendar />
         <PersonalPlan />
         <Categories />
-
+        <ToBoostIntelligence />
       </ScrollView>
     </SafeAreaView>
 }
 
 export default Home
 
+
+//shall have to fetch from api
+const ToBoostIntelligence = () => {
+  return <View className="mx-3 mt-7">
+    <Text className="font-cygrebold mb-4 font-bold text-[22px] leading-[26.4px] text-[#000000]">To Boost Intelligence</Text>
+    <ScrollView horizontal>
+      <Book src={images.book1} title={'The Body Keeps Th...'} containerStyles={'mr-6'} />
+      <Book src={images.book2} title={'Make Your Bed'} containerStyles={'mr-6'} />
+      <Book src={images.book2} title={'Make Your Bed'} />
+    </ScrollView>
+  </View>
+}
+
+const Book = ({ src, title, containerStyles }) => {
+  return <View className={`relative ${containerStyles} pt-4`}>
+    <TouchableOpacity className="absolute top-0 right-0 z-10 -mr-2 rounded-full bg-[#6592E3] items-center justify-center h-[40px] w-[40px]">
+      <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">+</Text>
+    </TouchableOpacity>
+
+    <Image source={src} width={144} height={209} />
+    <Text className="text-sm text-left text-[#000000] mt-1.5 font-cygreregular leading-[16.8px]">{title}</Text>
+  </View>
+}
 
 
 const Categories = () => {
@@ -72,6 +65,16 @@ const Category = ({ icon, title, containerStyles }) => {
     </View>
     <Text className="text-[#1C1C1C] text-[18px] font-cygrebold leading-[21.6px]">{title}</Text>
   </View>
+}
+
+const FlameIcon = () => {
+  return <Svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 12 16" id="flame">
+          <G id="Octicons" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
+            <G id="flame" fill="#fff">
+              <Path id="Shape" d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"></Path>
+            </G>
+          </G>
+    </Svg>
 }
 
 const PsychologyIcon = () => {
@@ -221,6 +224,34 @@ const PersonalPlan = () => {
     <Text className="text-[#FFFFFF] font-cygrebold text-[22px] leading-[21px] font-bold max-w-[145px]">
       Your Personal Reading Plan
     </Text>
+  </View>;
+}
+
+const ThisWeekStatistics = () => {
+  return <View className="bg-[#FFFFFF] mx-4 my-8 flex-row border-[#727272] border-[.5px] rounded-[15px]">
+    <View className="flex-row justify-center flex-1 items-center rounded-[14px] border-0 max-w-[108px] h-[95px] bg-[#6592E3]">
+      <View>
+        <FlameIcon />
+      </View>
+      <Text className="text-[#FFFFFF] font-cygrebold font-extrabold text-[26px] leading-[32px]">12</Text>
+    </View>
+    <View className="py-2 flex-1">
+      <Text className="text-[18px] font-cygresemibold leading-[21.6px] text-center">This Week</Text>
+      <View className="flex-row justify-center flex-1 items-center">
+        <View className='mr-10 justify-center items-center'>
+          <Text className="text-[#000000] text-[22px] leading-[26.4px] font-cygrebold">60</Text>
+          <Text className="text-[#000000] font-cygreregular text-sm leading-[16.8px]">pages</Text>
+        </View>
+        <View className='mr-10 items-center'>
+          <Text className="text-[#000000] text-[22px] leading-[26.4px] font-cygrebold">13</Text>
+          <Text className="font-cygreregular text-sm leading-[16.8px]">hours</Text>
+        </View>
+        <View className="items-center">
+          <Text className="text-[#000000] text-[22px] leading-[26.4px] font-cygrebold">32</Text>
+          <Text className="font-cygreregular text-sm leading-[16.8px]">notes</Text>
+        </View>
+      </View>
+    </View>
   </View>;
 }
 

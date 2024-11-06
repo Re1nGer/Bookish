@@ -32,6 +32,8 @@ import homeBookCover from '../assets/images/home_book_cover.png';
 import magnifier from '../assets/images/magnifier.png';
 import welcomeSm from '../assets/images/welcome_sm.png';
 import personalPlan from '../assets/images/personal_plan.png';
+import book1 from '../assets/images/book1.png';
+import book2 from '../assets/images/book2.png';
 
 
 export default {
@@ -68,5 +70,7 @@ export default {
     homeBookCover,
     magnifier,
     welcomeSm,
-    personalPlan
+    personalPlan,
+    book1, 
+    book2
 };
