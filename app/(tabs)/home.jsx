@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Svg, G, Path, Rect, ClipPath, Defs } from 'react-native-svg'
 import { MaterialIcons } from '@expo/vector-icons';
 import { images } from '../../constants'
+import AddBookBottomDrawer from '../../components/AddBookBottomDrawer';
 
 const Home = () => {
 
@@ -236,6 +237,9 @@ const BookCalendar = () => {
   </View>;
 }
 const CurrentBook = () => {
+
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+
   return <ScrollView
     horizontal={true}
     contentContainerStyle={{height: 270 }}
@@ -268,19 +272,26 @@ const CurrentBook = () => {
       </View>
     </View>
 
+{/*     Extract out into separate component */}
     <View className="bg-[#1C1C1C] rounded-[15px] max-h-[220px] h-full w-[320px] px-5 py-3">
       <Text className="text-[#fff] text-[34px] leading-[40px] font-cygrebold font-bold">
         Add a book
       </Text>
       <Text className="text-[#fff] text-sm leading-[16px] font-cygreregular font-light">Is there a book you are reading?</Text>
       <View className="flex-row mt-6">
-        <TouchableOpacity className="bg-[#6592E3] h-[44px] justify-center items-center max-w-[126px] w-full flex-row flex-1 rounded-[25px] ">
+        <TouchableOpacity
+          onPress={() => setIsBottomSheetOpen(true)}
+          className="bg-[#6592E3] h-[44px] justify-center items-center max-w-[126px] w-full flex-row flex-1 rounded-[25px] ">
           <MaterialIcons name='add' color='#fff' size={33} />
           <Text className="text-[18px] text-[#fff] font-cygrebold leading-[21px] font-bold">Add</Text>
         </TouchableOpacity>
         <Image source={images.magnifier} width={132} height={119} />
       </View>
     </View>
+    <AddBookBottomDrawer
+      isBottomSheetOpen={isBottomSheetOpen}
+      setIsBottomSheetOpen={setIsBottomSheetOpen}
+    />
   </ScrollView>;
 }
 
