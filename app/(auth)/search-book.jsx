@@ -73,7 +73,7 @@ const SearchBook = () => {
                     ref={inputRef}
                     value={text}
                     onChangeText={handleInputTextChange}
-                    className="bg-[#ffffff] font-cygreregular flex-1 pl-4 text-[#000000] leading-[16.8px] text-sm"
+                    className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 pl-4 text-[#000000] leading-[16.8px] text-sm"
                     placeholder="Search a book"
                 />
                 <TouchableOpacity className="rounded-full bg-[#000] p-1">
