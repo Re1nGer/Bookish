@@ -10,7 +10,6 @@ const Home = () => {
 
   return <SafeAreaView className="bg-primary" style={{ flex: 1 }}>
       <ScrollView>
-
         <ThisWeekStatistics />
         <CurrentBook />
         <BookCalendar />
@@ -18,12 +17,43 @@ const Home = () => {
         <Categories />
         <ToBoostIntelligence />
         <CollectionForYou />
+        <PersonalizedChallenges />
       </ScrollView>
     </SafeAreaView>
 }
 
 export default Home
 
+
+
+const PersonalizedChallenges = () => {
+  return <View className="my-7 mx-3">
+    <Text className="font-cygrebold mb-4 font-bold text-[22px] leading-[26.4px] text-[#000000]">Personolized Challenges</Text>
+    <ScrollView horizontal>
+      <Challenge title={'Success'} bottomLabel={'28-day challenge'} containerStyles={'mr-4'} />
+      <Challenge title={'Morning Routine'} bottomLabel={'10-day challenge'} />
+    </ScrollView>
+  </View>
+}
+
+const Challenge = ({ title, bottomLabel, containerStyles }) => {
+  return <View className={`rounded-[15px] justify-between px-5 bg-[#ffffff] w-[230px] h-[108px] py-3.5 border-[.5px] border-[#8A8A8A] relative ${containerStyles}`}>
+    <Text className="text-[20px] leading-[24px] font-extrabold text-[#1C1C1C] max-w-[83px]">{title}</Text>
+    <View className="bg-[#E6E6E6] items-center p-0.5 justify-center max-w-[132px] max-h-[23px] w-full rounded-[16px]">
+      <Text className="text-center text-[#000000]">{bottomLabel}</Text>
+    </View>
+    <View className="absolute right-2 top-2">
+      <BrutalistIcon />
+    </View>
+  </View>
+}
+
+
+const BrutalistIcon = () => {
+  return <Svg width="88" height="88" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Path d="M87.9999 44.0001V43.6995C87.8797 31.6576 78.0618 21.96 65.9999 22.0001C65.8998 22.0001 65.7996 22.0001 65.6994 22.0001H65.9999V21.6995C65.8797 9.63763 56.0419 -0.0399488 44 0.000124001C31.9581 -0.0399488 22.1203 9.65767 22.0001 21.6995V22.0001C9.93816 21.96 0.120342 31.6576 0.000123746 43.6995V44.0001C-0.039949 56.0419 9.65766 65.8798 21.6995 66H22.0001C21.96 78.0619 31.6576 87.8798 43.6995 88H44H44.3005C56.3424 87.8798 66.04 78.0619 65.9999 66H66.3005C78.3624 65.8798 88.04 56.0419 87.9999 44.0001ZM22.0001 66H22.3006C22.2004 66 22.1002 66 22.0001 66ZM57.244 57.2441H30.756V30.756H57.2641V57.2441H57.244Z" fill="#1C1C1C"/>
+  </Svg>
+}
 
 
 const CollectionForYou = () => {
