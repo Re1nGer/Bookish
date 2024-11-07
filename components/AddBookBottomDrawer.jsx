@@ -39,7 +39,10 @@ const AddBookBottomDrawer = ({ isBottomSheetOpen, setIsBottomSheetOpen }) => {
                 <View className="rounded-t-[30px] p-4 z-10" style={[styles.bottomSheet, { height: windowHeight * 0.3 }]}>
                     <Text className="text-[#000000] mb-6 font-cygrebold text-[22px] leading-[26.4px]">Add a Book</Text>
                     <TouchableOpacity
-                        onPress={() => router.push("(auth)/search-book")}
+                        onPress={() => {
+                            setIsBottomSheetOpen(false);
+                            router.push("(auth)/search-book")
+                        }}
                         className="rounded-[15px] bg-[#1C1C1C] max-h-[56px] w-full h-full flex-row items-center px-7 max-w-[360px] mb-2">
                         <MaterialIcons name='search' size={25} color={'#fff'} />
                         <Text className="text-[#FEFEFC] font-cygrebold leading-[19.2px] ml-6">Add By Search</Text>

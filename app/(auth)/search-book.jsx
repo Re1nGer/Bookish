@@ -1,7 +1,16 @@
-import { TextInput, View, Text, TouchableOpacity, Image, FlatList, RefreshControl } from "react-native";
+import {
+    TextInput,
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    FlatList,
+    RefreshControl,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { images } from "../../constants";
+import { useRef, useEffect, useState } from "react";
 
 
 const books = [
@@ -31,23 +40,53 @@ const books = [
 
 const SearchBook = () => {
 
+    const inputRef = useRef();
+
+    const [text, setText] = useState('');
+
+    const [data, setData] = useState([]);
+
+    const handleInputTextChange = (text) => {
+        //update input state
+        //make api call to fetch books
+        //throttle to avoid extra requests
+        setText(text);
+        if (text === '') {
+            setData(books)
+        }
+        else {
+            setData(books.filter(item => item.name.includes(text)))
+        }
+    }
+
+    useEffect(() => {
+        setData(books)
+        inputRef.current?.focus();
+    }, []);
+
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <View className="mt-6 mx-5">
             <Text className="text-[#2B2B2B] text-[24px] font-cygrebold leading-[28.8px] mb-5">Search a Book!</Text>
             <View className="bg-[#ffffff] mb-12 border border-[#6592E3] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[26px] px-5">
                 <MaterialIcons name="search" color={'#6592E3'} size={22} />
                 <TextInput
+                    ref={inputRef}
+                    value={text}
+                    onChangeText={handleInputTextChange}
                     className="bg-[#ffffff] font-cygreregular flex-1 pl-4 text-[#000000] leading-[16.8px] text-sm"
                     placeholder="Search a book"
                 />
                 <TouchableOpacity className="rounded-full bg-[#000] p-1">
-                    <MaterialIcons name='close' color={'#fff'} size={14}  />
+                    <MaterialIcons name='close' color={'#fff'} size={14} />
                 </TouchableOpacity>
             </View>
+
+{/*             Probably should add some animated effects upon refreshing */}
             <FlatList
-                data={books}
+                data={data}
                 keyExtractor={(item) => item.id}
                 renderItem={(bookItem) => <BookResult {...bookItem.item} key={bookItem.item.id} />}
+                ListEmptyComponent={() => <Text>Empty</Text>}
                 refreshControl={<RefreshControl onRefresh={() => console.log('refreshing')} refreshing={false} />}
             />
             <View className="mt-12 items-center">
