@@ -8,6 +8,8 @@ const AuthLayout = () => {
   return (
     <>
       <Stack>
+        
+{/*         Onboarding Screens */}
         <Stack.Screen name="sign-in" options={{ title: "", headerTransparent: true }} />
         <Stack.Screen name="sign-up" options={{ title: "Sign Up", headerTransparent: true}} /> 
         <Stack.Screen name="forgot-password" options={{ title: "", headerTransparent: true }} />
@@ -30,6 +32,10 @@ const AuthLayout = () => {
         <Stack.Screen name="commitment" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
         <Stack.Screen name="preparing-plan" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
         <Stack.Screen name="special-offer" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
+
+{/*         Functional Screens */}
+        <Stack.Screen name="search-book" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
+
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
     </>

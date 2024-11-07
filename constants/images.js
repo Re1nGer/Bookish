@@ -34,6 +34,7 @@ import welcomeSm from '../assets/images/welcome_sm.png';
 import personalPlan from '../assets/images/personal_plan.png';
 import book1 from '../assets/images/book1.png';
 import book2 from '../assets/images/book2.png';
+import searchBookImage from '../assets/images/search_book_image.png';
 
 
 export default {
@@ -72,5 +73,6 @@ export default {
     welcomeSm,
     personalPlan,
     book1, 
-    book2
+    book2,
+    searchBookImage
 };
