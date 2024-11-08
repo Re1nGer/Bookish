@@ -38,7 +38,7 @@ const TabsLayout = () => {
                     borderTopWidth: 1,
                     width: '95%',
                     margin: 'auto',
-                    marginBottom: 3,
+                    marginBottom: 20,
                     borderTopColor: '#232533',
                     height: Platform.select({
                         ios: 88, 

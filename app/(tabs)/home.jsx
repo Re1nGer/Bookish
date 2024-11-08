@@ -93,12 +93,24 @@ const CollectionIcon2 = () => {
 
 //shall have to fetch from api
 const ToBoostIntelligence = () => {
-  return <View className="mx-3 mt-7">
+
+  return <View className="mx-3 mt-7 max-h-[300px]">
     <Text className="font-cygrebold mb-4 font-bold text-[22px] leading-[26.4px] text-[#000000]">To Boost Intelligence</Text>
     <ScrollView horizontal>
-      <Book src={images.book1} title={'The Body Keeps Th...'} containerStyles={'mr-6'} />
-      <Book src={images.book2} title={'Make Your Bed'} containerStyles={'mr-6'} />
-      <Book src={images.book2} title={'Make Your Bed'} />
+      <Book
+        src={images.book1}
+        title={'The Body Keeps Th...'}
+        containerStyles={'mr-6'} 
+      />
+      <Book
+        src={images.book2}
+        title={'Make Your Bed'}
+        containerStyles={'mr-6'} 
+      />
+      <Book
+        src={images.book2}
+        title={'Make Your Bed'} 
+      />
     </ScrollView>
   </View>
 }
@@ -109,7 +121,7 @@ const Book = ({ src, title, containerStyles }) => {
       <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">+</Text>
     </TouchableOpacity>
 
-    <Image source={src} width={144} height={209} />
+    <Image source={src} className="max-w-[144px] max-h-[209px]" />
     <Text className="text-sm text-left text-[#000000] mt-1.5 font-cygreregular leading-[16.8px]">{title}</Text>
   </View>
 }
@@ -242,8 +254,7 @@ const CurrentBook = () => {
 
   return <ScrollView
     horizontal={true}
-    contentContainerStyle={{height: 270 }}
-    className="mx-4"
+    className="mx-4 h-[270px]"
     showsHorizontalScrollIndicator={false}
   >
     <View className="rounded-[15px] mr-4 flex-row bg-[#ffffff] justify-between max-w-[320px] w-full max-h-[220px] h-full mb-5 border-[.5px] border-[#8A8A8A] p-3">
