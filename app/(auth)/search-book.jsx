@@ -51,6 +51,7 @@ const SearchBook = () => {
 
     const [keyboardVisible, setKeyboardVisible] = useState(false);
 
+    //can extract into separate hook
     useEffect(() => {
         // For iOS
         const keyboardWillShow = Keyboard.addListener(
@@ -92,6 +93,10 @@ const SearchBook = () => {
         setData(books.filter(item => item.name.includes(text)))
     }
 
+    const handleCloseBtn = () => {
+        setText('');
+    }
+
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
@@ -108,7 +113,7 @@ const SearchBook = () => {
                     className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 pl-4 text-[#000000] leading-[16.8px] text-sm"
                     placeholder="Search a book"
                 />
-                <TouchableOpacity className="rounded-full bg-[#000] p-1">
+                <TouchableOpacity onPress={handleCloseBtn} className="rounded-full bg-[#000] p-1">
                     <MaterialIcons name='close' color={'#fff'} size={14} />
                 </TouchableOpacity>
             </View>
