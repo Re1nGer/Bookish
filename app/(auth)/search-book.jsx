@@ -6,11 +6,14 @@ import {
     Image,
     FlatList,
     RefreshControl,
+    Keyboard,
+    Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { images } from "../../constants";
 import { useRef, useEffect, useState } from "react";
+import { GearsIcon } from "../../components/Svg";
 
 
 const books = [
@@ -46,6 +49,41 @@ const SearchBook = () => {
 
     const [data, setData] = useState([]);
 
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+    useEffect(() => {
+        // For iOS
+        const keyboardWillShow = Keyboard.addListener(
+            'keyboardWillShow',
+            () => setKeyboardVisible(true)
+        );
+        const keyboardWillHide = Keyboard.addListener(
+            'keyboardWillHide',
+            () => setKeyboardVisible(false)
+        );
+
+        // For Android
+        const keyboardDidShow = Keyboard.addListener(
+            'keyboardDidShow',
+            () => setKeyboardVisible(true)
+        );
+        const keyboardDidHide = Keyboard.addListener(
+            'keyboardDidHide',
+            () => setKeyboardVisible(false)
+        );
+
+        return () => {
+        // Cleanup
+        if (Platform.OS === 'ios') {
+            keyboardWillShow.remove();
+            keyboardWillHide.remove();
+        } else {
+            keyboardDidShow.remove();
+            keyboardDidHide.remove();
+        }
+        };
+    }, []);
+
     const handleInputTextChange = (text) => {
         //update input state
         //make api call to fetch books
@@ -59,7 +97,7 @@ const SearchBook = () => {
     }, []);
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
-        <View className="pt-16 mx-5">
+        <View className="pt-16 mx-5 max-h-[100%]">
             <Text className="text-[#2B2B2B] text-[24px] font-cygrebold leading-[28.8px] mb-5">Search a Book!</Text>
             <View className="bg-[#ffffff] mb-12 border border-[#6592E3] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[26px] px-5">
                 <MaterialIcons name="search" color={'#6592E3'} size={22} />
@@ -76,17 +114,28 @@ const SearchBook = () => {
             </View>
 
 {/*             Probably should add some animated effects upon refreshing */}
-            <FlatList
-                data={data}
-                keyExtractor={(item) => item.id}
-                renderItem={(bookItem) => <BookResult {...bookItem.item} key={bookItem.item.id} />}
-                ListEmptyComponent={() => 
-                    <View className="mt-12 items-center">
-                        <Image source={images.searchBookImage} width={299} height={171} className="w-[299px] h-[171px]" resizeMode="contain" />
+            <View className="flex-1">
+                <FlatList
+                    data={data}
+                    keyExtractor={(item) => item.id}
+                    renderItem={(bookItem) => <BookResult {...bookItem.item} key={bookItem.item.id} />}
+                    ListEmptyComponent={() => 
+                        <View className="mt-12 items-center">
+                            <Image source={images.searchBookImage} width={299} height={171} className="w-[299px] h-[171px]" resizeMode="contain" />
+                        </View>
+                    }
+                    refreshControl={<RefreshControl onRefresh={() => console.log('refreshing')} refreshing={false} />}
+                />
+            </View>
+            { !keyboardVisible && (
+                <View className="items-center relative p-5 mb-5 flex-row justify-between max-h-[93px] h-full w-full rounded-[15px] bg-[#1C1C1C]">
+                    <View>
+                        <Text className="text-[#FFFFFF] mb-1 text-[18px] font-cygrebold leading-[21.6px] font-bold">Haven’t found it?</Text>
+                        <Text className="text-[#FFFFFF] font-cygreregular leading-[16.8px]">Add manually</Text>
                     </View>
-                }
-                refreshControl={<RefreshControl onRefresh={() => console.log('refreshing')} refreshing={false} />}
-            />
+                    <GearsIcon />
+                </View>
+            ) }
         </View>
     </SafeAreaView>
 }
@@ -116,4 +165,3 @@ const BookResult = ({name, author, imageUrl, rating}) => {
         </View>
     </View>
 }
-
