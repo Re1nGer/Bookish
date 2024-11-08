@@ -51,16 +51,10 @@ const SearchBook = () => {
         //make api call to fetch books
         //throttle to avoid extra requests
         setText(text);
-        if (text === '') {
-            setData(books)
-        }
-        else {
-            setData(books.filter(item => item.name.includes(text)))
-        }
+        setData(books.filter(item => item.name.includes(text)))
     }
 
     useEffect(() => {
-        setData(books)
         inputRef.current?.focus();
     }, []);
 
@@ -86,12 +80,13 @@ const SearchBook = () => {
                 data={data}
                 keyExtractor={(item) => item.id}
                 renderItem={(bookItem) => <BookResult {...bookItem.item} key={bookItem.item.id} />}
-                ListEmptyComponent={() => <Text>Empty</Text>}
+                ListEmptyComponent={() => 
+                    <View className="mt-12 items-center">
+                        <Image source={images.searchBookImage} width={299} height={171} className="w-[299px] h-[171px]" resizeMode="contain" />
+                    </View>
+                }
                 refreshControl={<RefreshControl onRefresh={() => console.log('refreshing')} refreshing={false} />}
             />
-            <View className="mt-12 items-center">
-                <Image source={images.searchBookImage} width={299} height={171} className="w-[299px] h-[171px]" resizeMode="contain" />
-            </View>
         </View>
     </SafeAreaView>
 }
