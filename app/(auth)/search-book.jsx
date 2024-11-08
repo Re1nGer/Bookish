@@ -59,7 +59,7 @@ const SearchBook = () => {
     }, []);
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
-        <View className="mt-6 mx-5">
+        <View className="pt-16 mx-5">
             <Text className="text-[#2B2B2B] text-[24px] font-cygrebold leading-[28.8px] mb-5">Search a Book!</Text>
             <View className="bg-[#ffffff] mb-12 border border-[#6592E3] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[26px] px-5">
                 <MaterialIcons name="search" color={'#6592E3'} size={22} />
