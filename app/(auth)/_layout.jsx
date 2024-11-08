@@ -34,7 +34,7 @@ const AuthLayout = () => {
         <Stack.Screen name="special-offer" options={{ title: "", headerBackVisible: false, headerShown: false }} /> 
 
 {/*         Functional Screens */}
-        <Stack.Screen name="search-book" options={{ title: "", headerTransparent: true }} /> 
+        <Stack.Screen name="search-book" options={{ title: "", headerTransparent: true, animation: 'slide_from_bottom' }} /> 
 
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
