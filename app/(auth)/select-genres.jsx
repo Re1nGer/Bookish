@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import Checkbox from "../../components/Checkbox";
+import { useState } from "react";
 
 
 const genres = [
@@ -28,6 +29,7 @@ const genres = [
 
 const SelectGenres = () => {
 
+    const [] = useState();
 
     return (
         <SafeAreaView className="bg-primary h-full">
@@ -48,7 +50,6 @@ const SelectGenres = () => {
                         <MaterialIcons name='close' color={'#fff'} size={14} />
                     </TouchableOpacity>
                 </View>
-
                 <Genre
                     selected={true}
                     text={'Adventure'} 
@@ -102,7 +103,7 @@ export default SelectGenres;
 
 const Genre = ({ selected, text, containerStyles }) => {
 
-    return <View className={`rounded-[10px] flex-row items-center max-w-[353px] max-h-[49px] w-full h-full border-[.3px] px-4 
+    return <View className={`rounded-[10px] flex-row items-center max-w-[353px] h-[49px] w-full border-[.3px] px-4 
         ${selected ? 'bg-[#121F16] text-[#ffffff]' : 'bg-[#ffffff] text-[#121F16]'} ${containerStyles}`}>
             <Checkbox
                 containerStyles={'mr-3'}
