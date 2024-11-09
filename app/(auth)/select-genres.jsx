@@ -14,18 +14,6 @@ import Checkbox from "../../components/Checkbox";
 import { useState } from "react";
 
 
-const genres = [
-        "Adventure",
-        "Business",
-        "Contemporary",
-        "Crime",
-        "Drama",
-        "History",
-        "Horror",
-        "Non-fiction",
-        "Psychology"
-    ];
-
 
 const SelectGenres = () => {
 
@@ -64,6 +52,7 @@ const SelectGenres = () => {
                         <MaterialIcons name='close' color={'#fff'} size={14} />
                     </TouchableOpacity>
                 </View>
+
                 <Genre
                     selected={states["adventures"]}
                     text={'Adventure'} 
