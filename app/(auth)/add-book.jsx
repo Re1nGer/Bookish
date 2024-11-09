@@ -101,7 +101,7 @@ const AddBook = () => {
                 </View>
             </View>
 
-            <View className="my-6">
+            <View className="mt-6 max-h-[180px]">
                 <Text className="text-[#1C1C1C] mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Collections</Text>
                 <View className="max-h-[116px] h-full pl-8 pr-4 flex-row justify-between rounded-[20px] bg-[#1C1C1C]">
                     <Text className="text-[#ffffff] max-w-[136px] font-cygrebold self-center text-sm leading-[16.8px] font-bold">Add book to your personal collections</Text>
