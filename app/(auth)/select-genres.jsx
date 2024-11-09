@@ -125,7 +125,7 @@ export default SelectGenres;
 
 const Genre = ({ selected, text, onPress, containerStyles }) => {
 
-    return <View className={`rounded-[10px] flex-row items-center max-w-[353px] h-[49px] w-full border-[.3px] px-4 
+    return <View className={`rounded-[10px] flex-row items-center h-[49px] w-full border-[.3px] px-4 
         ${selected ? 'bg-[#121F16] text-[#ffffff]' : 'bg-[#ffffff] text-[#121F16]'} ${containerStyles}`}>
             <Checkbox
                 containerStyles={'mr-3'}
