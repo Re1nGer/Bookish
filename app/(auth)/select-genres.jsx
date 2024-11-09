@@ -29,7 +29,21 @@ const genres = [
 
 const SelectGenres = () => {
 
-    const [] = useState();
+    const [states, setStates] = useState({
+        adventures: false,
+        business: false,
+        contemporary: false,
+        crime: false,
+        drama: false,
+        history: false,
+        horror: false,
+        nonFiction: false,
+        psychology: false
+    });
+
+    const handleOnPress = (name) => {
+        setStates(prev => ({...prev, [name]: !prev[name]}))
+    }
 
     return (
         <SafeAreaView className="bg-primary h-full">
@@ -51,45 +65,64 @@ const SelectGenres = () => {
                     </TouchableOpacity>
                 </View>
                 <Genre
-                    selected={true}
+                    selected={states["adventures"]}
                     text={'Adventure'} 
+                    onPress={() => handleOnPress("adventures")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
+                    selected={states["art"]}
                     text={'Art'} 
+                    onPress={() => handleOnPress("art")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
+                    selected={states["business"]}
                     text={'Business'} 
+                    onPress={() => handleOnPress("business")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
+                    selected={states["contemporary"]}
                     text={'Contemporary'} 
+                    onPress={() => handleOnPress("contemporary")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
+                    selected={states["crime"]}
                     text={'Crime'}
+                    onPress={() => handleOnPress("crime")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
+                    selected={states["drama"]}
                     text={'Drama'}
+                    onPress={() => handleOnPress("drama")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
+                    selected={states["history"]}
                     text={'History'} 
+                    onPress={() => handleOnPress("history")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
+                    selected={states["horror"]}
                     text={'Horror'} 
+                    onPress={() => handleOnPress("horror")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
+                    selected={states["nonFiction"]}
                     text={'Non-fiction'}
+                    onPress={() => handleOnPress("nonFiction")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
+                    selected={states["psychology"]}
                     text={'Psychology'} 
-                    containerStyles={'mb-2.5'}
+                    onPress={() => handleOnPress("psychology")}
+                    containerStyles={'mb-10'}
                 />
 
             </ScrollView>
@@ -101,13 +134,14 @@ export default SelectGenres;
 
 
 
-const Genre = ({ selected, text, containerStyles }) => {
+const Genre = ({ selected, text, onPress, containerStyles }) => {
 
     return <View className={`rounded-[10px] flex-row items-center max-w-[353px] h-[49px] w-full border-[.3px] px-4 
         ${selected ? 'bg-[#121F16] text-[#ffffff]' : 'bg-[#ffffff] text-[#121F16]'} ${containerStyles}`}>
             <Checkbox
                 containerStyles={'mr-3'}
                 checked={selected}
+                onPress={onPress}
             /> 
             <Text
                 className={`text-[#FFFFFF] font-cygrebold leading-[19.2px] font-bold
