@@ -72,7 +72,12 @@ const AddBookBottomDrawer = ({ isBottomSheetOpen, setIsBottomSheetOpen }) => {
                         <Text className="text-[#FEFEFC] font-cygrebold leading-[19.2px] ml-6">Add By Search</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="rounded-[15px] bg-[#1C1C1C] max-h-[56px] w-full h-full flex-row items-center px-7 max-w-[360px] mb-2">
+                    <TouchableOpacity
+                        onPress={() => {
+                            setIsBottomSheetOpen(false);
+                            router.push("(auth)/add-book")
+                        }}
+                        className="rounded-[15px] bg-[#1C1C1C] max-h-[56px] w-full h-full flex-row items-center px-7 max-w-[360px] mb-2">
                         <MaterialIcons name='keyboard' size={25} color={'#fff'} />
                         <Text className="text-[#FEFEFC] font-cygrebold leading-[19.2px] ml-6">Add Manually</Text>
                     </TouchableOpacity>
