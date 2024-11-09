@@ -65,7 +65,7 @@ const AddBookBottomDrawer = ({ isBottomSheetOpen, setIsBottomSheetOpen }) => {
                     <TouchableOpacity
                         onPress={() => {
                             setIsBottomSheetOpen(false);
-                            router.push("(auth)/search-book")
+                            router.push("/(auth)/search-book")
                         }}
                         className="rounded-[15px] bg-[#1C1C1C] max-h-[56px] w-full h-full flex-row items-center px-7 max-w-[360px] mb-2">
                         <MaterialIcons name='search' size={25} color={'#fff'} />
@@ -75,7 +75,7 @@ const AddBookBottomDrawer = ({ isBottomSheetOpen, setIsBottomSheetOpen }) => {
                     <TouchableOpacity
                         onPress={() => {
                             setIsBottomSheetOpen(false);
-                            router.push("(auth)/add-book")
+                            router.push("/(auth)/add-book")
                         }}
                         className="rounded-[15px] bg-[#1C1C1C] max-h-[56px] w-full h-full flex-row items-center px-7 max-w-[360px] mb-2">
                         <MaterialIcons name='keyboard' size={25} color={'#fff'} />

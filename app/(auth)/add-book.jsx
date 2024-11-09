@@ -4,16 +4,13 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    FlatList,
-    RefreshControl,
-    Keyboard,
-    Platform,
     ScrollView
 } from "react-native";
 
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CollectionsIcon } from "../../components/Svg";
+import { router } from "expo-router";
 
 const imageUrl = 'https://images.squarespace-cdn.com/content/v1/564a53ace4b0ef1eb2daff41/1524810192099-QZZKCRPMM2D2692XHZZG/Cover+Make+it+Stick.jpg';
 
@@ -90,12 +87,14 @@ const AddBook = () => {
             <View className="my-6 max-h-[130px]">
                 <Text className="text-[#1C1C1C] mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Genres</Text>
                 <View className="max-h-[116px] h-full p-4 flex-row justify-between rounded-[20px] bg-[#1C1C1C]">
-                    <View className="flex-wrap flex-row border flex-1 items-start">
+                    <View className="flex-wrap flex-row flex-1 items-start">
                         <Genre name={'Notification'} />
                         <Genre name={'Self Help'} />
                         <Genre name={'Psychology'} />
                     </View>
-                    <TouchableOpacity className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
+                    <TouchableOpacity
+                        onPress={() => router.push('/(auth)/select-genres')}
+                        className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
                         <MaterialIcons name="add" size={30} />
                     </TouchableOpacity>
                 </View>
