@@ -5,6 +5,7 @@ import { Svg, G, Path, Rect, ClipPath, Defs } from 'react-native-svg'
 import { MaterialIcons } from '@expo/vector-icons';
 import { images } from '../../constants'
 import AddBookBottomDrawer from '../../components/AddBookBottomDrawer';
+import { LaptopIcon } from '../../components/Svg';
 
 const Home = () => {
 
@@ -307,8 +308,8 @@ const CurrentBook = () => {
 }
 
 const PersonalPlan = () => {
-  return <View className="mt-5 mx-3 flex-row bg-[#1C1C1C] items-center rounded-[15px] max-h-[114px] h-full px-5 justify-center">
-    <Image source={images.personalPlan} width={126} height={69} className='mr-6' />
+  return <View className="mt-5 mx-3 flex-row bg-[#1C1C1C] items-center rounded-[15px] max-h-[114px] h-full px-5 justify-between">
+    <LaptopIcon />
     <Text className="text-[#FFFFFF] font-cygrebold text-[22px] leading-[21px] font-bold max-w-[145px]">
       Your Personal Reading Plan
     </Text>
