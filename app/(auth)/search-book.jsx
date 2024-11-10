@@ -12,33 +12,10 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { images } from "../../constants";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { GearsIcon } from "../../components/Svg";
+import axios from "../../network/axios";
 
-
-const books = [
-    {
-        id: 1,
-        name: 'Make It Stick',
-        author: 'Peter C. Brown, Mark A. McDaniel, Henry L. Roediger III',
-        imageUrl: 'https://images.squarespace-cdn.com/content/v1/564a53ace4b0ef1eb2daff41/1524810192099-QZZKCRPMM2D2692XHZZG/Cover+Make+it+Stick.jpg',
-        rating: '4.7'
-    },
-    {
-        id: 2,
-        name: 'How To Make People Like You',
-        author: 'Nicholas Boothman',
-        imageUrl: 'https://static.get-headway.com/26c0862c647c47ff976e-15e219a88c400c.jpg',
-        rating: '4.2'
-    },
-    {
-        id: 3,
-        name: 'Make Time',
-        author: 'Jake Knapp, John Zeratsky',
-        imageUrl: 'https://makeheadway.com/_next/image/?url=https%3A%2F%2Fa.storyblok.com%2Ff%2F181188%2F7da008b650%2F5a0967c6a1744c5594aa-15d4416181eab4.jpg&w=750&q=75',
-        rating: '4.5'
-    }
-];
 
 
 const SearchBook = () => {
@@ -85,13 +62,52 @@ const SearchBook = () => {
         };
     }, []);
 
-    const handleInputTextChange = (text) => {
-        //update input state
-        //make api call to fetch books
-        //throttle to avoid extra requests
-        setText(text);
-        setData(books.filter(item => item.name.includes(text)))
-    }
+    const [timeoutId, setTimeoutId] = useState(null);
+    const delay = 500;
+
+
+    const fetchBooks = async (searchText) => {
+        try {
+            const { data } = await axios.get(`/search/${searchText}?maxResult=10`);
+            console.log("fired new")
+            return data;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    };
+
+    const handleInputTextChange = useCallback(async (newText) => {
+        setText(newText);
+
+        // Clear existing timeout
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+
+        // Only make API call if text is not empty
+        if (newText.trim()) {
+            const newTimeoutId = setTimeout(async () => {
+                const res = await fetchBooks(newText);
+                if (res) {
+                    setData(res.items);
+                }
+            }, delay);
+
+            setTimeoutId(newTimeoutId);
+        } else {
+            setData([]); // Clear results if input is empty
+        }
+    }, [timeoutId, delay]);
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+        };
+    }, [timeoutId]);
 
     const handleCloseBtn = () => {
         setText('');
@@ -149,11 +165,12 @@ const SearchBook = () => {
 export default SearchBook;
 
 
-const BookResult = ({name, author, imageUrl, rating}) => {
+const BookResult = ({ volumeInfo }) => {
+
     return <View className="max-w-[353px] p-3 w-full  mb-2 rounded-[15px] max-h-[132px] border-[.3px] bg-[#ffffff] border-[#727272] flex-row">
         <View className="max-w-[78px] max-h-[111px] mr-4">
             <Image
-                source={{ uri: imageUrl }}
+                source={{ uri: volumeInfo.imageLinks?.smallThumbnail }}
                 width={78}
                 height={111}
                 resizeMode="contain"
@@ -161,12 +178,14 @@ const BookResult = ({name, author, imageUrl, rating}) => {
             />
         </View>
         <View>
-            <Text className="text-[#1C1C1C] text-[18px] leading-[21.6px] font-cygrebold max-w-[216px]">{name}</Text>
-            <Text className="mb-5 text-[#1C1C1C] leading-[14.4px] font-cygreregular max-w-[85%]">{author}</Text>
-            <View className="max-w-[56px] max-h-[21px] w-full h-full flex-row p-1 bg-[#6C97E4] rounded-[15px] justify-center items-center">
-                <MaterialIcons name="star" color={'#fff'} />
-                <Text className="leading-[14.4px] font-cygrebold text-[12px] text-[#ffffff]">{rating}</Text>
-            </View>
+            <Text className="text-[#1C1C1C] text-[18px] leading-[21.6px] font-cygrebold max-w-[216px]" numberOfLines={2} ellipsizeMode='tail'>{volumeInfo.title}</Text>
+            <Text className="mb-5 text-[#1C1C1C] leading-[14.4px] font-cygreregular max-w-[85%]" numberOfLines={2} ellipsizeMode='tail'>{volumeInfo?.authors?.join(",")}</Text>
+            { volumeInfo?.averageRating && (
+                <View className="max-w-[56px] max-h-[21px] w-full h-full flex-row p-1 bg-[#6C97E4] rounded-[15px] justify-center items-center">
+                    <MaterialIcons name="star" color={'#fff'} />
+                    <Text className="leading-[14.4px] font-cygrebold text-[12px] text-[#ffffff]">{volumeInfo?.averageRating ?? ""}</Text>
+                </View>
+            ) }
         </View>
     </View>
 }
