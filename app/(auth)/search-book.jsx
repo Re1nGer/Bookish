@@ -7,7 +7,8 @@ import {
     FlatList,
     RefreshControl,
     Keyboard,
-    Platform
+    Platform,
+    Pressable
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,6 +16,7 @@ import { images } from "../../constants";
 import { useRef, useEffect, useState, useCallback } from "react";
 import { GearsIcon } from "../../components/Svg";
 import axios from "../../network/axios";
+import { router } from "expo-router";
 
 
 
@@ -165,9 +167,11 @@ const SearchBook = () => {
 export default SearchBook;
 
 
-const BookResult = ({ volumeInfo }) => {
+const BookResult = ({ volumeInfo, id }) => {
 
-    return <View className="max-w-[353px] p-3 w-full  mb-2 rounded-[15px] max-h-[132px] border-[.3px] bg-[#ffffff] border-[#727272] flex-row">
+    return <Pressable
+        onPress={() => router.push({pathname: '/add-book', params: { id: id }})}
+        className="max-w-[353px] p-3 w-full  mb-2 rounded-[15px] max-h-[132px] border-[.3px] bg-[#ffffff] border-[#727272] flex-row">
         <View className="max-w-[78px] max-h-[111px] mr-4">
             <Image
                 source={{ uri: volumeInfo.imageLinks?.smallThumbnail }}
@@ -187,5 +191,5 @@ const BookResult = ({ volumeInfo }) => {
                 </View>
             ) }
         </View>
-    </View>
+    </Pressable>
 }
