@@ -36,7 +36,8 @@ const AuthLayout = () => {
 {/*         Functional Screens */}
         <Stack.Screen name="search-book" options={{ title: "", headerTransparent: true, animation: 'slide_from_bottom' }} /> 
         <Stack.Screen name="add-book" options={{ title: "", headerTransparent: true, animation: 'slide_from_bottom' }} /> 
-        <Stack.Screen name="select-genres" options={{ title: "", headerTransparent: true, animation: 'slide_from_bottom' }} /> 
+        <Stack.Screen name="select-genres" options={{ title: "", headerTransparent: true, headerShown: false,  animation: 'slide_from_bottom' }} /> 
+        <Stack.Screen name="select-collections" options={{ title: "", headerTransparent: true, animation: 'slide_from_bottom' }} /> 
 
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
