@@ -34,8 +34,8 @@ const SelectGenres = () => {
     }
 
     return (
-        <SafeAreaView className="bg-primary h-full">
-            <TouchableOpacity className="bg-[#6592E3] self-end mt-2.5 mr-5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
+        <SafeAreaView className="bg-[#F7F7F7] h-full">
+            <TouchableOpacity className="bg-[#6592E3] self-end mt-2 mr-5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
             </TouchableOpacity>
 

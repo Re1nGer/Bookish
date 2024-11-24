@@ -47,7 +47,7 @@ const AddBook = () => {
     }, []);
 
 
-    return <SafeAreaView className="bg-primary h-full">
+    return <SafeAreaView className="bg-[#F7F7F7] h-full">
             <TouchableOpacity className="bg-[#6592E3] self-end mt-2.5 mr-5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
             </TouchableOpacity>
@@ -122,9 +122,6 @@ const AddBook = () => {
                 <View className="max-h-[116px] h-full p-4 flex-row justify-between rounded-[20px] bg-[#1C1C1C]">
                     <View className="flex-wrap flex-row flex-1 items-start">
                         { book.volumeInfo.categories?.slice(0, 3).map(item => <Genre key={item} name={item} />) }
-{/*                         <Genre name={'Notification'} />
-                        <Genre name={'Self Help'} />
-                        <Genre name={'Psychology'} /> */}
                     </View>
                     <TouchableOpacity
                         onPress={() => router.push('/(auth)/select-genres')}
