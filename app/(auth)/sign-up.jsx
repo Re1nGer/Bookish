@@ -1,4 +1,4 @@
-import { View, ScrollView, Text } from 'react-native'
+import { View, ScrollView, Text, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import FormField from '../../components/FormField';
@@ -37,6 +37,26 @@ const SignUp = () => {
       router.push("onboarding");
     } catch (error) {
       if (error.response) {
+        console.log(error.response.data)
+        if (error.response.data?.error?.userExists) {
+          Alert.alert("Ooooooops....", "This email is already signed!", [
+            
+              {
+                text: 'Try Again',
+                onPress: () => console.log('Cancel pressed'),
+                style: 'cancel'
+              },
+              {
+                text: 'Sign in',
+                onPress: () => router.push("/sign-in"),
+              },
+            ],
+            {
+              cancelable: true,  // Android only - allows tap outside to dismiss
+              onDismiss: () => console.log('Alert dismissed')  // iOS only
+            }
+          );
+        }
         setErrors(error.response.data) //could be a bit more simplified
       } else if (error.request) {
         console.error('Error request:', error.request);
