@@ -3,12 +3,13 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { images } from "../../constants";
 import { router } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
+import { OnboardingIcon } from "../../components/Svg";
 
 
 const Onboarding = () => {
 
 
-    return <SafeAreaView className="bg-[#F7F7F7] h-full">
+    return <SafeAreaView edges={['top', 'left', 'right']} className="bg-[#F7F7F7] h-full w-full">
             <View className="w-full justify-between relative h-full">
                 <View className="px-[50px] flex-[.2] items-center justify-center">
                     <Text className="font-bold text-center text-[28px] leading-[26px] max-w-[246px] w-full tracking-wide font-cygrebold">
@@ -39,12 +40,9 @@ const Onboarding = () => {
                     </TouchableOpacity>
 
                 </View>
-
-                <Image
-                    source={images.onboardingImage}
-                    resizeMode="cover"
-                    className="bottom-0 absolute max-h-[650px] max-w-[650px]"
-                />
+                <View className="absolute bottom-0">
+                    <OnboardingIcon />
+                </View>
             </View>
             <StatusBar backgroundColor='#F7F7F7' style='dark' />
     </SafeAreaView>
