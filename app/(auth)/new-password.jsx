@@ -26,8 +26,13 @@ const NewPassword = () => {
 
   const [isPasswordError, setIsPasswordError] = useState(false);
 
+  const isPasswordInvalid = () => {
+    const { newPassword, newPasswordRepeated } = password;
+    return newPassword === "" || newPasswordRepeated === "" || newPassword !== newPasswordRepeated 
+  }
+
   const handleUpdate = async () => {
-    if (password.newPassword !== password.newPasswordRepeated) {
+    if (isPasswordInvalid()) {
       setIsPasswordError(true);
     } else {
       await updatePassword()
@@ -52,7 +57,7 @@ const NewPassword = () => {
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className='w-full flex-1 justify-between'>
           <View className="w-full h-full justify-between max-h-[60%] pt-[23px] items-start">
-            <Text className="font-inter text-[24px] text-[#000000] font-bold px-[25px] pt-10 pb-9">New Password</Text>
+            <View className="font-inter text-[24px] text-[#000000] font-bold px-[25px] pt-10 pb-9"></View>
             <View className="w-full h-full justify-start px-[31px] max-h-[320px]">
 
               <View className="w-full items-center justify-center flex-row">
@@ -64,8 +69,8 @@ const NewPassword = () => {
               <View className="w-full mt-[63px]">
 
                 <FormField
-                  title={"Enter New Password"}
-                  titleStyles={"font-roboto text-[#373737] font-medium text-[14px] leading-[20px] tracking-[.1px]"}
+                  title={"New Password"}
+                  titleStyles={"font-cygrebold text-black font-medium text-sm leading-[20px]"}
                   placeholder={'At least 8 characters'}
                   placeholderTextColor={"#777777"}
                   textInputStyles={'bg-[#EFEFEF] text-[12px] leading-[20px] tracking-[.1px] font-roboto font-semibold'}
@@ -73,11 +78,12 @@ const NewPassword = () => {
                   otherStyles={'max-h-[52px] h-full mb-[50px]'}
                   handleChangeText={(e) => setNewPassword(prev => ({ ...prev, newPasswordRepeated: e })) }
                   value={password.newPasswordRepeated}
+                  error={isPasswordError}
                 />
 
                 <FormField
-                  title={"Confirm New Password"}
-                  titleStyles={"font-roboto text-[#373737] font-medium text-[14px] leading-[20px] tracking-[.1px]"}
+                  title={"Password"}
+                  titleStyles={"font-cygrebold text-black  font-medium text-sm leading-[20px]"}
                   placeholder={'Confirm password'}
                   placeholderTextColor={"#777777"}
                   textInputStyles={'bg-[#EFEFEF] text-[12px] leading-[20px] tracking-[.1px] font-roboto font-semibold'}
@@ -85,6 +91,7 @@ const NewPassword = () => {
                   otherStyles={'max-h-[52px] h-full mb-[25px]'}
                   handleChangeText={(e) => setNewPassword(prev => ({ ...prev, newPassword: e })) }
                   value={password.newPassword}
+                  error={isPasswordError}
                 />
 
                 { isPasswordError ? (
@@ -95,7 +102,7 @@ const NewPassword = () => {
 
                 <TouchableOpacity
                   onPress={handleUpdate}
-                  className="rounded-[100px] mx-[33px] bg-[#373737] self-center mt-[25px] w-full h-[40px] items-center justify-center">
+                  className="rounded-[100px] mx-[33px] bg-primary self-center mt-[25px] w-full h-[40px] items-center justify-center">
                   <Text className="text-sm font-roboto leading-[20px] tracking-[.1px] text-white text-center">Update</Text>
                 </TouchableOpacity>
 

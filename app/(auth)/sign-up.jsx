@@ -54,8 +54,9 @@ const SignUp = () => {
           <View className="w-full items-end mt-[70px]">
 
             <FormField
-              title={"Title"}
+              title={"Name"}
               placeholder={"Enter your name"} 
+              textInputContainerStyles={'border-[.5px]'}
               handleChangeText={e => setForm(prev => ({...prev, name: e}))}
             />
 
@@ -63,6 +64,7 @@ const SignUp = () => {
               title={"Email"}
               placeholder={"Enter your email"}
               otherStyles={"my-[20px]"} 
+              textInputContainerStyles={'border-[.5px]'}
               handleChangeText={e => setForm(prev => ({...prev, email: e}))}
               error={errors.email}
               errorText={errors.email}
@@ -72,6 +74,7 @@ const SignUp = () => {
               title={"Password"}
               placeholder={"Enter your password"}
               hintText={"* At least 8 characters long"}  
+              textInputContainerStyles={'border-[.5px]'}
               handleChangeText={e => setForm(prev => ({...prev, password: e}))}
               error={errors.password}
               errorText={errors.password}
@@ -79,7 +82,7 @@ const SignUp = () => {
 
             <PrimaryButton title={"Sign up"}
                 handlePress={handleSignUpClick}
-                containerStyles={'mx-[20px] self-center mt-4 w-full rounded-3xl'}
+                containerStyles={'mx-[20px] self-center mt-4 w-full rounded-3xl max-h-[65px]'}
                 textStyles={'text-center justify-center items-center'}
             />
 

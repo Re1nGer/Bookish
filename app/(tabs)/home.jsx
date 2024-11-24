@@ -10,7 +10,7 @@ import { LaptopIcon } from '../../components/Svg';
 const Home = () => {
 
 
-  return <SafeAreaView className="bg-primary" style={{ flex: 1 }}>
+  return <SafeAreaView className="bg-[#F7F7F7]" style={{ flex: 1 }}>
       <ScrollView>
         <ThisWeekStatistics />
         <CurrentBook />

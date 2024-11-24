@@ -9,11 +9,12 @@ import upload from "../assets/icons/upload.png";
 import rightArrow from "../assets/icons/right-arrow.png";
 import logout from "../assets/icons/logout.png";
 import eyeHide from "../assets/icons/eye-hide.png";
+import eyeHideError from '../assets/icons/visibility.png';
 import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
 import trash from "../assets/icons/delete.png";
-import edit from "../assets/icons/edit-icon.png";
-import passwordSuccess from "../assets/icons/password-success-icon.png";
+import edit from "../assets/icons/edit.png";
+import passwordSuccess from "../assets/icons/task_alt.png";
 import growth from "../assets/icons/growth_icon.png";
 import entertainment from '../assets/icons/enter_icon.png';
 import inspiration from "../assets/icons/inspiration_icon.png";
@@ -49,5 +50,6 @@ export default {
   book,
   repetition,
   stats,
-  fire
+  fire,
+  eyeHideError
 };

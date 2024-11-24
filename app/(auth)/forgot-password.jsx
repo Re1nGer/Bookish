@@ -31,7 +31,7 @@ const ForgotPassword = () => {
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className='w-full flex-1 justify-between'>
           <View className="w-full h-full justify-between max-h-[60%] pt-[23px] items-start">
-            <Text className="font-inter text-[24px] text-[#000000] font-bold px-[25px] pt-10 pb-9">Forgot Password</Text>
+            <View className="font-bold px-[25px] pt-10 pb-9"></View>
             <View className="w-full h-full justify-start px-[31px] max-h-[320px]">
               <View className="flex-row items-center justify-center">
                 <Stage active={true} />
@@ -52,7 +52,7 @@ const ForgotPassword = () => {
                 />
                 <TouchableOpacity
                   onPress={handleSubmit}
-                  className="rounded-[100px] bg-[#373737] max-w-[327px] w-full h-[40px] items-center justify-center">
+                  className="rounded-[100px] bg-primary max-w-[327px] w-full h-[40px] items-center justify-center">
                   <Text className="text-sm font-roboto leading-[20px] tracking-[.1px] text-white text-center">Submit</Text>
                 </TouchableOpacity>
               </View>

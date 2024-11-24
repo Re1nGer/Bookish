@@ -1,6 +1,7 @@
 import React from 'react'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import { Text } from 'react-native'
 
 //never-forget is complicated component 
 
@@ -10,11 +11,35 @@ const AuthLayout = () => {
       <Stack>
         
 {/*         Onboarding Screens */}
-        <Stack.Screen name="sign-in" options={{ title: "", headerTransparent: true }} />
-        <Stack.Screen name="sign-up" options={{ title: "Sign Up", headerTransparent: true}} /> 
-        <Stack.Screen name="forgot-password" options={{ title: "", headerTransparent: true }} />
-        <Stack.Screen name="verification" options={{ title: "", headerTransparent: true }} />
-        <Stack.Screen name="new-password" options={{ title: "", headerTransparent: true }} />
+        <Stack.Screen name="sign-in" options={{ title: "Sign In",
+            headerTitle: () => <HeaderTitle text={"Sign In"} />,
+            headerTransparent: true }} />
+
+        <Stack.Screen
+          name="sign-up"
+          options={{ title: "Sign Up",
+            headerTitle: () => <HeaderTitle text={"Sign Up"} />,
+            headerTransparent: true}} /> 
+
+        <Stack.Screen
+          name="forgot-password"
+          options={{ title: "Forgot Password",
+            headerTitle: () => <HeaderTitle text={"Forgot Password"} />,
+            headerTransparent: true }}
+          />
+
+        <Stack.Screen
+          name="verification"
+          options={{ title: "Verification",
+            headerTitle: () => <HeaderTitle text={"Verification"} />,
+            headerTransparent: true }} />
+
+        <Stack.Screen
+          name="new-password"
+          options={{ title: "New Password",
+            headerTitle: () => <HeaderTitle text={"New Password"} />,
+            headerTransparent: true }} 
+        />
         <Stack.Screen name="password-success" options={{ title: "", headerShown: false }} />
         <Stack.Screen name="welcome" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ title: "", headerBackVisible: false, headerShown: false }} />
@@ -47,3 +72,8 @@ const AuthLayout = () => {
 
 
 export default AuthLayout
+
+
+const HeaderTitle = ({ text }) => {
+  return <Text className="font-cygrebold text-black font-bold text-[24px]">{text}</Text>
+}

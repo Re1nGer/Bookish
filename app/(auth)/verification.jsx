@@ -18,7 +18,7 @@ const Verification = () => {
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className='w-full flex-1 justify-between'>
           <View className="w-full h-full justify-between max-h-[60%] pt-[23px] items-start">
-            <Text className="font-inter text-[24px] text-[#000000] font-bold px-[25px] pt-10 pb-9">Verification</Text>
+            <View className="px-[25px] pt-10 pb-9"></View>
             <View className="w-full h-full justify-start px-[31px] max-h-[320px]">
               <View className="w-full flex-row items-center justify-center">
                 <Stage />
@@ -60,7 +60,7 @@ const SentTo = () => {
         onChangeText={handleEditEmail}
         className="font-medium font-roboto text-[#777777] text-[14px] max-w-[180px]"  />
       <TouchableOpacity onPress={handleOnEditIconClick}>
-        <View className='relative rounded-[5px] bg-[#D9D9D9] w-[24px] items-center justify-center h-[24px]'>
+        <View className='relative rounded-[5px] bg-primary w-[24px] items-center justify-center h-[24px]'>
           <Image source={icons.edit} className='w-[16px] h-[16px] absolute' />
         </View>
       </TouchableOpacity>

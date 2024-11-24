@@ -24,7 +24,7 @@ const FormField = ({
   return (
     <View className={`${otherStyles}`}>
       <Text className={`text-base font-cygresemibold text-[#1C1C1C] text-[18px] mb-1 ${titleStyles}`}>{title}</Text>
-      <View className={`border w-full px-4 py-3 h-14 bg-white border-[#8A8A8A] rounded-xl items-center flex-row ${textInputContainerStyles} ${error ? 'border-[#DF2626] border-2' : ''}`}>
+      <View className={`border w-full px-4 py-3 h-14 bg-white border-[#8A8A8A] rounded-xl items-center flex-row ${textInputContainerStyles} ${error ? 'border-red border-2' : ''}`}>
         <TextInput
           className={`flex-1 bg-white font-cygreregular h-full justify-center items-center text-base max-h-[54px] ${textInputStyles}`}
           value={value}
@@ -35,12 +35,13 @@ const FormField = ({
          />
          {title.includes('Password') && (
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+{/*             <EyeIconOpen color={ error ? '#DF4E37' : '#777777'} /> */}
             <Image source={showPassword ? icons.eye : icons.eyeHide} className={'w-6 h-6'} resizeMode='contain' />
           </TouchableOpacity>
          ) }
       </View>
-      { (hintText && !error) ? <Text className='font-cygreregular text-[12px] max-h-[40px] h-full text-[#777777]'>{hintText}</Text> : <></> }
-      { (error && errorText) ? <Text className='font-cygreregular max-h-[20px] text-[12px] text-[#DF2626]'>{errorText}</Text> : <></> }
+      { (hintText && !error) ? <Text className='font-cygrebold text-[12px] max-h-[40px] h-full text-[#777777]'>{hintText}</Text> : <></> }
+      { (error && errorText) ? <Text className='font-cygrebold max-h-[20px] text-[12px] text-red'>{errorText}</Text> : <></> }
     </View>
   )
 }

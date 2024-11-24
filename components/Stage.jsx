@@ -1,8 +1,8 @@
-import { TouchableOpacity, View } from "react-native"
+import { TouchableOpacity } from "react-native"
 
 const Stage = ({ active = false, styles }) => {
   return <TouchableOpacity
-            className={`bg-[#D9D9D9] flex-1 rounded-[13px] ${active ? 'bg-[#787878]' : ''}
+            className={`bg-gray flex-1 rounded-[13px] ${active ? 'bg-primary' : ''}
             w-full h-[8px] ${styles}`}>
           </TouchableOpacity>
 }

@@ -5,13 +5,6 @@ import {  router } from 'expo-router';
 import FormField from '../../components/FormField';
 import axios from '../../network/axios';
 
-function isValidEmail(email) {
-  // Regular expression for basic email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
-  return emailRegex.test(email);
-}
-
 
 const SignIn = () => {
   
@@ -43,12 +36,12 @@ const SignIn = () => {
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className='w-full flex-1 justify-between'>
           <View className="w-full h-full justify-between max-h-[60%] pt-[23px] items-start">
-            <Text className="font-inter text-[24px] text-black font-bold px-[25px] pt-10 pb-8">Sign In</Text>
+            <View className="px-[25px] pt-10 pb-8"></View>
             <View className="w-full h-full justify-start px-[31px] max-h-[320px]">
 
               <FormField
                 title={"Email"}
-                titleStyles={"font-roboto text-[#373737] font-semibold"}
+                titleStyles={"font-cygrebold text-black font-semibold"}
                 placeholder={'Enter your email'}
                 placeholderTextColor={"#777"}
                 textInputStyles={'bg-[#EFEFEF] text-[12px] font-roboto font-semibold'}
@@ -61,7 +54,7 @@ const SignIn = () => {
               <View className='w-full'>
                 <FormField
                   title={"Password"}
-                  titleStyles={"font-roboto text-[#373737] font-semibold"}
+                  titleStyles={"font-cygrebold text-black font-semibold"}
                   placeholder={'At least 8 characters'}
                   placeholderTextColor={"#777"}
                   textInputStyles={'bg-[#EFEFEF] text-[12px] font-roboto font-semibold'} 
@@ -71,23 +64,25 @@ const SignIn = () => {
                   error={errors !== ''}
                   errorText={errors}
                 />
-                <TouchableOpacity onPress={() => router.push("/forgot-password")}>
-                  <Text className='underline underline-offset-4 mt-[10px] max-h-[50px] flex-col justify-end text-[#777] text-[11px] font-medium font-roboto leading-[20px] tracking-[.1px]'>Forgot password?</Text>
+                <TouchableOpacity onPress={() => router.push("/forgot-password")} className="mt-3">
+                  <Text className='max-h-[50px] flex-col justify-end text-[#777] text-[11px] font-medium font-cygrebold leading-[20px]'>Forgot password?</Text>
                 </TouchableOpacity>
               </View>
             </View>
             
             <View className="w-full items-center justify-start h-full">
               <TouchableOpacity onPress={handleSigningIn}
-                className="rounded-[100px] bg-[#373737] max-w-[327px] w-full h-[40px] items-center justify-center">
-                <Text className="text-sm font-roboto leading-[20px] tracking-[.1px] text-white text-center">Sign In</Text>
+                className="rounded-[100px] bg-primary max-w-[327px] w-full h-[40px] items-center justify-center">
+                <Text className="text-sm font-cygrebold leading-[20px] text-white text-center">Sign In</Text>
               </TouchableOpacity>
             </View>
 
           </View>
           <View className="text-center mt-[40px] mb-[20px]">
             <TouchableOpacity onPress={() => router.push("/sign-up")}>
-              <Text className="text-base text-center font-cygreregular text-[#373737]">Don't have an account ? Sign Up</Text>
+              <Text className="text-base text-center font-cygreregular text-[#373737]">Don't have an account?
+                {" "}
+               <Text className="underline underline-offset-4 text-base text-center font-cygreregular text-[#373737]">Sign Up</Text></Text>
             </TouchableOpacity>
           </View>
         </View>
