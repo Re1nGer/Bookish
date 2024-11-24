@@ -40,7 +40,6 @@ const SignUp = () => {
         console.log(error.response.data)
         if (error.response.data?.error?.userExists) {
           Alert.alert("Ooooooops....", "This email is already signed!", [
-            
               {
                 text: 'Try Again',
                 onPress: () => console.log('Cancel pressed'),

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {  router } from 'expo-router';
@@ -25,6 +25,26 @@ const SignIn = () => {
       router.push('/onboarding');
     } catch (error) {
       if (error.response.data) {
+
+        if (error.response.data?.error?.email) {
+          Alert.alert("Ooooooops....", "This email isn't already signed!", [
+              {
+                text: 'Try Again',
+                onPress: () => console.log('Cancel pressed'),
+                style: 'cancel'
+              },
+              {
+                text: 'Sign up',
+                onPress: () => router.push("/sign-up"),
+              },
+            ],
+            {
+              cancelable: true,  // Android only - allows tap outside to dismiss
+              onDismiss: () => console.log('Alert dismissed')  // iOS only
+            }
+          );
+          return;
+        }
         setErrors(error.response.data?.error)
       }
       console.log(error.response.data?.error);
