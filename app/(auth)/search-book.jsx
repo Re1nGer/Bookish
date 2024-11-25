@@ -168,10 +168,9 @@ export default SearchBook;
 
 
 const BookResult = ({ volumeInfo, id }) => {
-
     return <Pressable
-        onPress={() => router.push({pathname: '/add-book', params: { id: id }})}
-        className="max-w-[353px] p-3 w-full  mb-2 rounded-[15px] max-h-[132px] border-[.3px] bg-[#ffffff] border-[#727272] flex-row">
+            onPress={() => router.push({pathname: '/add-book', params: { id: id }})}
+            className="max-w-[353px] p-3 w-full  mb-2 rounded-[15px] max-h-[132px] border-[.3px] bg-[#ffffff] border-[#727272] flex-row">
         <View className="max-w-[78px] max-h-[111px] mr-4">
             <Image
                 source={{ uri: volumeInfo.imageLinks?.smallThumbnail }}
@@ -182,12 +181,12 @@ const BookResult = ({ volumeInfo, id }) => {
             />
         </View>
         <View>
-            <Text className="text-[#1C1C1C] text-[18px] leading-[21.6px] font-cygrebold max-w-[216px]" numberOfLines={2} ellipsizeMode='tail'>{volumeInfo.title}</Text>
-            <Text className="mb-5 text-[#1C1C1C] leading-[14.4px] font-cygreregular max-w-[85%]" numberOfLines={2} ellipsizeMode='tail'>{volumeInfo?.authors?.join(",")}</Text>
-            { volumeInfo?.averageRating && (
+            <Text className="text-black text-[18px] leading-[21.6px] font-cygrebold max-w-[216px]" numberOfLines={2} ellipsizeMode='tail'>{volumeInfo.title}</Text>
+            <Text className="mb-5 text-black leading-[14.4px] font-cygreregular max-w-[85%]" numberOfLines={2} ellipsizeMode='tail'>{volumeInfo?.authors?.join(",")}</Text>
+            { volumeInfo?.averageRating > 0 && (
                 <View className="max-w-[56px] max-h-[21px] w-full h-full flex-row p-1 bg-[#6C97E4] rounded-[15px] justify-center items-center">
                     <MaterialIcons name="star" color={'#fff'} />
-                    <Text className="leading-[14.4px] font-cygrebold text-[12px] text-[#ffffff]">{volumeInfo?.averageRating ?? ""}</Text>
+                    <Text className="leading-[14.4px] font-cygrebold text-[12px] text-[#ffffff]">{volumeInfo?.averageRating}</Text>
                 </View>
             ) }
         </View>

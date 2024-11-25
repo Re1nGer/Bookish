@@ -54,7 +54,7 @@ const AddBook = () => {
         <ScrollView className="px-5 mt-5">
             <Text className="text-[#1C1C1C] mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Add Book</Text>
             <Image
-                source={{ uri: book.volumeInfo.imageLinks.thumbnail }}
+                source={{ uri: book.volumeInfo?.imageLinks?.thumbnail }}
                 width={134}
                 height={191}
                 className="self-center mt-6 rounded-[6px]"
@@ -98,7 +98,8 @@ const AddBook = () => {
                     <TextInput
                         className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm"
                         placeholder="Page Count"
-                        value={book.volumeInfo?.pageCount}
+                        readOnly
+                        value={book.volumeInfo?.pageCount?.toString()}
                     />
                 </View>
             </View>
