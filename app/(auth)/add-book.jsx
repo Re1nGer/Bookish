@@ -7,12 +7,13 @@ import {
     ScrollView
 } from "react-native";
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CollectionsIcon } from "../../components/Svg";
 import { router, useLocalSearchParams } from "expo-router";
 import axios from "../../network/axios";
+import { UserContext } from "../../context/UserContext";
 
 const AddBook = () => {
 
@@ -32,7 +33,14 @@ const AddBook = () => {
         }
     });
 
+    const { genres } = useContext(UserContext);
+
+    const getGenres = () => {
+        return Object.keys(genres).filter(genre => genres[genre]);
+    }
+
     const fetchBook = async () => {
+
         try {
             const { data } = await axios.get(`/book/${id}`);
             setBook(data)
@@ -43,8 +51,20 @@ const AddBook = () => {
     }
 
     useEffect(() => {
-        fetchBook();
-    }, []);
+        if (id) {
+            fetchBook();
+        }
+    }, [id]);
+
+
+    const addBook = async () => {
+        try {
+            const body = { ...book, categories: [...book.categories, getGenres()] }
+            await axios.post('/book', body);
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
@@ -99,7 +119,7 @@ const AddBook = () => {
                         className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm"
                         placeholder="Page Count"
                         readOnly
-                        value={book.volumeInfo?.pageCount?.toString()}
+                        value={book.volumeInfo?.pageCount?.toString() === "0" ? "" : book.volumeInfo?.pageCount?.toString()}
                     />
                 </View>
             </View>

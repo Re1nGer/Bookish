@@ -3,39 +3,28 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image,
     ScrollView,
-    FlatList
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import Checkbox from "../../components/Checkbox";
-import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 
 
 const SelectGenres = () => {
 
-    const [states, setStates] = useState({
-        adventures: false,
-        business: false,
-        contemporary: false,
-        crime: false,
-        drama: false,
-        history: false,
-        horror: false,
-        nonFiction: false,
-        psychology: false
-    });
+    const { genres, setGenres } = useContext(UserContext);
 
     const handleOnPress = (name) => {
-        setStates(prev => ({...prev, [name]: !prev[name]}))
+        setGenres(prev => ({...prev, [name]: !prev[name]}))
     }
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full">
-            <TouchableOpacity className="bg-[#6592E3] self-end mt-2 mr-5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
+            <TouchableOpacity className="bg-primary self-end mt-2 mr-5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
             </TouchableOpacity>
 
@@ -54,61 +43,61 @@ const SelectGenres = () => {
                 </View>
 
                 <Genre
-                    selected={states["adventures"]}
+                    selected={genres["adventures"]}
                     text={'Adventure'} 
                     onPress={() => handleOnPress("adventures")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
-                    selected={states["art"]}
+                    selected={genres["art"]}
                     text={'Art'} 
                     onPress={() => handleOnPress("art")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
-                    selected={states["business"]}
+                    selected={genres["business"]}
                     text={'Business'} 
                     onPress={() => handleOnPress("business")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
-                    selected={states["contemporary"]}
+                    selected={genres["contemporary"]}
                     text={'Contemporary'} 
                     onPress={() => handleOnPress("contemporary")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
-                    selected={states["crime"]}
+                    selected={genres["crime"]}
                     text={'Crime'}
                     onPress={() => handleOnPress("crime")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
-                    selected={states["drama"]}
+                    selected={genres["drama"]}
                     text={'Drama'}
                     onPress={() => handleOnPress("drama")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
-                    selected={states["history"]}
+                    selected={genres["history"]}
                     text={'History'} 
                     onPress={() => handleOnPress("history")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
-                    selected={states["horror"]}
+                    selected={genres["horror"]}
                     text={'Horror'} 
                     onPress={() => handleOnPress("horror")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
-                    selected={states["nonFiction"]}
+                    selected={genres["nonFiction"]}
                     text={'Non-fiction'}
                     onPress={() => handleOnPress("nonFiction")}
                     containerStyles={'mb-2.5'}
                 />
                 <Genre
-                    selected={states["psychology"]}
+                    selected={genres["psychology"]}
                     text={'Psychology'} 
                     onPress={() => handleOnPress("psychology")}
                     containerStyles={'mb-10'}
