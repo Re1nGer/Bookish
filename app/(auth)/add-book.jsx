@@ -14,6 +14,7 @@ import { CollectionsIcon } from "../../components/Svg";
 import { router, useLocalSearchParams } from "expo-router";
 import axios from "../../network/axios";
 import { UserContext } from "../../context/UserContext";
+import icons from "../../constants/icons";
 
 const AddBook = () => {
 
@@ -33,6 +34,22 @@ const AddBook = () => {
         }
     });
 
+    const defaultStatuses = {
+        toRead: false,
+        reading: false,
+        finished: false,
+        gaveUp: false,
+        paused: false
+    }
+
+    const [status, setStatus] = useState({
+        toRead: true,
+        reading: false,
+        finished: false,
+        gaveUp: false,
+        paused: false
+    });
+
     const { genres } = useContext(UserContext);
 
     const getGenres = () => {
@@ -40,7 +57,6 @@ const AddBook = () => {
     }
 
     const fetchBook = async () => {
-
         try {
             const { data } = await axios.get(`/book/${id}`);
             setBook(data)
@@ -68,9 +84,14 @@ const AddBook = () => {
 
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
-            <TouchableOpacity className="bg-[#6592E3] self-end mt-2.5 mr-5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
+        <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5">
+            <TouchableOpacity className="flex-1" onPress={() => router.back()}>
+                <Image source={icons.leftArrow} />
+            </TouchableOpacity>
+            <TouchableOpacity className="bg-primary flex-1 mt-2.5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
             </TouchableOpacity>
+        </View>
         <ScrollView className="px-5 mt-5">
             <Text className="text-[#1C1C1C] mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Add Book</Text>
             <Image
@@ -128,13 +149,36 @@ const AddBook = () => {
 {/*                 gotta figure out how to handle selected buttons */}
 
                 <View className="flex-row">
-                    <StatusBtn text={'To Read'} selected={true} containerStyles={'mr-2.5'} />
-                    <StatusBtn text={'Reading'} containerStyles={'mr-2.5'} />
-                    <StatusBtn text={'Finished'} />
+                    <StatusBtn text={'To Read'}
+                        selected={status['toRead']}
+                        containerStyles={'mr-2.5'}
+                        onPress={() => setStatus(_ => ({defaultStatuses, toRead: true}))}
+                    />
+                    <StatusBtn
+                        selected={status['reading']}
+                        text={'Reading'}
+                        containerStyles={'mr-2.5'} 
+                        onPress={() => setStatus(_ => ({defaultStatuses, reading: true}))}
+                    />
+                    <StatusBtn
+                        selected={status['finished']}
+                        text={'Finished'} 
+                        onPress={() => setStatus(_ => ({defaultStatuses, finished: true}))}
+                    />
                 </View>
                 <View className="flex-row justify-center">
-                    <StatusBtn text={'Gave Up'} containerStyles={'mr-2.5 mt-3'} />
-                    <StatusBtn text={'Paused'} containerStyles={'mt-3'} />
+                    <StatusBtn
+                        selected={status['gaveUp']}
+                        text={'Gave Up'}
+                        containerStyles={'mr-2.5 mt-3'} 
+                        onPress={() => setStatus(_ => ({defaultStatuses, gaveUp: true}))}
+                    />
+                    <StatusBtn
+                        selected={status['paused']}
+                        text={'Paused'}
+                        containerStyles={'mt-3'} 
+                        onPress={() => setStatus(_ => ({defaultStatuses, paused: true}))}
+                    />
                 </View>
             </View>
 
@@ -181,8 +225,10 @@ const Genre = ({ name, containerStyles }) => {
     </View>
 }
 
-const StatusBtn = ({ selected, text, containerStyles }) => {
-    return <TouchableOpacity className={`rounded-[15px] justify-center items-center max-w-[106px] h-[38px] w-full border-[.5px] border-[#8A8A8A] ${selected ? 'bg-[#6C97E4]' : 'bg-[#ffffff]'} ${containerStyles}`}>
+const StatusBtn = ({ selected, text, containerStyles, onPress }) => {
+    return <TouchableOpacity
+            onPress={onPress}
+            className={`rounded-[15px] justify-center items-center max-w-[106px] h-[38px] w-full border-[.5px] border-[#8A8A8A] ${selected ? 'bg-[#6C97E4]' : 'bg-[#ffffff]'} ${containerStyles}`}>
         <Text className={`leading-[16.8px] text-center font-cygrebold text-sm ${selected ? 'text-[#ffffff]' : 'text-[#1C1C1C]'}`}>{text}</Text>
     </TouchableOpacity>
 }
