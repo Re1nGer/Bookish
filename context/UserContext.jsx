@@ -19,7 +19,28 @@ export const UserProvider = ({ children }) => {
         history: false,
         horror: false,
         nonFiction: false,
-        psychology: false
+        psychology: false,
+        fiction: false,
+        mystery: false,
+        thriller: false,
+        scienceFiction: false,
+        fantasy: false,
+        romance: false,
+        biography: false,
+    });
+
+    const [book, setBook] = useState({
+        id: '',
+        volumeInfo: {
+            title: '',
+            authors: [],
+            description: '',
+            pageCount: 0,
+            categories: [],
+            imageLinks: {
+                thumbnail: ''
+            }
+        }
     });
 
     return <UserContext.Provider value={{
@@ -29,6 +50,8 @@ export const UserProvider = ({ children }) => {
         setVerificationCode,
         genres,
         setGenres,
+        book,
+        setBook,
         //TODO: to remove
         user,
         setUser
