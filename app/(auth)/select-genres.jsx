@@ -4,6 +4,7 @@ import {
     Text,
     TouchableOpacity,
     ScrollView,
+    Image
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,6 +12,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Checkbox from "../../components/Checkbox";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
+import { images } from "../../constants";
+import { router } from "expo-router";
 
 
 
@@ -24,9 +27,17 @@ const SelectGenres = () => {
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full">
-            <TouchableOpacity className="bg-primary self-end mt-2 mr-5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
-                <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
-            </TouchableOpacity>
+            <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5">
+
+                <TouchableOpacity className="flex-1" onPress={() => router.back()}>
+                    <Image source={images.leftArrowIcon} />
+                </TouchableOpacity>
+
+                <TouchableOpacity className="bg-primary self-end mt-2 mr-5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
+                    <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
+                </TouchableOpacity>
+            </View>
+
 
 
             <ScrollView className="px-5 mt-5">

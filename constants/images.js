@@ -35,6 +35,7 @@ import personalPlan from '../assets/images/personal_plan.png';
 import book1 from '../assets/images/book1.png';
 import book2 from '../assets/images/book2.png';
 import searchBookImage from '../assets/images/search_book_image.png';
+import leftArrowIcon from "../assets/images/left_arrow.png";
 
 
 export default {
@@ -74,5 +75,6 @@ export default {
     personalPlan,
     book1, 
     book2,
-    searchBookImage
+    searchBookImage,
+    leftArrowIcon
 };
