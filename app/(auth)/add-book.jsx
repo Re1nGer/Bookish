@@ -89,10 +89,11 @@ const AddBook = () => {
                 authors,
                 description,
                 totalPages,
-                categories: [...book.categories, getGenres()],
-                status: getStatus(),
+                categories: book.categories, //add getGenres() from a separate screen
+                //status: getStatus(), // have to handle adding a new status 
             }
             await axios.post('/book', body);
+            console.log("success")
         } catch(error) {
             console.log(error);
         }
@@ -101,10 +102,13 @@ const AddBook = () => {
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5">
-            <TouchableOpacity className="flex-1" onPress={() => router.back()}>
+            <TouchableOpacity
+                className="flex-1" onPress={() => router.back()}>
                 <Image source={images.leftArrowIcon} />
             </TouchableOpacity>
-            <TouchableOpacity className="bg-primary flex-1 mt-2.5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
+            <TouchableOpacity
+                onPress={async () => await addBook()}
+                className="bg-primary flex-1 mt-2.5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
             </TouchableOpacity>
         </View>

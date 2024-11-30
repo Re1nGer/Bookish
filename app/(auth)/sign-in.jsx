@@ -21,7 +21,9 @@ const SignIn = () => {
 
   const login = async () => {
     try {
-      await axios.post('/login', { email: form.email, password: form.password })
+      const { data } = await axios.post('/login', { email: form.email, password: form.password })
+      axios.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
+      //console.log(data);
       router.push('/onboarding');
     } catch (error) {
       if (error.response.data) {
