@@ -106,7 +106,7 @@ const BookStatusDropdown = () => {
               styles.dropdown,
               {
                 position: 'relative',
-                top: 180,
+                top: 210,
                 left: dropdownLayout.x,
                 width: dropdownLayout.width,
               },

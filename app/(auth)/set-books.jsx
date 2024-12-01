@@ -1,10 +1,10 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import { router } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
 import OnboardingProgress from "../../components/OnboardingProgress";
 import React, { useState } from 'react';
-import Slider from '@react-native-community/slider';
+import SliderCounter from "../../components/SliderCounter";
 import { images } from "../../constants";
 
 
@@ -51,45 +51,6 @@ const SetBooks = () => {
 
 }
 
-const SliderCounter = ({ value, setValue }) => {
-
-
-  //Slider's track height isn't customizable
-
-  return (
-    <View style={styles.container}>
-      <Text className="text-[60px] font-bold font-cygrebold">{value.toFixed(0)}</Text>
-      <Slider
-        style={{ height: 40, width: '100%' }}
-        minimumValue={13}
-        maximumValue={100}
-        step={1}
-        value={value}
-        onValueChange={setValue}
-        thumbTintColor={'#6592E3'}
-        minimumTrackTintColor="#6592E3"
-        maximumTrackTintColor="#C1D7FF"
-      />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  valueText: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  slider: {
-    width: '100%',
-    height: "26px",
-  },
-});
 
 
 export default SetBooks;
