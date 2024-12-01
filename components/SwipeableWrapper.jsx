@@ -93,8 +93,8 @@ const SwipeableWrapper = ({ children, showDots = true }) => {
             >
                 {childrenArray[currentIndex]}
             </Animated.View>
+          {renderDots()}
         </View>
-        {renderDots()}
     </>
   );
 };

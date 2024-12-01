@@ -15,6 +15,7 @@ import SliderCounter from "../../components/SliderCounter";
 import { useState } from "react";
 import SwipeableWrapper from "../../components/SwipeableWrapper";
 import CircularProgress from "../../components/CircleProgress";
+import Feather from '@expo/vector-icons/Feather';
 
 
 const SavedBook = () => {
@@ -35,6 +36,7 @@ const SavedBook = () => {
             </TouchableOpacity>
         </View>
         <ScrollView>
+
             <View className="mx-5 border-[#8A8A8A] flex-row p-4 border-[.5px] rounded-[20px] max-w-[353px] max-h-[213px]">
                 <Image source={images.bookPlaceholder} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" />
                 <View className="relative">
@@ -49,6 +51,39 @@ const SavedBook = () => {
                 <TotalProgress />
                 <RecentSession />
             </SwipeableWrapper>
+
+            <View className="mx-5 mb-7 flex-row justify-between">
+                <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Notes</Text>
+                <TouchableOpacity>
+                    <Text className="text-primary underline font-cygrebold leading-[19.2px]">Show more</Text>
+                </TouchableOpacity>
+            </View>
+
+            <ScrollView 
+                horizontal
+                className="mx-5">
+                    <TouchableOpacity className="w-[97px] bg-primary items-center justify-center h-[97px] rounded-[20px] mr-3">
+                        <Text className="text-white text-[50px] pb-3">+</Text>
+                    </TouchableOpacity>
+                    <View className="flex-row">
+                        <View className="max-w-[361px] w-full max-h-[247px] h-full border-[.5px] rounded-[20px] p-5">
+                            <View className="flex-row items-center mb-4">
+                                <View className="p-2 bg-primary rounded-[13px] max-h-[40px] h-full max-w-[130px] flex-row items-center justify-center mr-2.5">
+                                    <Feather name="book" size={13} color="white" style={{ marginRight: 5 }} />
+                                    <Text className="text-sm text-[#fff] font-cygresemibold leading-[16.8px]">Make It Stick</Text>
+                                </View>
+                                <View className="p-2 bg-[#EEEEEE] rounded-[13px] max-h-[40px] h-full">
+                                    <Text className="text-sm text-black font-cygresemibold leading-[16.8px]">30.09.2024</Text>
+                                </View>
+                            </View>
+                            <View className="rounded-[8px] bg-[#EEEEEE] py-3 px-4 max-w-[327px] max-h-[166px] h-full w-full">
+                                <Text className="text-black font-cygreregular leading-[19.2px] font-medium">
+                                    One of the key strategies discussed in Make It Stick is the value of interleaving. Unlike traditional studying, where topics or skills are practiced in blocks, interleaving involves mixing different topics or problem types within a single session. 
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+            </ScrollView>
         </ScrollView>
     </SafeAreaView>
 }
