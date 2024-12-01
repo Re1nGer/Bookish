@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import OnboardingProgress from "../../components/OnboardingProgress";
 import Switch from "../../components/Switch";
 import WheelPicker from '@quidone/react-native-wheel-picker';
+import { useState } from "react";
 
 
 const NeverForget = () => {
@@ -24,6 +25,12 @@ const NeverForget = () => {
         value: val,
         label: val,
     }));
+
+    const [hour, setHour] = useState(0);
+
+    const [minute, setMinute] = useState(0);
+
+    const [timeFormats, setTimeFormats] = useState("AM");
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -52,14 +59,20 @@ const NeverForget = () => {
             </View>
             <View className="items-center relative gap-6 flex-row justify-center max-h-[247px] border border-[#8A8A8A] rounded-[15px] mx-[23px]">
                 <WheelPicker
+                    value={hour}
+                    onValueChanged={(v) => setHour(v.item.value)}
                     data={hours}
                     width={40}
                 />
                 <WheelPicker
                     data={minutes}
+                    value={minute}
+                    onValueChanged={(v) => setMinute(v.item.value)}
                     width={40}
                 />
                 <WheelPicker
+                    value={timeFormats}
+                    onValueChanged={(v) => setTimeFormats(v.item.value)}
                     data={timeFormat}
                     width={40}
                 />
