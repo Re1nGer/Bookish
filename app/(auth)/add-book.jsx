@@ -107,7 +107,7 @@ const AddBook = () => {
                 <Image source={images.leftArrowIcon} />
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={async () => await addBook()}
+                onPress={() => router.push('saved-book')}//async () => await addBook()}
                 className="bg-primary flex-1 mt-2.5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
             </TouchableOpacity>

@@ -36,6 +36,7 @@ import book1 from '../assets/images/book1.png';
 import book2 from '../assets/images/book2.png';
 import searchBookImage from '../assets/images/search_book_image.png';
 import leftArrowIcon from "../assets/images/left_arrow.png";
+import bookPlaceholder from '../assets/images/make-it-stick.png';
 
 
 export default {
@@ -76,5 +77,6 @@ export default {
     book1, 
     book2,
     searchBookImage,
-    leftArrowIcon
+    leftArrowIcon,
+    bookPlaceholder
 };
