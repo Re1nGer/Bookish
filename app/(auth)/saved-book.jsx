@@ -44,9 +44,10 @@ const SavedBook = () => {
                 </View>
             </View>
             <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mx-5 mt-8 mb-5">Reading Progress</Text>
-            <SwipeableWrapper showDots={false}>
+            <SwipeableWrapper showDots={true}>
                 <TotalPages />
                 <TotalProgress />
+                <RecentSession />
             </SwipeableWrapper>
         </ScrollView>
     </SafeAreaView>
@@ -61,8 +62,8 @@ const TotalProgress = () => {
     const percentLeft = Math.round(currentPage / tempMaxPageCount * 100);
 
     return (
-        <View className="max-h-[227px] w-full items-center">
-            <View className="px-6 py-5 max-w-[353px] bg-black rounded-[20px] w-full items-center">
+        <View className="max-h-[267px] w-full items-center">
+            <View className="px-6 py-5 max-w-[353px] h-[95%] bg-black rounded-[20px] w-full items-center">
                 <CircularProgress size={125} progress={currentPage / tempMaxPageCount * 100} />
                 <Text className="text-[#fff] text-center text-[16px] mt-3 font-cygreregular max-w-[165px]">
                     {`${tempMaxPageCount - currentPage} pages left or ${percentLeft}% left to finish`}
@@ -70,9 +71,22 @@ const TotalProgress = () => {
             </View>
         </View>
     )
-
 }
 
+
+const RecentSession = () => {
+
+    return (
+        <View className="max-h-[267px] w-full items-center">
+            <View className="px-6 py-5 h-[95%] max-w-[353px] bg-black rounded-[20px] w-full items-center">
+                <Text className="text-[20px] text-[#fff] font-cygrebold leading-[24px] mb-1">No Recent Sessions</Text>
+                <Text className="text-[12px] text-[#fff] font-cygreregular leading-[14.4px] mb-5">Click to start reading session</Text>
+                <Image source={images.noSession} width={135} height={96} className="max-w-[135px] max-h-[96px] h-full" />
+            </View>
+        </View>
+    );
+
+}
 
 const TotalPages = () => {
 
@@ -89,8 +103,8 @@ const TotalPages = () => {
     const tempMaxPageCount = 336;
 
     return (
-        <View className="max-h-[227px] w-full items-center">
-            <View className="px-6 py-5 max-w-[353px] bg-black rounded-[20px] w-full">
+        <View className="max-h-[267px] w-full items-center">
+            <View className="px-6 py-5 h-[95%] max-w-[353px] bg-black rounded-[20px] w-full">
                 <View className="flex-row justify-between">
                     <TouchableOpacity
                         onPress={handleReduceCounter}

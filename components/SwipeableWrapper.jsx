@@ -6,6 +6,7 @@ import {
   Animated,
   PanResponder,
   Dimensions,
+  Easing
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -29,8 +30,9 @@ const SwipeableWrapper = ({ children, showDots = true }) => {
         // Swipe left to next
         Animated.timing(position, {
           toValue: -width,
-          duration: 250,
+          duration: 150,
           useNativeDriver: true,
+          easing: Easing.out(Easing.ease),
         }).start(() => {
           setCurrentIndex(currentIndex + 1);
           position.setValue(0);
@@ -39,8 +41,9 @@ const SwipeableWrapper = ({ children, showDots = true }) => {
         // Swipe right to previous
         Animated.timing(position, {
           toValue: width,
-          duration: 250,
+          duration: 150,
           useNativeDriver: true,
+          easing: Easing.out(Easing.ease),
         }).start(() => {
           setCurrentIndex(currentIndex - 1);
           position.setValue(0);
@@ -82,15 +85,17 @@ const SwipeableWrapper = ({ children, showDots = true }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Animated.View 
-        style={[styles.componentWrapper, getCardStyle()]} 
-        {...panResponder.panHandlers}
-      >
-        {childrenArray[currentIndex]}
-      </Animated.View>
-      {renderDots()}
-    </View>
+    <>
+        <View style={styles.container}>
+            <Animated.View 
+                style={[styles.componentWrapper, getCardStyle()]} 
+                {...panResponder.panHandlers}
+            >
+                {childrenArray[currentIndex]}
+            </Animated.View>
+        </View>
+        {renderDots()}
+    </>
   );
 };
 
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 40,
+    bottom: 0,
     left: 0,
     right: 0,
   },
@@ -124,7 +129,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   activeDot: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#000000',
   },
 });
 
