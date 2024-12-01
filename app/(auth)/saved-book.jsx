@@ -13,21 +13,11 @@ import Entypo from '@expo/vector-icons/Entypo';
 import BookStatusPicker from "../../components/ReadStatusDropdown";
 import SliderCounter from "../../components/SliderCounter";
 import { useState } from "react";
+import SwipeableWrapper from "../../components/SwipeableWrapper";
+import CircularProgress from "../../components/CircleProgress";
 
 
 const SavedBook = () => {
-
-    const [value, setValue] = useState(13);
-
-    const handleReduceCounter = () => {
-        setValue(prev => prev - 1);
-    }
-
-    const handleAddCounter = () => {
-        setValue(prev => prev + 1);
-    }
-
-    const tempMaxPageCount = 336;
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -54,42 +44,86 @@ const SavedBook = () => {
                 </View>
             </View>
             <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mx-5 mt-8 mb-5">Reading Progress</Text>
-            <View className="max-h-[227px] w-full items-center">
-                <View className="px-6 py-5 max-w-[353px] bg-black rounded-[20px] w-full">
-                    <View className="flex-row justify-between">
-                        <TouchableOpacity
-                            onPress={handleReduceCounter}
-                            className="rounded-full bg-[#8A8A8A] items-center justify-center h-[71px] w-[67px]">
-                            <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">-</Text>
-                        </TouchableOpacity>
-                        <View>
-                            <Text className="text-[#fff] text-center text-[60px] font-cygrebold leading-[72px]">{value}</Text>
-                            <Text className="text-[#fff] text-center text-[16px] font-cygrebold">{`of ${tempMaxPageCount} pages`}</Text>
-                            <Text className="text-[#fff] text-center text-[12px] font-cygreregular">{`${tempMaxPageCount - value} pages left`}</Text>
-                        </View>
-                        <TouchableOpacity
-                            onPress={handleAddCounter}
-                            className="rounded-full bg-primary items-center justify-center h-[71px] w-[67px]">
-                            <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">+</Text>
-                        </TouchableOpacity>
+            <SwipeableWrapper showDots={false}>
+                <TotalPages />
+                <TotalProgress />
+            </SwipeableWrapper>
+        </ScrollView>
+    </SafeAreaView>
+}
+
+const TotalProgress = () => {
+
+    const tempMaxPageCount = 336;
+
+    const currentPage = 50;
+
+    const percentLeft = Math.round(currentPage / tempMaxPageCount * 100);
+
+    return (
+        <View className="max-h-[227px] w-full items-center">
+            <View className="px-6 py-5 max-w-[353px] bg-black rounded-[20px] w-full items-center">
+                <CircularProgress size={125} progress={currentPage / tempMaxPageCount * 100} />
+                <Text className="text-[#fff] text-center text-[16px] mt-3 font-cygreregular max-w-[165px]">
+                    {`${tempMaxPageCount - currentPage} pages left or ${percentLeft}% left to finish`}
+                </Text>
+            </View>
+        </View>
+    )
+
+}
+
+
+const TotalPages = () => {
+
+    const [value, setValue] = useState(13);
+
+    const handleReduceCounter = () => {
+        setValue(prev => prev - 1);
+    }
+
+    const handleAddCounter = () => {
+        setValue(prev => prev + 1);
+    }
+
+    const tempMaxPageCount = 336;
+
+    return (
+        <View className="max-h-[227px] w-full items-center">
+            <View className="px-6 py-5 max-w-[353px] bg-black rounded-[20px] w-full">
+                <View className="flex-row justify-between">
+                    <TouchableOpacity
+                        onPress={handleReduceCounter}
+                        className="rounded-full bg-[#8A8A8A] items-center justify-center h-[71px] w-[67px]">
+                        <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">-</Text>
+                    </TouchableOpacity>
+                    <View>
+                        <Text className="text-[#fff] text-center text-[60px] font-cygrebold leading-[72px]">{value}</Text>
+                        <Text className="text-[#fff] text-center text-[16px] font-cygrebold">{`of ${tempMaxPageCount} pages`}</Text>
+                        <Text className="text-[#fff] text-center text-[12px] font-cygreregular">{`${tempMaxPageCount - value} pages left`}</Text>
                     </View>
-                    <SliderCounter
-                        showCounter={false}
-                        value={value}
-                        setValue={setValue} 
-                        textColor={'text-[#fff]'}
-                        maxValue={tempMaxPageCount}
-                    />
-                    <View className="items-center mr-3 flex-row justify-center">
-                        <Text className="text-[#FFFFFF] font-cygrebold leading-[19.2px] mr-2.5">Started At</Text>
-                        <View className="rounded-[20px] bg-primary px-3 py-1">
-                            <Text className="font-cygrebold text-[12px] leading-[14.4px] font-bold text-[#fff]">01.10.2024</Text>
-                        </View>
+                    <TouchableOpacity
+                        onPress={handleAddCounter}
+                        className="rounded-full bg-primary items-center justify-center h-[71px] w-[67px]">
+                        <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">+</Text>
+                    </TouchableOpacity>
+                </View>
+                <SliderCounter
+                    showCounter={false}
+                    value={value}
+                    setValue={setValue} 
+                    textColor={'text-[#fff]'}
+                    maxValue={tempMaxPageCount}
+                />
+                <View className="items-center mr-3 flex-row justify-center">
+                    <Text className="text-[#FFFFFF] font-cygrebold leading-[19.2px] mr-2.5">Started At</Text>
+                    <View className="rounded-[20px] bg-primary px-3 py-1">
+                        <Text className="font-cygrebold text-[12px] leading-[14.4px] font-bold text-[#fff]">01.10.2024</Text>
                     </View>
                 </View>
             </View>
-        </ScrollView>
-    </SafeAreaView>
+        </View>
+    );
 }
 
 
