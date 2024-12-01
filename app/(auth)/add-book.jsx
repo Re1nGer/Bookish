@@ -15,6 +15,8 @@ import { router, useLocalSearchParams } from "expo-router";
 import axios from "../../network/axios";
 import { UserContext } from "../../context/UserContext";
 import { images } from "../../constants";
+import Genre from "../../components/Genre";
+import StatusBtn from "../../components/StatusBtn";
 
 const AddBook = () => {
 
@@ -132,7 +134,7 @@ const AddBook = () => {
                 </View>
             </View>
             <View className="max-h-[100px]">
-                <Text className="text-[#1C1C1C] mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Author</Text>
+                <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Author</Text>
                 <View className="bg-[#ffffff] mb-9 border-[.5px] border-[#8A8A8A] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[15px] px-5">
                     <TextInput
                         className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm"
@@ -142,7 +144,7 @@ const AddBook = () => {
                 </View>
             </View>
             <View className="max-h-[180px]">
-                <Text className="text-[#1C1C1C] mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Description</Text>
+                <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Description</Text>
                 <View className="bg-[#ffffff] mb-9 border-[.5px] border-[#8A8A8A] items-center max-h-[145px] h-full flex-row justify-between w-full rounded-[15px] px-5">
                     <TextInput
                         textAlignVertical="top"
@@ -154,7 +156,7 @@ const AddBook = () => {
                 </View>
             </View>
             <View className="max-h-[100px] mt-6">
-                <Text className="text-[#1C1C1C] mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Page Count</Text>
+                <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Page Count</Text>
                 <View className="bg-[#ffffff] mb-9 border-[.5px] border-[#8A8A8A] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[15px] px-5">
                     <TextInput
                         className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm"
@@ -165,7 +167,7 @@ const AddBook = () => {
                 </View>
             </View>
             <View className="max-h-[160px] mt-6">
-                <Text className="text-[#1C1C1C] mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Status</Text>
+                <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Status</Text>
 {/*                 gotta figure out how to handle selected buttons */}
 
                 <View className="flex-row">
@@ -203,8 +205,8 @@ const AddBook = () => {
             </View>
 
             <View className="my-6 max-h-[130px]">
-                <Text className="text-[#1C1C1C] mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Genres</Text>
-                <View className="max-h-[116px] h-full p-4 flex-row justify-between rounded-[20px] bg-[#1C1C1C]">
+                <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Genres</Text>
+                <View className="max-h-[116px] h-full p-4 flex-row justify-between rounded-[20px] bg-black">
                     <View className="flex-wrap flex-row flex-1 items-start">
                         { book.volumeInfo.categories?.slice(0, 3).map(item => <Genre key={item} name={item} />) }
                     </View>
@@ -217,10 +219,10 @@ const AddBook = () => {
             </View>
 
             <View className="mt-6 max-h-[180px]">
-                <Text className="text-[#1C1C1C] mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Collections</Text>
+                <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Collections</Text>
                 <TouchableOpacity
                     onPress={() => router.push('select-collections')}
-                    className="max-h-[116px] h-full pl-8 pr-4 flex-row justify-between rounded-[20px] bg-[#1C1C1C]">
+                    className="max-h-[116px] h-full pl-8 pr-4 flex-row justify-between rounded-[20px] bg-black">
                     <Text className="text-[#ffffff] max-w-[136px] font-cygrebold self-center text-sm leading-[16.8px] font-bold">Add book to your personal collections</Text>
                     <View className="self-start h-full -mt-3">
                         <CollectionsIcon />
@@ -235,20 +237,3 @@ const AddBook = () => {
 export default AddBook;
 
 
-const Genre = ({ name, containerStyles }) => {
-
-    return <View className={`py-2 px-1 mr-2 mb-2 max-w-[116px] bg-[#6592E3] flex-row items-center justify-between rounded-[5px] ${containerStyles}`}>
-        <Text className="text-[#FFFFFF] font-cygrebold leading-[16.8px] text-sm px-1" numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
-        <TouchableOpacity className="rounded-full bg-[#fff] items-center justify-center w-[16px] h-[16px]">
-            <MaterialIcons name='close' color={'#6592E3'} size={8} />
-        </TouchableOpacity>
-    </View>
-}
-
-const StatusBtn = ({ selected, text, containerStyles, onPress }) => {
-    return <TouchableOpacity
-            onPress={onPress}
-            className={`rounded-[15px] justify-center items-center max-w-[106px] h-[38px] w-full border-[.5px] border-[#8A8A8A] ${selected ? 'bg-[#6C97E4]' : 'bg-[#ffffff]'} ${containerStyles}`}>
-        <Text className={`leading-[16.8px] text-center font-cygrebold text-sm ${selected ? 'text-[#ffffff]' : 'text-[#1C1C1C]'}`}>{text}</Text>
-    </TouchableOpacity>
-}

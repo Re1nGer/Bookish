@@ -16,6 +16,8 @@ import { useState } from "react";
 import SwipeableWrapper from "../../components/SwipeableWrapper";
 import CircularProgress from "../../components/CircleProgress";
 import Feather from '@expo/vector-icons/Feather';
+import { QuoteStarsIcon } from "../../components/Svg";
+import Genre from "../../components/Genre";
 
 
 const SavedBook = () => {
@@ -52,7 +54,7 @@ const SavedBook = () => {
                 <RecentSession />
             </SwipeableWrapper>
 
-            <View className="mx-5 mb-7 flex-row justify-between">
+            <View className="mx-5 mb-7 mt-10 flex-row justify-between">
                 <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Notes</Text>
                 <TouchableOpacity>
                     <Text className="text-primary underline font-cygrebold leading-[19.2px]">Show more</Text>
@@ -66,7 +68,7 @@ const SavedBook = () => {
                         <Text className="text-white text-[50px] pb-3">+</Text>
                     </TouchableOpacity>
                     <View className="flex-row">
-                        <View className="max-w-[361px] w-full max-h-[247px] h-full border-[.5px] rounded-[20px] p-5">
+                        <View className="max-w-[361px] w-full max-h-[267px] h-full border-[.5px] rounded-[20px] p-5">
                             <View className="flex-row items-center mb-4">
                                 <View className="p-2 bg-primary rounded-[13px] max-h-[40px] h-full max-w-[130px] flex-row items-center justify-center mr-2.5">
                                     <Feather name="book" size={13} color="white" style={{ marginRight: 5 }} />
@@ -76,7 +78,7 @@ const SavedBook = () => {
                                     <Text className="text-sm text-black font-cygresemibold leading-[16.8px]">30.09.2024</Text>
                                 </View>
                             </View>
-                            <View className="rounded-[8px] bg-[#EEEEEE] py-3 px-4 max-w-[327px] max-h-[166px] h-full w-full">
+                            <View className="rounded-[8px] bg-[#EEEEEE] pt-3 px-4 max-w-[327px] max-h-[148px] h-full w-full">
                                 <Text className="text-black font-cygreregular leading-[19.2px] font-medium">
                                     One of the key strategies discussed in Make It Stick is the value of interleaving. Unlike traditional studying, where topics or skills are practiced in blocks, interleaving involves mixing different topics or problem types within a single session. 
                                 </Text>
@@ -84,6 +86,46 @@ const SavedBook = () => {
                         </View>
                     </View>
             </ScrollView>
+
+            <View className="mx-5 mb-3 mt-8 flex-row justify-between">
+                <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Quotes</Text>
+                <TouchableOpacity>
+                    <Text className="text-primary underline font-cygrebold leading-[19.2px]">Show more</Text>
+                </TouchableOpacity>
+            </View>
+
+            <View className="mx-5 bg-black max-h-[106px] h-full flex-row items-center rounded-[20px]">
+                <View className="mx-7">
+                    <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Add quotes you liked from this book</Text>
+                </View>
+                <QuoteStarsIcon />
+            </View>
+
+            <View className="mt-10 mx-5">
+                <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Description</Text>
+                <View className="border-[#8A8A8A] border-[.5px] rounded-[20px] ">
+                    <Text className="font-cygreregular leading-[19.2px] text-black px-5 py-4">
+                        A groundbreaking book that explores the science of learning and provides evidence-based strategies for improving retention and long-term memory.
+                    </Text>
+                </View>
+            </View>
+            
+            <View className="mt-5 mx-5 max-h-[160px]">
+                <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Genres</Text>
+                <View className="flex-wrap p-5 border bg-black max-h-[126px] h-full flex-row items-center rounded-[20px]">
+                    <Genre name={'Nonfiction'} showCloseBtn={false} />
+                    <Genre name={'Self Help'} showCloseBtn={false} />
+                    <Genre name={'Psychology'} showCloseBtn={false} />
+                </View>
+            </View>
+
+            <View className="mt-5 mb-3 mx-5 max-h-[160px]">
+                <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2">Collections</Text>
+                <View className="flex-wrap p-5 border bg-black max-h-[126px] w-full h-full flex-row items-center rounded-[20px]">
+                    <Genre name={'For psychology classes'} containerStyles={'max-w-[200px] w-full'} showCloseBtn={false} />
+                </View>
+            </View>
+
         </ScrollView>
     </SafeAreaView>
 }
