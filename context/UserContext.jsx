@@ -10,6 +10,26 @@ export const UserProvider = ({ children }) => {
 
     const [verificationCode, setVerificationCode] = useState('');
 
+    const [onboarding, setOnboarding] = useState({
+        commitToGrowth: { 
+            7: false,
+            14: false,
+            30: false,
+            50: false,
+        },
+        minutesPerDay: {
+            20: false,
+            30: false,
+            45: false,
+            1: false,
+        },
+        bookPerYear: 13,
+        areas: [],
+        people: [],
+        books: [],
+        reasons: []
+    });
+
     const [genres, setGenres] = useState({
         adventures: false,
         business: false,
@@ -52,6 +72,8 @@ export const UserProvider = ({ children }) => {
         setGenres,
         book,
         setBook,
+        onboarding,
+        setOnboarding,
         //TODO: to remove
         user,
         setUser
