@@ -25,7 +25,8 @@ const SavedBook = () => {
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
             <TouchableOpacity
-                className="flex-1" onPress={() => router.back()}>
+                className="flex-1"
+                onPress={() => router.back()}>
                 <Image source={images.leftArrowIcon} />
             </TouchableOpacity>
             <TouchableOpacity

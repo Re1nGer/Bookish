@@ -11,6 +11,7 @@ import { images } from "../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useRef, useState } from "react";
+import { router } from "expo-router";
 
 
 const Library = () => {
@@ -36,6 +37,7 @@ const Library = () => {
                     <Entypo name="plus" size={24} color="white" />
             </TouchableOpacity>
             <TouchableOpacity
+                onPress={() => router.push('book-filters')}
                 className="bg-primary flex-1 mt-2.5 max-w-[44px] w-full items-center justify-center max-h-[44px] h-full rounded-[10px]">
                     <MaterialIcons name="filter-list" size={24} color="white" />
             </TouchableOpacity>
