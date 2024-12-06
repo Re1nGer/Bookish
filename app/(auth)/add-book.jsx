@@ -22,7 +22,7 @@ const AddBook = () => {
 
     const { id } = useLocalSearchParams();
 
-    const [book, setBook] = useState({
+/*     const [book, setBook] = useState({
         id: '',
         volumeInfo: {
             title: '',
@@ -35,7 +35,7 @@ const AddBook = () => {
                 thumbnail: ''
             }
         }
-    });
+    }); */
 
     const defaultStatuses = {
         toRead: false,
@@ -53,7 +53,7 @@ const AddBook = () => {
         paused: false
     });
 
-    const { genres } = useContext(UserContext);
+    const { genres, book, setBook } = useContext(UserContext);
 
     const getGenres = () => {
         return Object.keys(genres).filter(genre => genres[genre]);
@@ -75,7 +75,7 @@ const AddBook = () => {
     }
 
     useEffect(() => {
-        if (id) {
+        if (id && !book.id) {
             fetchBook();
         }
     }, [id]);
@@ -208,7 +208,7 @@ const AddBook = () => {
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Genres</Text>
                 <View className="max-h-[116px] h-full p-4 flex-row justify-between rounded-[20px] bg-black">
                     <View className="flex-wrap flex-row flex-1 items-start">
-                        { book.volumeInfo.categories?.slice(0, 3).map(item => <Genre key={item} name={item} />) }
+                        { book.volumeInfo.categories.slice(0, 4).map(item => <Genre key={item} name={item} />) }
                     </View>
                     <TouchableOpacity
                         onPress={() => router.push('/(auth)/select-genres')}

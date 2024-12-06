@@ -30,24 +30,7 @@ export const UserProvider = ({ children }) => {
         reasons: []
     });
 
-    const [genres, setGenres] = useState({
-        adventures: false,
-        business: false,
-        contemporary: false,
-        crime: false,
-        drama: false,
-        history: false,
-        horror: false,
-        nonFiction: false,
-        psychology: false,
-        fiction: false,
-        mystery: false,
-        thriller: false,
-        scienceFiction: false,
-        fantasy: false,
-        romance: false,
-        biography: false,
-    });
+    const [genres, setGenres] = useState({});
 
     const [book, setBook] = useState({
         id: '',

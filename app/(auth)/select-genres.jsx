@@ -3,27 +3,63 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ScrollView,
-    Image
+    Image,
+    FlatList
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import Checkbox from "../../components/Checkbox";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { images } from "../../constants";
 import { router } from "expo-router";
+import axios from "../../network/axios";
 
 
 
 const SelectGenres = () => {
 
-    const { genres, setGenres } = useContext(UserContext);
+    const { genres, setGenres, book, setBook } = useContext(UserContext);
+
+    //[{ id: int, item: string}]
+    const [fetchedGenres, setFetchedGenres] = useState([]);
 
     const handleOnPress = (name) => {
         setGenres(prev => ({...prev, [name]: !prev[name]}))
     }
+
+    const fetchCategories = async () => {
+        try {
+            const { data } = await axios.get('categories');
+            return data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const getKeysWithTrueValue = obj => Object.entries(obj)
+        .filter(([_, value]) => value === true)
+        .map(([key]) => key);
+
+    useEffect(() => {
+        fetchCategories()
+        .then(data => {
+            const existingCategories = book.volumeInfo.categories;
+            console.log(existingCategories)
+            const genreObj = Object.fromEntries(data.map(({ item }) => [item, existingCategories.includes(item) ? true : genres[item]]));
+            const test = getKeysWithTrueValue(genreObj);
+            setGenres(genreObj);
+            console.log('added', test)
+            setBook(prev => ({...prev, volumeInfo: {
+                ...prev.volumeInfo,
+                categories: test
+            } }));
+            setFetchedGenres(data.map(item => item.item));
+        });
+    }, []);
+
+    //console.log(genres);
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full">
@@ -33,27 +69,50 @@ const SelectGenres = () => {
                     <Image source={images.leftArrowIcon} />
                 </TouchableOpacity>
 
-                <TouchableOpacity className="bg-primary self-end mt-2 mr-5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
+                <TouchableOpacity className="bg-primary self-end mt-2 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                     <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
                 </TouchableOpacity>
             </View>
 
 
-
-            <ScrollView className="px-5 mt-5">
-                <Text className="text-[#1C1C1C] mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Select genres</Text>
+            <View className="mx-5 max-h-[150px]">
+                <Text className="text-black mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Select genres</Text>
                 <View className="bg-[#ffffff] mt-5 mb-7 border-[.3px] border-[#727272] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[26px] px-5">
                     <MaterialIcons name="search" color={'#1C1C1C'} size={22} />
                     <TextInput
                         className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 pl-4 text-[#000000] leading-[16.8px] text-sm"
-                        placeholder="Search a book"
+                        placeholder="Search a genre"
                     />
                     <TouchableOpacity className="rounded-full bg-[#000] p-1">
                         <MaterialIcons name='close' color={'#fff'} size={14} />
                     </TouchableOpacity>
                 </View>
 
-                <Genre
+            </View>
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                className="mx-5"
+                data={fetchedGenres}
+                renderItem={({ item }) => <Genre
+                    key={item}
+                    selected={genres[item]}
+                    text={item}
+                    onPress={() => handleOnPress(item)}
+                    containerStyles={'mb-3.5'}
+                />}
+            />
+{/*                  {fetchedGenres?.map(item => (
+                    <Genre
+                        key={item}
+                        selected={genres[item]}
+                        text={item}
+                        onPress={() => handleOnPress(item)}
+                        containerStyles={'mb-2.5'}
+                    />))
+                } */}
+                
+
+{/*                 <Genre
                     selected={genres["adventures"]}
                     text={'Adventure'} 
                     onPress={() => handleOnPress("adventures")}
@@ -112,9 +171,8 @@ const SelectGenres = () => {
                     text={'Psychology'} 
                     onPress={() => handleOnPress("psychology")}
                     containerStyles={'mb-10'}
-                />
+                /> */}
 
-            </ScrollView>
         </SafeAreaView>
     );
 }
