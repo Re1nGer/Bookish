@@ -13,6 +13,8 @@ import { useState, useRef, useEffect } from "react";
 import { router } from "expo-router";
 import Genre from "../../components/Genre";
 import { QuoteStarsIcon } from "../../components/Svg";
+import BookBottomDrawer from "../../components/BottomDrawer";
+import Fontisto from '@expo/vector-icons/Fontisto';
 
 
 
@@ -27,6 +29,10 @@ const CreateNote = () => {
     const [isFocused, setIsFocused] = useState(false);
 
     const [boldSelected, setBoldSelected] = useState(false);
+
+    const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
+
+    const [isNoteDrawerOpen, setIsNoteDrawerOpen] = useState(false);
 
     const handleSelectionChange = (event) => {
         setSelection(event.nativeEvent.selection);
@@ -45,8 +51,6 @@ const CreateNote = () => {
     useEffect(() => {
         inputRef.current?.focus();
     }, [])
-
-    console.log(isFocused)
 
     const handleBoldPress = () => {
 
@@ -79,7 +83,7 @@ const CreateNote = () => {
         }
     };
 
-    return <SafeAreaView style={{ flex: 1 }} className="bg-[#F7F7F7] h-full max-h-full">
+    return <SafeAreaView className="bg-[#F7F7F7] h-full max-h-full">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
                 <View className="flex-row items-center mt-2">
                     <TouchableOpacity
@@ -94,16 +98,56 @@ const CreateNote = () => {
                         <Text className="leading-[19.2px] text-[#fff] font-cygrebold">Save</Text>
                 </TouchableOpacity>
             </View>
-
+            <BookBottomDrawer
+                isBottomSheetOpen={isQuoteDrawerOpen}
+                setIsBottomSheetOpen={setIsQuoteDrawerOpen}>
+                    <Text className="font-cygrebold text-[22px] leading-[26.4px] text-center">Connect Quote</Text>
+                    <TouchableOpacity className="bg-black mt-7 flex-row justify-start pl-6 rounded-[15px] mb-2 max-h-[56px] items-center h-full w-full">
+                        <Fontisto name="quote-a-left" size={20} color="white" />
+                        <Text className="text-white pl-9 font-cygrebold text-[18px]">New</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity className="bg-black flex-row justify-start pl-6 rounded-[15px] max-h-[56px] items-center w-full h-full">
+                        <Fontisto name="quote-a-right" size={20} color="white" />
+                        <Text className="text-white pl-9 font-cygrebold text-[18px]">Old</Text>
+                    </TouchableOpacity>
+            </BookBottomDrawer>
+            <BookBottomDrawer
+                height="55%"
+                isBottomSheetOpen={isNoteDrawerOpen}
+                setIsBottomSheetOpen={setIsNoteDrawerOpen}
+                containerStyles={'pb-0'}
+            >
+                    <Text className="font-cygrebold text-[22px] mt-9 leading-[26.4px] text-center">Choose Note’s Type</Text>
+                    <TouchableOpacity className="bg-[#519999] mt-7 flex-row justify-start pl-6 rounded-[15px] mb-2 max-h-[56px] items-center h-full w-full">
+                        <Fontisto name="quote-a-left" size={20} color="white" />
+                        <Text className="text-white pl-9 font-cygrebold text-[18px]">Thought</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity className="bg-[#03679A] flex-row justify-start pl-6 rounded-[15px] mb-2 max-h-[56px] items-center w-full h-full">
+                        <Fontisto name="quote-a-right" size={20} color="white" />
+                        <Text className="text-white pl-9 font-cygrebold text-[18px]">Question</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity className="bg-[#EEB63C] flex-row justify-start pl-6 rounded-[15px] mb-2 max-h-[56px] items-center w-full h-full">
+                        <Fontisto name="quote-a-right" size={20} color="white" />
+                        <Text className="text-white pl-9 font-cygrebold text-[18px]">Summary</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity className="bg-[#F8846A] flex-row justify-start pl-6 rounded-[15px] mb-10 max-h-[56px] items-center w-full h-full">
+                        <Fontisto name="quote-a-right" size={20} color="white" />
+                        <Text className="text-white pl-9 font-cygrebold text-[18px]">Fact</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity className="bg-black flex-row self-end justify-center rounded-[34px] max-h-[56px] items-center w-full h-full">
+                        <Text className="text-white font-cygrebold text-[18px] text-center">Add New Type</Text>
+                    </TouchableOpacity>
+            </BookBottomDrawer>
             <ScrollView>
-
-                <TouchableOpacity
+                <Pressable
                     onPress={() => inputRef.current?.focus()}
                     className="mt-5 mx-5 relative h-[317px] border-[#8A8A8A] rounded-[20px] border-[.5px] py-3 px-4">
                         <View className="flex-row">
-                            <View className="bg-[#F8846A] max-w-[95px] mt-4 mr-2 max-h-[25px] w-full h-full justify-center items-center rounded-[13px]">
+                            <TouchableOpacity
+                                onPress={() => setIsNoteDrawerOpen(true)}
+                                className="bg-[#F8846A] max-w-[95px] mt-4 mr-2 max-h-[25px] w-full h-full justify-center items-center rounded-[13px]">
                                 <Text className="text-sm text-white font-cygre semibold leading-[16.8px] text-center">Fact</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View className="bg-[#E6E6E6] max-w-[95px] mt-4 max-h-[25px] w-full h-full justify-center items-center rounded-[13px]">
                                 <Text className="text-sm text-white font-cygre semibold leading-[16.8px] text-center">{new Date().toLocaleDateString('de-DE')}</Text>
                             </View>
@@ -120,7 +164,7 @@ const CreateNote = () => {
                         onSelectionChange={handleSelectionChange}
                         selection={selection}
                     />
-                </TouchableOpacity>
+                </Pressable>
     {/*             { isFocused && (
                     <ScrollView
                         horizontal
@@ -193,12 +237,14 @@ const CreateNote = () => {
                 <View className="mx-5 mt-5">
                     <Text className="text-whtie text-[22px] leading-[26.4px] font-cygrebold">Quote</Text>
                 </View>
-                <View className="my-2.5 mx-5 max-h-[106px] bg-black h-full flex-row items-center rounded-[20px]">
+                <Pressable
+                    onPress={() => setIsQuoteDrawerOpen(true)}
+                    className="my-2.5 mx-5 max-h-[106px] bg-black h-full flex-row items-center rounded-[20px]">
                     <View className="mx-7">
-                        <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Add quotes you liked from this book</Text>
+                        <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Is this note related to some quote?</Text>
                     </View>
                     <QuoteStarsIcon />
-                </View>
+                </Pressable>
             <View className="h-[50px]"></View>
             </ScrollView>
     </SafeAreaView>
