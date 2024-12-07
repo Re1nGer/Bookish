@@ -151,13 +151,15 @@ const SearchBook = () => {
                 />
             </View>
             { !keyboardVisible && (
-                <View className="items-center relative p-5 mb-5 flex-row justify-between max-h-[93px] h-full w-full rounded-[15px] bg-[#1C1C1C]">
+                <TouchableOpacity 
+                    onPress={() => router.push('add-book')}
+                    className="items-center relative p-5 mb-5 flex-row justify-between max-h-[93px] h-full w-full rounded-[15px] bg-[#1C1C1C]">
                     <View>
                         <Text className="text-[#FFFFFF] mb-1 text-[18px] font-cygrebold leading-[21.6px] font-bold">Haven’t found it?</Text>
                         <Text className="text-[#FFFFFF] font-cygreregular leading-[16.8px]">Add manually</Text>
                     </View>
                     <GearsIcon />
-                </View>
+                </TouchableOpacity>
             ) }
         </View>
     </SafeAreaView>

@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import Checkbox from "../../components/Checkbox";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { UserContext } from "../../context/UserContext";
 import { images } from "../../constants";
 import { router } from "expo-router";
@@ -24,6 +24,8 @@ const SelectGenres = () => {
 
     //[{ id: int, item: string}]
     const [fetchedGenres, setFetchedGenres] = useState([]);
+
+    const [genresText, setGenresText] = useState('');
 
     const handleOnPress = (name) => {
         setGenres(prev => ({...prev, [name]: !prev[name]}))
@@ -42,25 +44,31 @@ const SelectGenres = () => {
         .filter(([_, value]) => value === true)
         .map(([key]) => key);
 
+
     useEffect(() => {
         fetchCategories()
         .then(data => {
             const existingCategories = book.volumeInfo.categories;
-            console.log(existingCategories)
+
             const genreObj = Object.fromEntries(data.map(({ item }) =>
                 [item, existingCategories.includes(item) ? true : genres[item]]));
 
             const categories = getKeysWithTrueValue(genreObj);
 
             setGenres(genreObj);
+
             setBook(prev => ({...prev, volumeInfo: {
                 ...prev.volumeInfo,
                 categories: categories
             } }));
+
             setFetchedGenres(data.map(item => item.item));
         });
     }, []);
 
+    const [timeoutId, setTimeoutId] = useState(null);
+
+    const delay = 500;
 
     useEffect(() => {
         const categories = getKeysWithTrueValue(genres);
@@ -70,7 +78,37 @@ const SelectGenres = () => {
         } }));
     }, [genres])
 
-    //console.log(genres);
+    const handleInputTextChange = useCallback(async (newText) => {
+        setGenresText(newText);
+
+        // Clear existing timeout
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+
+        // Only make API call if text is not empty
+        if (newText.trim()) {
+            const newTimeoutId = setTimeout(async () => {
+                const filteredCategories = fetchedGenres
+                    .filter(item => item.includes(newText) || newText.includes(item));
+                
+                    setFetchedGenres(filteredCategories)
+            }, delay);
+
+            setTimeoutId(newTimeoutId);
+        } else if (!newText)  {
+            fetchCategories()
+            .then(data => setFetchedGenres(data.map(item => item.item)));
+        }
+    }, [timeoutId, delay]);
+
+    useEffect(() => {
+        return () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+        };
+    }, [timeoutId]);
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full">
@@ -91,10 +129,14 @@ const SelectGenres = () => {
                 <View className="bg-[#ffffff] mt-5 mb-7 border-[.3px] border-[#727272] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[26px] px-5">
                     <MaterialIcons name="search" color={'#1C1C1C'} size={22} />
                     <TextInput
+                        onChangeText={handleInputTextChange}
+                        value={genresText}
                         className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 pl-4 text-[#000000] leading-[16.8px] text-sm"
                         placeholder="Search a genre"
                     />
-                    <TouchableOpacity className="rounded-full bg-[#000] p-1">
+                    <TouchableOpacity
+                        onPress={() => handleInputTextChange('')}
+                        className="rounded-full bg-[#000] p-1">
                         <MaterialIcons name='close' color={'#fff'} size={14} />
                     </TouchableOpacity>
                 </View>
