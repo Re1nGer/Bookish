@@ -47,17 +47,28 @@ const SelectGenres = () => {
         .then(data => {
             const existingCategories = book.volumeInfo.categories;
             console.log(existingCategories)
-            const genreObj = Object.fromEntries(data.map(({ item }) => [item, existingCategories.includes(item) ? true : genres[item]]));
-            const test = getKeysWithTrueValue(genreObj);
+            const genreObj = Object.fromEntries(data.map(({ item }) =>
+                [item, existingCategories.includes(item) ? true : genres[item]]));
+
+            const categories = getKeysWithTrueValue(genreObj);
+
             setGenres(genreObj);
-            console.log('added', test)
             setBook(prev => ({...prev, volumeInfo: {
                 ...prev.volumeInfo,
-                categories: test
+                categories: categories
             } }));
             setFetchedGenres(data.map(item => item.item));
         });
     }, []);
+
+
+    useEffect(() => {
+        const categories = getKeysWithTrueValue(genres);
+        setBook(prev => ({...prev, volumeInfo: {
+            ...prev.volumeInfo,
+            categories: categories
+        } }));
+    }, [genres])
 
     //console.log(genres);
 

@@ -37,6 +37,21 @@ const AddBook = () => {
         }
     }); */
 
+    const defaultBook = {
+        id: '',
+        volumeInfo: {
+            title: '',
+            authors: [],
+            description: '',
+            pageCount: 0,
+            categories: [],
+            status: "",
+            imageLinks: {
+                thumbnail: ''
+            }
+        }
+    }
+
     const defaultStatuses = {
         toRead: false,
         reading: false,
@@ -53,7 +68,7 @@ const AddBook = () => {
         paused: false
     });
 
-    const { genres, book, setBook } = useContext(UserContext);
+    const { genres, book, setBook, setGenres } = useContext(UserContext);
 
     const getGenres = () => {
         return Object.keys(genres).filter(genre => genres[genre]);
@@ -75,8 +90,15 @@ const AddBook = () => {
     }
 
     useEffect(() => {
-        if (id && !book.id) {
+        if (id && book.id === '') {
             fetchBook();
+        }
+
+        //clear all book states
+        return () => {
+            setStatus(defaultStatuses);
+            setGenres({})
+            setBook(defaultBook);
         }
     }, [id]);
 
