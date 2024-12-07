@@ -5,7 +5,9 @@ import {
     TextInput,
     Pressable,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    KeyboardAvoidingView,
+    Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,6 +17,7 @@ import Genre from "../../components/Genre";
 import { QuoteStarsIcon } from "../../components/Svg";
 import BookBottomDrawer from "../../components/BottomDrawer";
 import Fontisto from '@expo/vector-icons/Fontisto';
+import FormField from '../../components/FormField';
 
 
 
@@ -33,6 +36,8 @@ const CreateNote = () => {
     const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
 
     const [isNoteDrawerOpen, setIsNoteDrawerOpen] = useState(false);
+
+    const [isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen] = useState(false);
 
     const handleSelectionChange = (event) => {
         setSelection(event.nativeEvent.selection);
@@ -130,12 +135,60 @@ const CreateNote = () => {
                         <Fontisto name="quote-a-right" size={20} color="white" />
                         <Text className="text-white pl-9 font-cygrebold text-[18px]">Summary</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity className="bg-[#F8846A] flex-row justify-start pl-6 rounded-[15px] mb-10 max-h-[56px] items-center w-full h-full">
+                    <TouchableOpacity className="bg-[#F8846A] flex-1 flex-row justify-start mb-10 pl-6 rounded-[15px] max-h-[56px] items-center w-full h-full">
                         <Fontisto name="quote-a-right" size={20} color="white" />
                         <Text className="text-white pl-9 font-cygrebold text-[18px]">Fact</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity className="bg-black flex-row self-end justify-center rounded-[34px] max-h-[56px] items-center w-full h-full">
+                    <TouchableOpacity
+                        onPress={() => setIsNoteTypeDrawerOpen(true)}
+                        className="bg-black mb-2 justify-center rounded-[34px] max-h-[56px] items-center w-full h-full">
                         <Text className="text-white font-cygrebold text-[18px] text-center">Add New Type</Text>
+                    </TouchableOpacity>
+            </BookBottomDrawer>
+            <BookBottomDrawer
+                height="80%"
+                isBottomSheetOpen={isNoteTypeDrawerOpen}
+                setIsBottomSheetOpen={setIsNoteTypeDrawerOpen}
+                containerStyles={'pb-0'}
+            >
+                    <KeyboardAvoidingView
+                        className="w-full"
+                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                        style={{ flex: 1 }}
+                    >
+                    <Text className="font-cygrebold text-[22px] mt-9 leading-[26.4px] text-center">Create New Type</Text>
+
+                    <View className="my-6 rounded-[20px] justify-center border-[.5px] px-9 max-h-[137px] h-full">
+                        <View className="flex-row mb-6">
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                        </View>
+                        <View className="flex-row">
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                        </View>
+                    </View>
+                        <FormField
+                            title={'Name'}
+                            placeholder={'Enter name for this type'}   
+                            otherStyles={'mb-5'}
+                        />
+                        <FormField
+                            title={'Icon'}
+                            placeholder={'Enter emoji for this type'}   
+                            otherStyles={'flex-1'}
+                        />
+                    </KeyboardAvoidingView>
+                    <TouchableOpacity className="bg-black mb-4 justify-center rounded-[34px] max-h-[56px] items-center w-full h-full">
+                        <Text className="text-white font-cygrebold text-[18px] text-center">Save</Text>
                     </TouchableOpacity>
             </BookBottomDrawer>
             <ScrollView>
