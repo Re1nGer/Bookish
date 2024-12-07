@@ -65,7 +65,9 @@ const SavedBook = () => {
             <ScrollView 
                 horizontal
                 className="mx-5">
-                    <TouchableOpacity className="w-[97px] bg-primary items-center justify-center h-[97px] rounded-[20px] mr-3">
+                    <TouchableOpacity
+                        onPress={() => router.push('create-note')}
+                        className="w-[97px] bg-primary items-center justify-center h-[97px] rounded-[20px] mr-3">
                         <Text className="text-white text-[50px] pb-3">+</Text>
                     </TouchableOpacity>
                     <View className="flex-row">
