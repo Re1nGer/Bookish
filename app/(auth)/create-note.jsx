@@ -21,6 +21,22 @@ import FormField from '../../components/FormField';
 
 
 
+const defaultColors = {
+    black: false,
+    orange: false,
+    lightYellow: false,
+    brightYellow: false,
+    green: false,
+    blue: false,
+    violet: false,
+    pink: false,
+    turquoise: false,
+    red: false,
+    brown: false,
+    oliveGreen: false
+}
+
+
 const CreateNote = () => {
 
     const [text, setText] = useState('');
@@ -42,6 +58,21 @@ const CreateNote = () => {
     const handleSelectionChange = (event) => {
         setSelection(event.nativeEvent.selection);
     };
+
+    const [colors, setColors] = useState({
+        black: true,
+        orange: false,
+        lightYellow: false,
+        brightYellow: false,
+        green: false,
+        blue: false,
+        violet: false,
+        pink: false,
+        turquoise: false,
+        red: false,
+        brown: false,
+        oliveGreen: false
+    });
 
     const FormatButton = ({ icon, onPress, label, containerStyles }) => (
         <TouchableOpacity 
@@ -160,20 +191,44 @@ const CreateNote = () => {
 
                     <View className="my-6 rounded-[20px] justify-center border-[.5px] px-9 max-h-[137px] h-full">
                         <View className="flex-row mb-6">
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, black: !colors["black"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5 ${colors["black"] ? 'bg-[#000]' : ''}`}></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, orange: !colors["orange"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#F8846A] mr-5 ${colors["orange"] ? 'bg-[#F8846A]' : ''}`}></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, lightYellow: !colors["lightYellow"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#FFCA57] mr-5 ${colors["lightYellow"] ? 'bg-[#FFCA57]' : ''}`}></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, brightYellow: !colors["brightYellow"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#FFF946] mr-5 ${colors["brightYellow"] ? 'bg-[#FFF946]' : ''}`}></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, green: !colors["green"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#1BBA3B] mr-5 ${colors["green"] ? 'bg-[#1BBA3B]' : ''}`}></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, blue: !colors["blue"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#4D81E0] mr-5 ${colors["blue"] ? 'bg-[#4D81E0]' : ''}`}></TouchableOpacity>
                         </View>
                         <View className="flex-row">
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
-                            <TouchableOpacity className="border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5"></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, violet: !colors["violet"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#633EE9] mr-5 ${colors["violet"] ? 'bg-[#633EE9]' : ''}`}></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, pink: !colors["pink"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#F473C0] mr-5 ${colors["pink"] ? 'bg-[#F473C0]' : ''}`}></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, turquoise: !colors["turquoise"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#7AD4DE] mr-5 ${colors["turquoise"] ? 'bg-[#7AD4DE]' : ''}`}></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, red: !colors["red"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#9D1414] mr-5 ${colors["red"] ? 'bg-[#9D1414]' : ''}`}></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, brown: !colors["brown"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#6F3416] mr-5 ${colors["brown"] ? 'bg-[#6F3416]' : ''}`}></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setColors(_ => ({...defaultColors, oliveGreen: !colors["oliveGreen"]}))}
+                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#65875A] mr-5 ${colors["oliveGreen"] ? 'bg-[#65875A]' : ''}`}></TouchableOpacity>
                         </View>
                     </View>
                         <FormField
