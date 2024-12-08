@@ -142,7 +142,12 @@ const CreateNote = () => {
                         <Fontisto name="quote-a-left" size={20} color="white" />
                         <Text className="text-white pl-9 font-cygrebold text-[18px]">New</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity className="bg-black flex-row justify-start pl-6 rounded-[15px] max-h-[56px] items-center w-full h-full">
+                    <TouchableOpacity
+                        onPress={() => {
+                            setIsNoteTypeDrawerOpen(false);
+                            router.push('quote-to-connect');
+                        }}
+                        className="bg-black flex-row justify-start pl-6 rounded-[15px] max-h-[56px] items-center w-full h-full">
                         <Fontisto name="quote-a-right" size={20} color="white" />
                         <Text className="text-white pl-9 font-cygrebold text-[18px]">Old</Text>
                     </TouchableOpacity>

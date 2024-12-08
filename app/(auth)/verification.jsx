@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, Image } from 'react-native'
+import { View, Text, ScrollView, TextInput, Image, Platform, KeyboardAvoidingView } from 'react-native'
 import { TouchableOpacity } from 'react-native';
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -154,7 +154,10 @@ const DigitSellInput = ({ email }) => {
 
   return  (
     <>
-      <View className="w-full mt-[24px] flex-row">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="w-full mt-[24px] flex-row">
+
         <TextInput
           className="opacity-0 w-[1px]"
           keyboardType="numeric"
@@ -184,7 +187,7 @@ const DigitSellInput = ({ email }) => {
           onFocus={focusDigitInput}
           isError={isVerificationCodeError}
         />
-      </View>
+        </KeyboardAvoidingView>
 
       { isVerificationCodeError ? (
         <Text className="leading-[20px] tracking-[.1px] font-medium font-roboto mt-[11px] text-[12px] text-[#E86F68]">
