@@ -345,14 +345,14 @@ const CreateNote = () => {
                 <View className="mx-5 mt-5">
                     <Text className="text-whtie text-[22px] leading-[26.4px] font-cygrebold">Quote</Text>
                 </View>
-                <Pressable
+                <TouchableOpacity
                     onPress={() => setIsQuoteDrawerOpen(true)}
                     className="my-2.5 mx-5 max-h-[106px] bg-black h-full flex-row items-center rounded-[20px]">
                     <View className="mx-7">
                         <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Is this note related to some quote?</Text>
                     </View>
                     <QuoteStarsIcon />
-                </Pressable>
+                </TouchableOpacity>
             <View className="h-[50px]"></View>
             </ScrollView>
     </SafeAreaView>
