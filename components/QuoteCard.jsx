@@ -1,12 +1,13 @@
 import {
     View,
     Text,
+    TouchableOpacity,
 } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import RadioButton from './RadioButton';
 
 
-const QuoteCard = ({ text, book, selected, onRadioButtonPress, showRadioButton = true, containerStyles }) => {
+const QuoteCard = ({ text, book, selected, onRadioButtonPress, onDeleteButtonPress, showRadioButton = true, containerStyles }) => {
 
     return <View className={`border-[#8A8A8A] py-5 px-4 border-[.5px] rounded-[20px] ${containerStyles}`}>
         <View className="flex-row justify-between items-center mb-4">
@@ -19,7 +20,11 @@ const QuoteCard = ({ text, book, selected, onRadioButtonPress, showRadioButton =
                     onPress={onRadioButtonPress}
                     selected={selected} 
                 />
-            ) : <View></View> }
+            ) : <TouchableOpacity
+                    onPress={onDeleteButtonPress}
+                    className="bg-black rounded-full p-2">
+                    <MaterialIcons name="delete" size={24} color="white" />
+                </TouchableOpacity> }
         </View>
         <View className="py-3 px-4 rounded-[8px] bg-[#EEEEEE] w-full">
             <Text className="text-black font-cygresemibold leading-[19.2px]">{text}</Text>

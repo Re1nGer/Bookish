@@ -20,6 +20,7 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import FormField from '../../components/FormField';
 import { UserContext } from "../../context/UserContext";
 import QuoteCard from "../../components/QuoteCard";
+import { Alert } from 'react-native';
 
 
 
@@ -62,6 +63,26 @@ const CreateNote = () => {
     const handleSelectionChange = (event) => {
         setSelection(event.nativeEvent.selection);
     };
+
+    const handleQuoteDelete = () => {
+        Alert.alert(
+            "Delete Quote",
+            "Are you sure you want to delete this quote? This action cannot be undone.",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { 
+                    text: "Delete", 
+                    onPress: () => {
+                        setNote(prev => ({...prev, quote: null}));
+                    },
+                    style: "destructive" // This will make it red on iOS
+                }
+            ]
+        );
+    }
 
     const [colors, setColors] = useState({
         black: true,
@@ -380,7 +401,12 @@ const CreateNote = () => {
 
                 { note.quote ? (
                     <View className="mx-5 mt-6">
-                        <QuoteCard text={note.quote.text} book={note.quote.book} showRadioButton={false}  />
+                        <QuoteCard
+                            text={note.quote.text}
+                            book={note.quote.book}
+                            showRadioButton={false}  
+                            onDeleteButtonPress={handleQuoteDelete}
+                        />
                     </View>
                     ) : (
                     <TouchableOpacity
