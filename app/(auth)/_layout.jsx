@@ -70,6 +70,7 @@ const AuthLayout = () => {
         <Stack.Screen name="quote-to-connect" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_right', headerShown: false }} /> 
         <Stack.Screen name="repetition-groups" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_right', headerShown: false }} /> 
         <Stack.Screen name="select-authors" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
+        <Stack.Screen name="create-collection" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
 
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />

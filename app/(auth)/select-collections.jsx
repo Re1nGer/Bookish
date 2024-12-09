@@ -3,13 +3,12 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image,
     ScrollView,
-    FlatList
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Collection1Icon } from "../../components/Svg";
+import { router } from "expo-router";
 
 
 
@@ -69,6 +68,7 @@ const NewCollection = ({ containerStyles }) => {
     return <View className={`bg-primary rounded-[20px] mb-5 flex-[.3] justify-between p-4 max-w-[169px] w-full max-h-[174px] h-full ${containerStyles}`}>
         <Text className="font-cygrebold text-[22px] leading-[26.4px] max-w-[105px] font-bold text-[#ffffff]">New Collection</Text>
         <TouchableOpacity
+            onPress={() => router.push('create-collection')}
             className="items-center self-end bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
             <MaterialIcons name="add" size={30} />
         </TouchableOpacity>
