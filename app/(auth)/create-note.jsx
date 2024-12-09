@@ -350,7 +350,7 @@ const CreateNote = () => {
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Spaced Repetition Groups</Text>
                     <View className="p-5 border bg-black max-h-[126px] w-full h-full justify-between flex-row items-center rounded-[20px]">
                         <View className="flex-wrap flex-row justify-start self-start flex-1">
-                            <Genre name={'Memory Improvement'} showCloseBtn={true} containerStyles={'max-w-[200px]'} />
+                            <Genre name={'Memory Improvement'} showCloseBtn containerStyles={'max-w-[200px]'} />
                         </View>
                         <TouchableOpacity
                             onPress={() => router.push('repetition-groups')}
@@ -363,7 +363,14 @@ const CreateNote = () => {
                 <View className="mt-5 mx-5 max-h-[160px]">
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Collections</Text>
                     <View className="flex-wrap p-5 border bg-black max-h-[126px] h-full flex-row items-center rounded-[20px]">
-                        <Genre name={'For psychology classes'} showCloseBtn={false} containerStyles={'max-w-[200px]'} />
+                        <View className="flex-wrap flex-row justify-start self-start flex-1">
+                            <Genre name={'For psychology classes'} showCloseBtn containerStyles={'max-w-[200px]'} />
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => router.push('select-collections')}
+                            className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
+                            <MaterialIcons name="add" size={30} />
+                        </TouchableOpacity>
                     </View>
                 </View>
 
