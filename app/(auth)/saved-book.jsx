@@ -18,9 +18,18 @@ import CircularProgress from "../../components/CircleProgress";
 import Feather from '@expo/vector-icons/Feather';
 import { QuoteStarsIcon } from "../../components/Svg";
 import Genre from "../../components/Genre";
+import { TimerIcon, NoteIcon, QuoteIcon } from "../../components/Svg";
 
 
 const SavedBook = () => {
+
+    const statusOptions = [
+        'To Read',
+        'Reading',
+        'Finished',
+        'Gave Up',
+        'Paused',
+    ];
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -45,7 +54,21 @@ const SavedBook = () => {
                 <View className="relative">
                     <Text className="text-black text-[18px] mb-0.5 leading-[21.6px] font-cygrebold">Make It Stick</Text>
                     <Text className="text-black text-[12px] leading-[14.4px] font-cygreregular mb-5">Make It Stick</Text>
-                    <BookStatusPicker />
+                    <BookStatusPicker
+                        statusOptions={statusOptions}
+                        initialText={'To Read'}
+                    />
+                    <View className="flex-row justify-center mt-3">
+                        <TouchableOpacity className="p-3 mr-4 rounded-full bg-primary">
+                            <TimerIcon />
+                        </TouchableOpacity>
+                        <TouchableOpacity className="p-3 mr-4 rounded-full bg-primary">
+                            <NoteIcon />
+                        </TouchableOpacity>
+                        <TouchableOpacity className="p-3 mr-4 rounded-full bg-primary">
+                            <QuoteIcon />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
             <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mx-5 mt-8 mb-5">Reading Progress</Text>

@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-const BookStatusDropdown = () => {
+const BookStatusDropdown = ({ statusOptions, initialText }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState('To Read');
+  const [selectedStatus, setSelectedStatus] = useState(initialText);
   const [dropdownLayout, setDropdownLayout] = useState({
     x: 0,
     y: 0,
@@ -21,13 +21,6 @@ const BookStatusDropdown = () => {
   });
   const buttonRef = useRef();
 
-  const statusOptions = [
-    'To Read',
-    'Reading',
-    'Finished',
-    'Gave Up',
-    'Paused',
-  ];
 
   const handleSelect = (status) => {
     setSelectedStatus(status);
@@ -53,30 +46,32 @@ const BookStatusDropdown = () => {
   };
 
     const renderStatuses = () => {
-        return  <>
-                {statusOptions.map((status) => {
-                    if (status === selectedStatus) {
-                        return <></>;
-                    }
-                    return <TouchableOpacity
-                        key={status}
-                        style={[
-                            styles.option,
-                            selectedStatus === status && styles.selectedOption,
-                        ]}
-                        onPress={() => handleSelect(status)}
-                    >
-                    <Text
-                        style={[
-                            styles.optionText,
-                            selectedStatus === status && styles.selectedOptionText,
-                        ]}
-                    >
-                        {status}
-                    </Text>
-                </TouchableOpacity>
-        })}
-    </>
+        return  (
+          <>
+            {statusOptions.map((status) => {
+                if (status === selectedStatus) {
+                    return <></>;
+                }
+                return <TouchableOpacity
+                    key={status}
+                    style={[
+                        styles.option,
+                        selectedStatus === status && styles.selectedOption,
+                    ]}
+                    onPress={() => handleSelect(status)}
+                >
+                <Text
+                    style={[
+                        styles.optionText,
+                        selectedStatus === status && styles.selectedOptionText,
+                    ]}
+                >
+                    {status}
+                </Text>
+            </TouchableOpacity>
+            })}
+        </>
+      );
     }
 
   return (
@@ -90,7 +85,6 @@ const BookStatusDropdown = () => {
         <Text style={styles.buttonText}>{selectedStatus}</Text>
         <MaterialIcons name="arrow-drop-down" size={24} color="white" style={isOpen && styles.arrowUp} />
       </TouchableOpacity>
-
       <Modal
         visible={isOpen}
         transparent
