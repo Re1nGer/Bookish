@@ -11,13 +11,15 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { router } from "expo-router";
 import Genre from "../../components/Genre";
 import { QuoteStarsIcon } from "../../components/Svg";
 import BookBottomDrawer from "../../components/BottomDrawer";
 import Fontisto from '@expo/vector-icons/Fontisto';
 import FormField from '../../components/FormField';
+import { UserContext } from "../../context/UserContext";
+import QuoteCard from "../../components/QuoteCard";
 
 
 
@@ -55,6 +57,8 @@ const CreateNote = () => {
 
     const [isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen] = useState(false);
 
+    const { note, setNote } = useContext(UserContext);
+
     const handleSelectionChange = (event) => {
         setSelection(event.nativeEvent.selection);
     };
@@ -86,6 +90,15 @@ const CreateNote = () => {
 
     useEffect(() => {
         inputRef.current?.focus();
+
+        return () => {
+            setNote({
+                collections: [],
+                groups: [],
+                quote: null,
+                text: ''
+            });
+        }
     }, [])
 
     const handleBoldPress = () => {
@@ -335,8 +348,15 @@ const CreateNote = () => {
                 ) } */}
                 <View className="mt-9 mx-5 max-h-[160px]">
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Spaced Repetition Groups</Text>
-                    <View className="flex-wrap p-5 border bg-black max-h-[126px] w-full h-full flex-row items-center rounded-[20px]">
-                        <Genre name={'Memory Improvement'} showCloseBtn={false} containerStyles={'max-w-[200px]'} />
+                    <View className="p-5 border bg-black max-h-[126px] w-full h-full justify-between flex-row items-center rounded-[20px]">
+                        <View className="flex-wrap flex-row justify-start self-start flex-1">
+                            <Genre name={'Memory Improvement'} showCloseBtn={true} containerStyles={'max-w-[200px]'} />
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => router.push('repetition-groups')}
+                            className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
+                            <MaterialIcons name="add" size={30} />
+                        </TouchableOpacity>
                     </View>
                 </View>
 
@@ -350,14 +370,21 @@ const CreateNote = () => {
                 <View className="mx-5 mt-5">
                     <Text className="text-whtie text-[22px] leading-[26.4px] font-cygrebold">Quote</Text>
                 </View>
-                <TouchableOpacity
-                    onPress={() => setIsQuoteDrawerOpen(true)}
-                    className="my-2.5 mx-5 max-h-[106px] bg-black h-full flex-row items-center rounded-[20px]">
-                    <View className="mx-7">
-                        <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Is this note related to some quote?</Text>
+
+                { note.quote ? (
+                    <View className="mx-5 mt-6">
+                        <QuoteCard text={note.quote.text} book={note.quote.book} showRadioButton={false}  />
                     </View>
-                    <QuoteStarsIcon />
-                </TouchableOpacity>
+                    ) : (
+                    <TouchableOpacity
+                        onPress={() => setIsQuoteDrawerOpen(true)}
+                        className="my-2.5 mx-5 max-h-[106px] bg-black h-full flex-row items-center rounded-[20px]">
+                        <View className="mx-7">
+                            <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Is this note related to some quote?</Text>
+                        </View>
+                        <QuoteStarsIcon />
+                    </TouchableOpacity>
+                )}
             <View className="h-[50px]"></View>
             </ScrollView>
     </SafeAreaView>

@@ -10,6 +10,22 @@ export const UserProvider = ({ children }) => {
 
     const [verificationCode, setVerificationCode] = useState('');
 
+    const quote = {
+        id: 0,
+        text: '',
+        book: ''
+    };
+
+    const [note, setNote] = useState({
+        collections: [],
+        groups: [],
+        quote: null,
+        text: ''
+    });
+
+    const [notes, setNotes] = useState([]);
+
+
     const [onboarding, setOnboarding] = useState({
         commitToGrowth: { 
             7: false,
@@ -57,6 +73,8 @@ export const UserProvider = ({ children }) => {
         setBook,
         onboarding,
         setOnboarding,
+        note,
+        setNote,
         //TODO: to remove
         user,
         setUser

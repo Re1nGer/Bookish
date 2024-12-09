@@ -3,17 +3,16 @@ import {
     Text,
     TouchableOpacity,
     TextInput,
-    Pressable,
-    StyleSheet,
-    ScrollView,
     KeyboardAvoidingView,
     Platform,
+    FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState, useRef, useEffect } from "react";
+import { useState, useContext } from "react";
 import { router } from "expo-router";
-import RadioButton from "../../components/RadioButton";
+import { UserContext } from "../../context/UserContext";
+import QuoteCard from "../../components/QuoteCard";
 
 
 
@@ -21,7 +20,53 @@ const QuoteToConnect = () => {
 
     const [text, setText] = useState('')
 
-    const handleInputTextChange = () => {}
+    const handleInputTextChange = (text) => {
+        setText(text);
+    }
+
+    const { setNote } = useContext(UserContext);
+
+    //fetch from api
+    const [quotes, setQuotes] = useState([
+        {
+            id: 1,
+            text: 'Trying to solve a problem before being taught the solution leads to better learning, even when errors are made in the attempt.',
+            book: 'Make It Stick',
+            selected: true
+        },
+        {
+            id: 2,
+            text: 'Interleaving is a learning technique where different topics, subjects, or problem types are mixed within a single study session rather than focusing on just one topic in a blocked fashion. ',
+            book: 'Make It Stick',
+            selected: false
+        },
+        {
+            id: 3,
+            text: 'People who learn to extract the key ideas from new material and organize them into a mental model and connect that model to prior knowledge show an advantage in learning complex mastery. A mental model is a mental representation of some external reality.',
+            book: 'Make It Stick',
+            selected: false
+        },
+    ]);
+
+    const handleQuoteSelection = (selectedId) => {
+        setQuotes(prev => 
+            prev.map(quote => 
+                quote.id === selectedId
+                    ? { ...quote, selected: true }
+                    : { ...quote, selected: false }
+            )
+        );
+    };
+
+
+    const handleSave = () => {
+        const selectedQuote = quotes.find(item => item.selected);
+        setNote(prev => ({...prev, quote: selectedQuote}))
+        router.back();
+    }
+
+
+    //fetch quotes set to notes object 
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] flex-1">
@@ -33,11 +78,11 @@ const QuoteToConnect = () => {
                             <MaterialIcons name="close" size={24} color="black" />
                     </TouchableOpacity>
                     <TouchableOpacity
+                        onPress={handleSave}
                         className="bg-primary rounded-[30px] flex-1 mt-2.5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full py-2 px-4">
                             <Text className="leading-[19.2px] text-[#fff] font-cygrebold">Save</Text>
                     </TouchableOpacity>
                 </View>
-{/*                 <Text className="text-black mx-5 font-cygrebold text-[22px] leading-[26.4px] mt-6">Select quote to connect</Text> */}
             </View>
             <KeyboardAvoidingView
                 className="mx-5 max-h-[150px] flex-1"
@@ -60,7 +105,17 @@ const QuoteToConnect = () => {
                     </TouchableOpacity>
                 </View>
                 </KeyboardAvoidingView>
-            <ScrollView contentInsetAdjustmentBehavior="automatic" className="mx-5 flex-1">
+                <FlatList
+                    className="mx-5 flex-1"
+                    data={quotes}
+                    renderItem={({ item }) => <QuoteCard
+                        book={item.book}
+                        text={item.text}
+                        selected={item.selected}
+                        onRadioButtonPress={() => handleQuoteSelection(item.id)}
+                        containerStyles={'mb-4'} />}
+                />
+{/*             <ScrollView contentInsetAdjustmentBehavior="automatic" className="mx-5 flex-1">
                 <QuoteCard containerStyles={'mb-4'} />
                 <QuoteCard containerStyles={'mb-4'} />
                 <QuoteCard containerStyles={'mb-4'} />
@@ -68,27 +123,12 @@ const QuoteToConnect = () => {
                 <QuoteCard containerStyles={'mb-4'} />
                 <QuoteCard containerStyles={'mb-4'} />
                 <QuoteCard containerStyles={'mb-4 flex-1'} />
-            </ScrollView>
+            </ScrollView> */}
         </SafeAreaView>
     );
 }
 
 
-const QuoteCard = ({ containerStyles }) => {
-
-    return <View className={`border-[#8A8A8A] py-5 px-4 border-[.5px] max-h-[189px] rounded-[20px] ${containerStyles}`}>
-        <View className="flex-row justify-between items-center mb-4">
-            <View className="bg-[#6592E3] px-4 py-1 rounded-[13px] flex-row items-center">
-                <MaterialIcons name="book" color={'white'} />
-                <Text className="text-[#FFFFFF] text-sm leading-[16.8px] ml-1">Make It Stick</Text>
-            </View>
-            <RadioButton selected={true} />
-        </View>
-        <View className="py-3 px-4 rounded-[8px] bg-[#EEEEEE] w-full max-h-[109px]">
-            <Text className="text-black font-cygresemibold leading-[19.2px]">Trying to solve a problem before being taught the solution leads to better learning, even when errors are made in the attempt.</Text>
-        </View>
-    </View>
-}
 
 
 
