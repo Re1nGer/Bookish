@@ -9,6 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRef, useState, useEffect } from "react";
 import { router } from "expo-router";
+import axios from '../../network/axios';
 
 
 
@@ -16,9 +17,24 @@ const CreateCollection = () => {
 
     const inputRef = useRef(null);
 
+    const [name, setName] = useState('');
+
     useEffect(() => {
         inputRef.current?.focus();
     }, [])
+
+    const addCollection = async () => {
+        try {
+            await axios.post('/users/collections', { name });
+            router.push({pathname: 'collection', params: { name } })
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    const handleInputChange = (text) => {
+        setName(text);
+    }
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full relative">
@@ -33,9 +49,15 @@ const CreateCollection = () => {
                 <View>
                     <Text className="font-cygrebold text-[24px] leading-[28.8px] mb-7">Your new collection:</Text>
                     <View className="border-[.5px] border-[#8A8A8A] rounded-[15px] max-w-[307px] mb-7">
-                        <TextInput ref={inputRef} className="px-10 py-3 text-black leading-[19.2px] font-cygreregular" />
+                        <TextInput
+                            ref={inputRef}
+                            onChangeText={handleInputChange}
+                            className="px-10 py-3 text-black leading-[19.2px] font-cygreregular" 
+                        />
                     </View>
-                    <TouchableOpacity className="bg-primary rounded-[30px] p-2.5 items-center justify-center max-w-[307px]">
+                    <TouchableOpacity
+                        onPress={addCollection}
+                        className="bg-primary rounded-[30px] p-2.5 items-center justify-center max-w-[307px]">
                         <Text className="text-white  font-cygrebold leading-[19.2px]">Save</Text>
                     </TouchableOpacity>
                 </View>
