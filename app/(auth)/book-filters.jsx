@@ -67,7 +67,9 @@ export default LibraryFilters;
 
 
 const AuthorsDropdown = () => {
-    return <TouchableOpacity className="border-[#8A8A8A] border-[.5px] bg-[#fff] items-center justify-center rounded-[15px] flex-row p-3">
+    return <TouchableOpacity
+        onPress={() => router.push('select-authors')}
+        className="border-[#8A8A8A] border-[.5px] bg-[#fff] items-center justify-center rounded-[15px] flex-row p-3">
         <Text className="text-black font-cygreregular leading-[19.2px] mr-2.5 text-center">Choose Authors</Text>
         <MaterialIcons name="arrow-drop-down" size={20} color="black" />
     </TouchableOpacity>;

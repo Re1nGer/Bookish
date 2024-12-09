@@ -9,12 +9,12 @@ import {
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
-import Checkbox from "../../components/Checkbox";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { UserContext } from "../../context/UserContext";
 import { images } from "../../constants";
 import { router } from "expo-router";
 import axios from "../../network/axios";
+import SelectGenre from "../../components/SelectGenre";
 
 
 
@@ -146,7 +146,7 @@ const SelectGenres = () => {
                 showsVerticalScrollIndicator={false}
                 className="mx-5"
                 data={fetchedGenres}
-                renderItem={({ item }) => <Genre
+                renderItem={({ item }) => <SelectGenre
                     key={item}
                     selected={genres[item]}
                     text={item}
@@ -233,18 +233,3 @@ const SelectGenres = () => {
 export default SelectGenres;
 
 
-
-const Genre = ({ selected, text, onPress, containerStyles }) => {
-
-    return <View className={`rounded-[10px] flex-row items-center h-[49px] w-full border-[.3px] px-4 
-        ${selected ? 'bg-[#121F16] text-[#ffffff]' : 'bg-[#ffffff] text-[#121F16]'} ${containerStyles}`}>
-            <Checkbox
-                containerStyles={'mr-3'}
-                checked={selected}
-                onPress={onPress}
-            /> 
-            <Text
-                className={`text-[#FFFFFF] font-cygrebold leading-[19.2px] font-bold
-                ${selected ? 'text-[#ffffff]' : 'text-[#121F16]'}`}>{text}</Text>
-    </View>
-}
