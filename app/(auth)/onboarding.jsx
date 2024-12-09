@@ -35,7 +35,9 @@ const Onboarding = () => {
                         <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Start The Test</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="border border-[#000000] bg-transparent items-center justify-center max-w-[313px] w-full max-h-[52px] h-full rounded-[47px]">
+                    <TouchableOpacity
+                        onPress={() => router.push('home')}
+                        className="border border-[#000000] bg-transparent items-center justify-center max-w-[313px] w-full max-h-[52px] h-full rounded-[47px]">
                         <Text className="text-[#000000] text-[18px] leading-[22px] font-semibold">Skip For Now</Text>
                     </TouchableOpacity>
 

@@ -24,6 +24,7 @@ const CreateCollection = () => {
     }, [])
 
     const addCollection = async () => {
+        if (!name) return;
         try {
             await axios.post('/users/collections', { name });
             router.push({pathname: 'collection', params: { name } })
