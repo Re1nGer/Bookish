@@ -49,6 +49,7 @@ const Collection = () => {
                     <Text className="text-black font-cygrebold text-[22px] font-bold">{name}</Text>
                 </View>
                 <TouchableOpacity
+                    onPress={() => router.push('note-filters')}
                     className="bg-primary flex-1 mt-2.5 max-w-[44px] w-full items-center justify-center max-h-[44px] h-full rounded-[10px]">
                         <Entypo name="dots-three-vertical" size={24} color="#fff" />
                 </TouchableOpacity>
