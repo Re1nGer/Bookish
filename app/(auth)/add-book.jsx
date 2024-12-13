@@ -22,11 +22,11 @@ import FormField from "../../components/FormField";
 
 
 const statusMap = {
-    ToRead: 0,
-    Reading: 1,
-    Finished: 2,
-    GaveUp: 3,
-    Paused: 4
+    'toRead': 0,
+    'reading': 1,
+    'finished': 2,
+    'gaveUp': 3,
+    'paused': 4
 };
 
 const bookStatusToInt = (status) => {
@@ -87,7 +87,7 @@ const AddBook = () => {
     }
 
     const getStatus = () => {
-        const statuses = Object.keys(status).filter(s => status[s]);
+        const statuses = Object.keys(status).filter(s => status[s] === true);
         return statuses[0];
     }
 
