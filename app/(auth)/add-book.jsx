@@ -12,7 +12,7 @@ import { useContext, useEffect, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CollectionsIcon } from "../../components/Svg";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import axios from "../../network/axios";
 import { UserContext } from "../../context/UserContext";
 import { images } from "../../constants";
@@ -61,6 +61,10 @@ const AddBook = () => {
 
     const { id } = useLocalSearchParams();
 
+    console.log(id)
+
+    const navigator = useNavigation();
+
     const [status, setStatus] = useState({
         toRead: true,
         reading: false,
@@ -72,10 +76,11 @@ const AddBook = () => {
     const [errors, setErrors] = useState({
         author: false,
         title: false,
-        description: false
     });
 
     const { genres, book, setBook, setGenres } = useContext(UserContext);
+
+    const { collections } = book;
 
     const getGenres = () => {
         return Object.keys(genres).filter(genre => genres[genre]);
@@ -86,8 +91,13 @@ const AddBook = () => {
         return statuses[0];
     }
 
+    const getCollections = () => {
+        return collections?.map(item => item.id);
+    }
+
     const fetchBook = async () => {
         try {
+            console.log('fire')
             const { data } = await axios.get(`/book/${id}`);
             setBook(data)
         }
@@ -114,6 +124,16 @@ const AddBook = () => {
 
         const { title, authors, description, pageCount, categories, imageLinks } = book.volumeInfo;
 
+
+        if (!title) {
+            setErrors(prev => ({...prev, title: true}))
+        }
+        if (!authors) {
+            setErrors(prev => ({...prev, author: true}))
+        }
+
+        if (!title || !authors) return;
+
         try {
             const body = {
                 title,
@@ -122,10 +142,11 @@ const AddBook = () => {
                 totalPages: pageCount,
                 categories: categories, //add getGenres() from a separate screen
                 status: bookStatusToInt(getStatus()), // have to handle adding a new status 
-                imageUrl: imageLinks?.thumbnail
+                imageUrl: imageLinks?.thumbnail,
+                collectionIds: getCollections()
             }
             const { data } =  await axios.post('/book', body);
-            router.push({pathname: 'saved-book', params: { id:data.id }})
+            navigator.replace('saved-book', { id:data.id })
             console.log("success")
         } catch(error) {
             console.log(error);
@@ -205,7 +226,7 @@ const AddBook = () => {
                     textInputContainerStyles={'border-[.5px] max-h-[45px]'}
                     textInputStyles={'bg-[#ffffff] font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm'}
                     handleChangeText={handleAuthorUpdate}
-                    value={book.volumeInfo.author?.join(',')}
+                    value={book.volumeInfo.authors?.join(',')}
                     error={errors.author}
                     errorText={"Author cannot be empty"}
                 />
@@ -236,7 +257,6 @@ const AddBook = () => {
             </View>
             <View className="max-h-[160px] mt-6">
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Status</Text>
-{/*                 gotta figure out how to handle selected buttons */}
 
                 <View className="flex-row">
                     <StatusBtn text={'To Read'}
@@ -276,7 +296,8 @@ const AddBook = () => {
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Genres</Text>
                 <View className="max-h-[116px] h-full p-4 flex-row justify-between rounded-[20px] bg-black">
                     <View className="flex-wrap flex-row flex-1 items-start">
-                        { book.volumeInfo.categories.slice(0, 4).map(item => <Genre key={item} name={item} />) }
+                        { book.volumeInfo.categories.slice(0, 4).map(item =>
+                             <Genre key={item} name={item} showCloseBtn={true} />) }
                     </View>
                     <TouchableOpacity
                         onPress={() => router.push('/(auth)/select-genres')}
@@ -286,8 +307,22 @@ const AddBook = () => {
                 </View>
             </View>
 
+
             <View className="mt-6 max-h-[180px]">
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Collections</Text>
+                { collections ? (
+                    <View className="max-h-[116px] h-full p-4 flex-row justify-between rounded-[20px] bg-black">
+                        <View className="flex-wrap flex-row flex-1 items-start">
+                            { collections.slice(0, 4).map(item =>
+                                <Genre key={item.id} name={item.name} showCloseBtn={true} containerStyles={'max-w-full'} />) }
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => router.push('select-collections')}
+                            className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
+                            <MaterialIcons name="add" size={30} />
+                        </TouchableOpacity>
+                    </View>
+                ) : (
                 <TouchableOpacity
                     onPress={() => router.push('select-collections')}
                     className="max-h-[116px] h-full pl-8 pr-4 flex-row justify-between rounded-[20px] bg-black">
@@ -296,6 +331,7 @@ const AddBook = () => {
                         <CollectionsIcon />
                     </View>
                 </TouchableOpacity>
+                ) }
             </View>
 
         </ScrollView>

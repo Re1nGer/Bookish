@@ -4,13 +4,15 @@ import {
     Text,
     TouchableOpacity,
     ScrollView,
+    Image
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Collection1Icon } from "../../components/Svg";
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from '../../network/axios';
+import { UserContext } from "../../context/UserContext";
 
 
 function splitArray(arr) {
@@ -30,12 +32,17 @@ const SelectCollections = () => {
 
     const [secondHalfCollections, setSecondtHalfCollections] = useState([]);
 
+    const handleInputTextChange = () => {}
+
+    const { setBook, book: { collections } } = useContext(UserContext);
+
     const fetchCollections = async () => {
         try {
             const { data } = await axios.get('users/collections');
             const [first, second] = splitArray(data);
-            const firstMapped = first.map(item => ({...item, selected: false})); //probably wiser to receiver from backed selected false
-            const secondMapped = second.map(item => ({...item, selected: false}));
+            //we need collections variable in case there are already selected collections
+            const firstMapped = first.map(item => ({...item, selected: collections?.some(j => j.id === item.id) ? true : false })); //probably wiser to receiver from backed selected false
+            const secondMapped = second.map(item => ({...item, selected: collections?.some(j => j.id === item.id) ? true : false }));
             setFirstHalfCollections(firstMapped);
             setSecondtHalfCollections(secondMapped);
         } catch (error) {
@@ -63,7 +70,14 @@ const SelectCollections = () => {
         );
     };
 
-    const handleSave = () => {}
+    const handleSave = () => {
+        const first = firstHalfCollections.filter(item => item.selected).map(item => ({ id: item.id, name: item.name}))
+        const second = secondHalfCollections.filter(item => item.selected).map(item => ({ id: item.id, name: item.name }));
+        const collections = first.concat(second);
+        console.log(collections);
+        setBook(prev => ({...prev, collections: collections}))
+        router.back();
+    }
 
     useEffect(() => {
         fetchCollections();
@@ -73,22 +87,36 @@ const SelectCollections = () => {
 
     return <SafeAreaView className="bg-[#F7F7F7] relative flex-1">
 
-            <TouchableOpacity className="bg-primary self-end mt-2.5 mr-5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
-                <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
-            </TouchableOpacity>
+            <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5">
 
-            <View className="px-5 mt-5 max-h-[150px]">
-                <Text className="text-black mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Select collections</Text>
+                <TouchableOpacity className="flex-1" onPress={() => router.back()}>
+                    <MaterialIcons name='close' color={'black'} size={20} />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    onPress={handleSave}
+                    className="bg-primary self-end mt-2 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
+                    <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
+                </TouchableOpacity>
+            </View>
+
+
+            <View className="mx-5 max-h-[150px]">
+                <Text className="text-black mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Select genres</Text>
                 <View className="bg-[#ffffff] mt-5 mb-7 border-[.3px] border-[#727272] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[26px] px-5">
                     <MaterialIcons name="search" color={'#1C1C1C'} size={22} />
                     <TextInput
+                        onChangeText={handleInputTextChange}
                         className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 pl-4 text-[#000000] leading-[16.8px] text-sm"
-                        placeholder="Search"
+                        placeholder="Search a genre"
                     />
-                    <TouchableOpacity className="rounded-full bg-[#000] p-1">
+                    <TouchableOpacity
+                        onPress={() => handleInputTextChange('')}
+                        className="rounded-full bg-[#000] p-1">
                         <MaterialIcons name='close' color={'#fff'} size={14} />
                     </TouchableOpacity>
                 </View>
+
             </View>
 
 
@@ -136,17 +164,15 @@ const NewCollection = ({ containerStyles }) => {
 const ExistingCollection = ({ name, selected, onSelected, containerStyles }) => {
 
     //push to collection with the name (it should be unique)
+    console.log(selected)
     return (
         <TouchableOpacity
             onPress={onSelected}
-            className={`rounded-lg ${selected ? 'bg-[#1C1C1C2B] p-[10px] mb-9' : 'bg-transparent'} max-h-[200px]`}>
+            className={`bg-[#ffffff] mb-4 border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 ${selected ? 'border-[2px] border-primary': ''} w-full h-full ${containerStyles}`}>
+            <Text className={`font-cygrebold mb-7 text-[22px] leading-[26.4px] max-w-[105px] font-bold text-[#121F16] ${selected ? 'text-primary' : ''}`}>{name}</Text>
             <View
-                className={`bg-[#ffffff] border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between p-4 ${selected ? 'max-w-[155px] max-h-[160px]': 'max-w-[169px] max-h-[174px]'}  w-full h-full ${containerStyles}`}>
-                <Text className="font-cygrebold mb-7 text-[22px] leading-[26.4px] max-w-[105px] font-bold text-[#121F16]">{name}</Text>
-                <View
-                    className="items-center self-end bg-[#ffffff] max-w-[61px] relative -z-10 max-h-[62px] rounded-full justify-center p-4">
-                    <Collection1Icon />
-                </View>
+                className="items-center self-end bg-[#ffffff] max-w-[61px] bottom-[.5px] right-0 relative -z-10 max-h-[61px] rounded-full justify-center p-4">
+                <Collection1Icon fill={selected && '#6592E3'} />
             </View>
         </TouchableOpacity>
     );

@@ -4,13 +4,14 @@ import {
     TouchableOpacity,
     Image,
     TextInput,
-    FlatList
+    FlatList,
+    RefreshControl
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { router } from "expo-router";
 import axios from '../../network/axios';
 
@@ -23,6 +24,8 @@ const Library = () => {
 
     const [books, setBooks] = useState([]);
 
+    const [refreshing, setRefreshing] = useState(false);
+
     const booksToRead = books.filter(item => item.status === 0).length;
 
     const booksReading = books.filter(item => item.status === 1).length;
@@ -34,6 +37,15 @@ const Library = () => {
     const getProgress = (totalPages, currentPage) => {
         return Math.round(currentPage / totalPages * 100).toString();
     }
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+    
+        // Your refresh logic here
+        await fetchBooks()
+        setRefreshing(false);
+
+    }, []);
 
     const fetchBooks = async () => {
         try {
@@ -48,7 +60,7 @@ const Library = () => {
         fetchBooks()
     }, []);
 
-    console.log(books[0], books.length)
+    //console.log(books[0], books.length)
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -60,6 +72,7 @@ const Library = () => {
                 <MaterialIcons name="arrow-drop-down" size={24} color="black" />
             </TouchableOpacity>
             <TouchableOpacity
+                onPress={() => router.push('search-book')}
                 className="bg-primary flex-1 mt-2.5 mr-2.5 max-w-[44px] w-full items-center justify-center max-h-[44px] h-full rounded-[10px]">
                     <Entypo name="plus" size={24} color="white" />
             </TouchableOpacity>
@@ -100,23 +113,32 @@ const Library = () => {
                     count={booksFinished}
                 />
             </View>
-            <View className="mx-5 my-7 flex-1">
-                <FlatList
-                    className="flex-1"
-                    data={books}
-                    keyExtractor={item => item.id}
-                    maxToRenderPerBatch={10}
-                    renderItem={({ item }) => <BookStatus
-                        key={item.id}
-                        author={item.author}
-                        name={item.title}
-                        progress={getProgress(item.totalPages, item.currentPage)}
-                        imageUrl={item.imageUrl}
-                        containerStyles={'mb-4 flex-1'}
-                        onPress={() => router.push({pathname: 'saved-book', params: { id: item.id }})}
-                    />}
+            <FlatList
+                className="flex-1 mx-5 mt-5"
+                data={books}
+                keyExtractor={item => item.id}
+                maxToRenderPerBatch={10}
+                refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    // Optional props:
+                    colors={['#9Bd35A', '#689F38']} // Android
+                    tintColor="#689F38"  // iOS
+                    title="Pull to refresh" // iOS
                 />
-            </View>
+            }
+            renderItem={({ item }) => <BookStatus
+                key={item.id}
+                author={item.author}
+                name={item.title}
+                progress={getProgress(item.totalPages, item.currentPage)}
+                imageUrl={item.imageUrl}
+                containerStyles={'mb-4'}
+                tag={item.bookCollections.length > 0 && item.bookCollections[0].name}
+                onPress={() => router.push({pathname: 'saved-book', params: { id: item.id }})}
+            />}
+            />
     </SafeAreaView>
 }
 
@@ -149,8 +171,8 @@ const BookStatus = ({ name, author, progress, tag, imageUrl, onPress, containerS
                 <View className={`absolute h-full bg-primary rounded-[15px]`} style={{ width: `${progress}%` }}></View>
             </View>
             { tag ? (
-                <View className="bg-primary rounded-[5px] max-h-[28px] py-1 px-2 max-w-[176px]">
-                    <Text className="text-[14px] leading-[16.8px] font-cygreregular text-[#fff]">{tag}</Text>
+                <View className="bg-primary rounded-[5px] max-h-[28px] py-1.5 px-2 max-w-[176px]">
+                    <Text className="text-[14px] leading-[16.8px] font-cygreregular text-[#fff] text-center">{tag}</Text>
                 </View>
             ) : <></> }
         </View>

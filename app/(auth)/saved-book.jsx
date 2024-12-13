@@ -75,17 +75,18 @@ const SavedBook = () => {
         currentPage,
         categories: [],
         imageUrl: '',
-        status: 0
+        status: 0,
+        collections: []
     })
 
     const {
         title,
         author,
         description,
-        status,
         pageCount,
         categories,
-        imageUrl 
+        imageUrl,
+        collections 
     } = book;
 
     const [currentPage, setCurrentPage] = useState(book.currentPage);
@@ -128,7 +129,7 @@ const SavedBook = () => {
         }
     }
 
-    console.log(book.status)
+    console.log(book)
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -245,23 +246,25 @@ const SavedBook = () => {
             </View>
             
             { categories.length > 0 ?(
-                <View className="mt-5 mx-5 max-h-[160px]">
+                <View className="my-5 mx-5 max-h-[160px]">
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Genres</Text>
                     <View className="flex-wrap p-5 border bg-black max-h-[126px] h-full flex-row items-center rounded-[20px]">
-    {/*                     <Genre name={'Nonfiction'} showCloseBtn={false} />
-                        <Genre name={'Self Help'} showCloseBtn={false} />
-                        <Genre name={'Psychology'} showCloseBtn={false} /> */}
-                    { categories?.slice(0, 4)?.map(item => <Genre key={item.id} name={item.name} showCloseBtn={false} />) }
+                    { categories?.slice(0, 4)?.map(item =>
+                         <Genre key={item.id} name={item.name} showCloseBtn={false} />) }
                     </View>
                 </View>
             ) : <></> }
 
-            <View className="mt-5 mb-3 mx-5 max-h-[160px]">
-                <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2">Collections</Text>
-                <View className="flex-wrap p-5 border bg-black max-h-[126px] w-full h-full flex-row items-center rounded-[20px]">
-                    <Genre name={'For psychology classes'} containerStyles={'max-w-[200px] w-full'} showCloseBtn={false} />
+            { collections.length > 0 ? (
+                <View className="mt-5 mb-3 mx-5 max-h-[160px]">
+                    <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2">Collections</Text>
+                    <View className="flex-wrap p-5 border bg-black max-h-[126px] w-full h-full flex-row items-center rounded-[20px]">
+    {/*                     <Genre name={'For psychology classes'} containerStyles={'max-w-[200px] w-full'} showCloseBtn={false} /> */}
+                        { collections?.slice(0, 4)?.map(item =>
+                            <Genre key={item.id} name={item.name} showCloseBtn={false} />) }
+                    </View>
                 </View>
-            </View>
+            ) : <></> }
 
         </ScrollView>
     </SafeAreaView>

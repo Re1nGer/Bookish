@@ -59,7 +59,8 @@ export const UserProvider = ({ children }) => {
             imageLinks: {
                 thumbnail: ''
             }
-        }
+        },
+        collections: []
     });
 
     return <UserContext.Provider value={{
