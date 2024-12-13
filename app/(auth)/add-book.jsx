@@ -4,7 +4,8 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    ScrollView
+    ScrollView,
+    Alert
 } from "react-native";
 
 import { useContext, useEffect, useState } from 'react';
@@ -17,48 +18,48 @@ import { UserContext } from "../../context/UserContext";
 import { images } from "../../constants";
 import Genre from "../../components/Genre";
 import StatusBtn from "../../components/StatusBtn";
+import FormField from "../../components/FormField";
+
+
+const statusMap = {
+    ToRead: 0,
+    Reading: 1,
+    Finished: 2,
+    GaveUp: 3,
+    Paused: 4
+};
+
+const bookStatusToInt = (status) => {
+
+  // Return the integer value or -1 if status is not found
+  return statusMap[status] ?? 0;
+};
+
+const defaultBook = {
+    id: '',
+    volumeInfo: {
+        title: '',
+        authors: [],
+        description: '',
+        pageCount: 0,
+        categories: [],
+        status: "",
+        imageLinks: {
+            thumbnail: ''
+        }
+    }
+}
+const defaultStatuses = {
+    toRead: false,
+    reading: false,
+    finished: false,
+    gaveUp: false,
+    paused: false
+}
 
 const AddBook = () => {
 
     const { id } = useLocalSearchParams();
-
-/*     const [book, setBook] = useState({
-        id: '',
-        volumeInfo: {
-            title: '',
-            authors: [],
-            description: '',
-            pageCount: 0,
-            categories: [],
-            status: "",
-            imageLinks: {
-                thumbnail: ''
-            }
-        }
-    }); */
-
-    const defaultBook = {
-        id: '',
-        volumeInfo: {
-            title: '',
-            authors: [],
-            description: '',
-            pageCount: 0,
-            categories: [],
-            status: "",
-            imageLinks: {
-                thumbnail: ''
-            }
-        }
-    }
-
-    const defaultStatuses = {
-        toRead: false,
-        reading: false,
-        finished: false,
-        gaveUp: false,
-        paused: false
-    }
 
     const [status, setStatus] = useState({
         toRead: true,
@@ -66,6 +67,12 @@ const AddBook = () => {
         finished: false,
         gaveUp: false,
         paused: false
+    });
+    
+    const [errors, setErrors] = useState({
+        author: false,
+        title: false,
+        description: false
     });
 
     const { genres, book, setBook, setGenres } = useContext(UserContext);
@@ -76,7 +83,7 @@ const AddBook = () => {
 
     const getStatus = () => {
         const statuses = Object.keys(status).filter(s => status[s]);
-        return statuses ? statuses[0] : "";
+        return statuses[0];
     }
 
     const fetchBook = async () => {
@@ -105,22 +112,56 @@ const AddBook = () => {
 
     const addBook = async () => {
 
-        const { title, authors, description, totalPages } = book.volumeInfo;
+        const { title, authors, description, pageCount, categories, imageLinks } = book.volumeInfo;
 
         try {
             const body = {
                 title,
                 authors,
                 description,
-                totalPages,
-                categories: book.categories, //add getGenres() from a separate screen
-                //status: getStatus(), // have to handle adding a new status 
+                totalPages: pageCount,
+                categories: categories, //add getGenres() from a separate screen
+                status: bookStatusToInt(getStatus()), // have to handle adding a new status 
+                imageUrl: imageLinks?.thumbnail
             }
-            await axios.post('/book', body);
+            const { data } =  await axios.post('/book', body);
+            router.push({pathname: 'saved-book', params: { id:data.id }})
             console.log("success")
         } catch(error) {
             console.log(error);
+            //send an error code to check for specific errors
+            Alert.alert(
+                "Oooops...",
+                "Looks like you already have that book in the library :)",
+                [
+                    {
+                        text: "Okay!",
+                        style: "cancel"
+                    }
+                ]
+            );
         }
+    }
+
+    const handleDescriptionUpdate = (text) => {
+        setBook(prev => ({...prev, volumeInfo: {
+            ...prev.volumeInfo,
+            description: text
+        } }));
+    }
+
+    const handleAuthorUpdate = (text) => {
+        setBook(prev => ({...prev, volumeInfo: {
+            ...prev.volumeInfo,
+            authors: [text]
+        } }));
+    }
+
+    const handleTitleUpdate = (text) => {
+        setBook(prev => ({...prev, volumeInfo: {
+            ...prev.volumeInfo,
+            title: text
+        } }));
     }
 
 
@@ -131,7 +172,7 @@ const AddBook = () => {
                 <Image source={images.leftArrowIcon} />
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => router.push('saved-book')}//async () => await addBook()}
+                onPress={async () => await addBook()}//async () => await addBook()}
                 className="bg-primary flex-1 mt-2.5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
             </TouchableOpacity>
@@ -145,25 +186,29 @@ const AddBook = () => {
                 className="self-center mt-6 rounded-[6px]"
                 resizeMode="contain" 
             />
-            <View className="mt-3 max-h-[100px]">
-                <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Title</Text>
-                <View className="bg-[#ffffff] mb-9 border-[.5px] border-[#8A8A8A] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[15px] px-5">
-                    <TextInput
-                        className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm"
-                        placeholder="Make it stick"
-                        value={book.volumeInfo.title}
-                    />
-                </View>
+            <View className="mb-3 max-h-[100px]">
+                <FormField
+                    title={"Title"}
+                    placeholder={"Enter Title"} 
+                    textInputContainerStyles={'border-[.5px] max-h-[45px]'}
+                    textInputStyles={'bg-[#ffffff] font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm'}
+                    handleChangeText={handleTitleUpdate}
+                    value={book.volumeInfo.title}
+                    error={errors.title}
+                    errorText={"Title cannot be empty"}
+                />
             </View>
-            <View className="max-h-[100px]">
-                <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Author</Text>
-                <View className="bg-[#ffffff] mb-9 border-[.5px] border-[#8A8A8A] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[15px] px-5">
-                    <TextInput
-                        className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm"
-                        placeholder="Make it stick"
-                        value={book.volumeInfo?.authors?.join(',')}
-                    />
-                </View>
+            <View className="max-h-[100px] mb-6">
+                <FormField
+                    title={"Author"}
+                    placeholder={"Enter Author"} 
+                    textInputContainerStyles={'border-[.5px] max-h-[45px]'}
+                    textInputStyles={'bg-[#ffffff] font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm'}
+                    handleChangeText={handleAuthorUpdate}
+                    value={book.volumeInfo.author?.join(',')}
+                    error={errors.author}
+                    errorText={"Author cannot be empty"}
+                />
             </View>
             <View className="max-h-[180px]">
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Description</Text>
@@ -172,8 +217,9 @@ const AddBook = () => {
                         textAlignVertical="top"
                         multiline={true}
                         className="bg-[#ffffff] pt-4 h-full font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm"
-                        placeholder="Make it stick"
+                        placeholder="Description"
                         value={book.volumeInfo?.description}
+                        onChangeText={handleDescriptionUpdate}
                     />
                 </View>
             </View>
@@ -257,5 +303,3 @@ const AddBook = () => {
 }
 
 export default AddBook;
-
-

@@ -5,14 +5,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   Modal,
-  Dimensions,
   Pressable,
 } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-const BookStatusDropdown = ({ statusOptions, initialText }) => {
+const BookStatusDropdown = ({ statusOptions, onSelect, selectedStatus, setSelectedStatus }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(initialText);
   const [dropdownLayout, setDropdownLayout] = useState({
     x: 0,
     y: 0,
@@ -22,9 +20,14 @@ const BookStatusDropdown = ({ statusOptions, initialText }) => {
   const buttonRef = useRef();
 
 
-  const handleSelect = (status) => {
-    setSelectedStatus(status);
-    setIsOpen(false);
+  const handleSelect = async (status) => {
+    try {
+      await onSelect(status);
+      setSelectedStatus(status);
+      setIsOpen(false);
+    } catch(error) {
+      console.log(error);
+    }
   };
 
   const measureButton = () => {
@@ -45,34 +48,34 @@ const BookStatusDropdown = ({ statusOptions, initialText }) => {
     setIsOpen(!isOpen);
   };
 
-    const renderStatuses = () => {
-        return  (
-          <>
-            {statusOptions.map((status) => {
-                if (status === selectedStatus) {
-                    return <></>;
-                }
-                return <TouchableOpacity
-                    key={status}
-                    style={[
-                        styles.option,
-                        selectedStatus === status && styles.selectedOption,
-                    ]}
-                    onPress={() => handleSelect(status)}
-                >
-                <Text
-                    style={[
-                        styles.optionText,
-                        selectedStatus === status && styles.selectedOptionText,
-                    ]}
-                >
-                    {status}
-                </Text>
-            </TouchableOpacity>
-            })}
-        </>
-      );
-    }
+  const renderStatuses = () => {
+      return  (
+        <>
+          {statusOptions.map((status) => {
+              if (status === selectedStatus) {
+                  return <></>;
+              }
+              return <TouchableOpacity
+                  key={status}
+                  style={[
+                      styles.option,
+                      selectedStatus === status && styles.selectedOption,
+                  ]}
+                  onPress={async () => await handleSelect(status)}
+              >
+              <Text
+                  style={[
+                      styles.optionText,
+                      selectedStatus === status && styles.selectedOptionText,
+                  ]}
+              >
+                  {status}
+              </Text>
+          </TouchableOpacity>
+          })}
+      </>
+    );
+  }
 
   return (
     <View className="relative">

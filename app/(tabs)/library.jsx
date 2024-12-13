@@ -3,15 +3,16 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    ScrollView,
-    TextInput
+    TextInput,
+    FlatList
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { router } from "expo-router";
+import axios from '../../network/axios';
 
 
 const Library = () => {
@@ -20,10 +21,36 @@ const Library = () => {
 
     const inputRef = useRef(null);
 
+    const [books, setBooks] = useState([]);
+
+    const booksToRead = books.filter(item => item.status === 0).length;
+
+    const booksReading = books.filter(item => item.status === 1).length;
+
+    const booksFinished = books.filter(item => item.status === 2).length;
+
     const handleCloseBtn = () => {}
 
+    const getProgress = (totalPages, currentPage) => {
+        return Math.round(currentPage / totalPages * 100).toString();
+    }
 
-    return <SafeAreaView className="bg-[#F7F7F7] h-full">
+    const fetchBooks = async () => {
+        try {
+            const { data } = await axios.get('/users/books');
+            setBooks(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchBooks()
+    }, []);
+
+    console.log(books[0], books.length)
+
+    return <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
             <TouchableOpacity
                 activeOpacity={0.7}
@@ -42,7 +69,6 @@ const Library = () => {
                     <MaterialIcons name="filter-list" size={24} color="white" />
             </TouchableOpacity>
         </View>
-        <ScrollView>
             <View className="mx-5 max-h-[50px]">
                 <View className="bg-[#ffffff] mb-12 border border-[#49454F] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[26px] px-5">
                     <MaterialIcons name="search" color={'#49454F'} size={22} />
@@ -61,43 +87,36 @@ const Library = () => {
             <View className="mx-5 flex-row mt-5">
                 <BookStatBox
                     statName={'To Read'}
-                    count={0}
+                    count={booksToRead}
                     containerStyles={'mr-2'} 
                 />
                 <BookStatBox
                     statName={'Reading'}
-                    count={2}
+                    count={booksReading}
                     containerStyles={'mr-2'} 
                 />
                 <BookStatBox
                     statName={'Finished'}
-                    count={3}
+                    count={booksFinished}
                 />
             </View>
-            <View className="mx-5 my-7">
-                <BookStatus
-                    name={'Make It Stick'}
-                    author={'Peter C. Brown, Mark A. McDaniel'}
-                    tag={'For psychology classes'}
-                    progress={'65'} 
-                    containerStyles={'mb-4'}
-                />
-                <BookStatus
-                    name={'Make It Stick'}
-                    author={'Peter C. Brown, Mark A. McDaniel'}
-                    tag={'For psychology classes'}
-                    progress={'65'} 
-                    containerStyles={'mb-4'}
-                />
-                <BookStatus
-                    name={'Make It Stick'}
-                    author={'Peter C. Brown, Mark A. McDaniel'}
-                    tag={'For psychology classes'}
-                    progress={'65'} 
-                    containerStyles={'mb-4'}
+            <View className="mx-5 my-7 flex-1">
+                <FlatList
+                    className="flex-1"
+                    data={books}
+                    keyExtractor={item => item.id}
+                    maxToRenderPerBatch={10}
+                    renderItem={({ item }) => <BookStatus
+                        key={item.id}
+                        author={item.author}
+                        name={item.title}
+                        progress={getProgress(item.totalPages, item.currentPage)}
+                        imageUrl={item.imageUrl}
+                        containerStyles={'mb-4 flex-1'}
+                        onPress={() => router.push({pathname: 'saved-book', params: { id: item.id }})}
+                    />}
                 />
             </View>
-        </ScrollView>
     </SafeAreaView>
 }
 
@@ -112,26 +131,30 @@ const BookStatBox = ({ statName, count, containerStyles }) => {
 }
 
 
-const BookStatus = ({ name, author, progress, tag, containerStyles }) => {
-    return <View className={`max-w-[353px] max-h-[172px] w-full h-full flex-row border border-[#727272] px-3 py-4 rounded-[15px] ${containerStyles}`}>
+const BookStatus = ({ name, author, progress, tag, imageUrl, onPress, containerStyles }) => {
+    return <TouchableOpacity
+        onPress={onPress}
+        className={`max-w-[353px] h-[172px] w-full flex-row border border-[#727272] px-3 py-4 rounded-[15px] ${containerStyles}`}>
         <Image
-            source={images.book}
+            source={imageUrl ? { uri: imageUrl } : images.book}
             className="max-w-[99px] max-h-[141px] w-full h-full mr-4"
             width={99}
             height={141}
         />
         <View>
-            <Text className="text-black text-[18px] font-cygrebold leading-[21.6px]">{name}</Text>
+            <Text className="text-black text-[18px] font-cygrebold leading-[21.6px] max-w-[200px]" numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
             <Text className="text-black text-sm font-cygreregular leading-[16.8px] max-w-[210px]">{author}</Text>
             <Text className="text-primary text-right text-[12px] leading-[14.4px] mt-2">{`${progress}%`}</Text>
             <View className="relative max-w-[195px] w-full max-h-[13px] h-full bg-[#EEEEEE] mb-7 rounded-[15px]">
                 <View className={`absolute h-full bg-primary rounded-[15px]`} style={{ width: `${progress}%` }}></View>
             </View>
-            <View className="bg-primary rounded-[5px] max-h-[28px] py-1 px-2 max-w-[176px]">
-                <Text className="text-[14px] leading-[16.8px] font-cygreregular text-[#fff]">{tag}</Text>
-            </View>
+            { tag ? (
+                <View className="bg-primary rounded-[5px] max-h-[28px] py-1 px-2 max-w-[176px]">
+                    <Text className="text-[14px] leading-[16.8px] font-cygreregular text-[#fff]">{tag}</Text>
+                </View>
+            ) : <></> }
         </View>
-    </View>
+    </TouchableOpacity>
 }
 
 export default Library;

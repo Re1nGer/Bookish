@@ -7,29 +7,128 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
 import BookStatusPicker from "../../components/ReadStatusDropdown";
 import SliderCounter from "../../components/SliderCounter";
-import { useState } from "react";
+import { useState, useContext, useEffect, useLayoutEffect } from "react";
 import SwipeableWrapper from "../../components/SwipeableWrapper";
 import CircularProgress from "../../components/CircleProgress";
 import Feather from '@expo/vector-icons/Feather';
 import { QuoteStarsIcon } from "../../components/Svg";
 import Genre from "../../components/Genre";
 import { TimerIcon, NoteIcon, QuoteIcon } from "../../components/Svg";
+import { UserContext } from "../../context/UserContext";
+import axios from '../../network/axios';
 
+
+//extract out into utils
+const statusOptions = {
+    'To Read': 0,
+    'Reading': 1,
+    'Finished': 2,
+    'Gave Up': 3,
+    'Paused': 4,
+}
+
+const statuses = [
+    'To Read',
+    'Reading',
+    'Finished',
+    'Gave Up',
+    'Paused'
+]
+
+const statusName = {
+    0: 'To Read',
+    1: 'Reading',
+    2: 'Finished',
+    3: 'Gave Up',
+    4: 'Paused',
+}
+
+const bookNameToStatus = (status) => {
+
+  // Return the integer value or -1 if status is not found
+  return statusOptions[status];
+};
+
+const bookStatusToName = (status) => {
+    return statusName[status]
+}
 
 const SavedBook = () => {
 
-    const statusOptions = [
-        'To Read',
-        'Reading',
-        'Finished',
-        'Gave Up',
-        'Paused',
-    ];
+
+    const { id } = useLocalSearchParams();
+
+    // get rid of updates with context
+    //const { book } = useContext(UserContext);
+
+    const [book, setBook] = useState({
+        id: '',
+        title: '',
+        author: '',
+        description: '',
+        pageCount: 0,
+        currentPage,
+        categories: [],
+        imageUrl: '',
+        status: 0
+    })
+
+    const {
+        title,
+        author,
+        description,
+        status,
+        pageCount,
+        categories,
+        imageUrl 
+    } = book;
+
+    const [currentPage, setCurrentPage] = useState(book.currentPage);
+    const [selectedStatus, setSelectedStatus] = useState(bookStatusToName(book.status));
+
+    const fetchBook = async () => {
+        try {
+            const { data } = await axios.get(`/users/book/${id}`);
+            setBook(data)
+            setCurrentPage(data.currentPage);
+            setSelectedStatus(bookStatusToName(data.status))
+        }
+        catch(error) {
+            console.log(error);
+        }
+    }
+
+
+    useLayoutEffect(() => {
+        fetchBook();
+    }, [id])
+
+
+    //console.log(book)
+
+    const getBookImage = () => {
+       return imageUrl ? { uri:imageUrl } : images.bookPlaceholder  
+    }
+
+    const updatePageCount = () => {}
+
+    const updateStatus = async (status) => {
+
+        try {
+            await axios.put(`/users/book/${id}/status?statusId=${statusOptions[status]}`);
+            setBook(prev => ({...prev, status: statusOptions[status]}))
+        } 
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    console.log(book.status)
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -50,13 +149,15 @@ const SavedBook = () => {
         <ScrollView>
 
             <View className="mx-5 border-[#8A8A8A] flex-row p-4 border-[.5px] rounded-[20px] max-w-[353px] max-h-[213px]">
-                <Image source={images.bookPlaceholder} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" />
+                <Image source={getBookImage()} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" />
                 <View className="relative">
-                    <Text className="text-black text-[18px] mb-0.5 leading-[21.6px] font-cygrebold">Make It Stick</Text>
-                    <Text className="text-black text-[12px] leading-[14.4px] font-cygreregular mb-5">Make It Stick</Text>
+                    <Text className="text-black text-[18px] mb-0.5 leading-[21.6px] font-cygrebold max-w-[150px]" numberOfLines={1} ellipsizeMode='tail'>{title}</Text>
+                    <Text className="text-black text-[12px] leading-[14.4px] font-cygreregular mb-5">{author}</Text>
                     <BookStatusPicker
-                        statusOptions={statusOptions}
-                        initialText={'To Read'}
+                        setSelectedStatus={setSelectedStatus}
+                        selectedStatus={selectedStatus}
+                        onSelect={updateStatus}
+                        statusOptions={statuses}
                     />
                     <View className="flex-row justify-center mt-3">
                         <TouchableOpacity className="p-3 mr-4 rounded-full bg-primary">
@@ -73,8 +174,15 @@ const SavedBook = () => {
             </View>
             <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mx-5 mt-8 mb-5">Reading Progress</Text>
             <SwipeableWrapper showDots={true}>
-                <TotalPages />
-                <TotalProgress />
+                <TotalPages
+                    totalPages={pageCount}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage} 
+                />
+                <TotalProgress
+                    totalPages={pageCount}
+                    currentPage={currentPage} 
+                />
                 <RecentSession />
             </SwipeableWrapper>
 
@@ -131,19 +239,22 @@ const SavedBook = () => {
                 <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Description</Text>
                 <View className="border-[#8A8A8A] border-[.5px] rounded-[20px] ">
                     <Text className="font-cygreregular leading-[19.2px] text-black px-5 py-4">
-                        A groundbreaking book that explores the science of learning and provides evidence-based strategies for improving retention and long-term memory.
+                        { description }
                     </Text>
                 </View>
             </View>
             
-            <View className="mt-5 mx-5 max-h-[160px]">
-                <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Genres</Text>
-                <View className="flex-wrap p-5 border bg-black max-h-[126px] h-full flex-row items-center rounded-[20px]">
-                    <Genre name={'Nonfiction'} showCloseBtn={false} />
-                    <Genre name={'Self Help'} showCloseBtn={false} />
-                    <Genre name={'Psychology'} showCloseBtn={false} />
+            { categories.length > 0 ?(
+                <View className="mt-5 mx-5 max-h-[160px]">
+                    <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Genres</Text>
+                    <View className="flex-wrap p-5 border bg-black max-h-[126px] h-full flex-row items-center rounded-[20px]">
+    {/*                     <Genre name={'Nonfiction'} showCloseBtn={false} />
+                        <Genre name={'Self Help'} showCloseBtn={false} />
+                        <Genre name={'Psychology'} showCloseBtn={false} /> */}
+                    { categories?.slice(0, 4)?.map(item => <Genre key={item.id} name={item.name} showCloseBtn={false} />) }
+                    </View>
                 </View>
-            </View>
+            ) : <></> }
 
             <View className="mt-5 mb-3 mx-5 max-h-[160px]">
                 <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2">Collections</Text>
@@ -156,20 +267,16 @@ const SavedBook = () => {
     </SafeAreaView>
 }
 
-const TotalProgress = () => {
+const TotalProgress = ({ totalPages, currentPage }) => {
 
-    const tempMaxPageCount = 336;
-
-    const currentPage = 50;
-
-    const percentLeft = Math.round(currentPage / tempMaxPageCount * 100);
+    const percentLeft = Math.round(currentPage / totalPages * 100);
 
     return (
         <View className="max-h-[267px] w-full items-center">
             <View className="px-6 py-5 max-w-[353px] h-[95%] bg-black rounded-[20px] w-full items-center">
-                <CircularProgress size={125} progress={currentPage / tempMaxPageCount * 100} />
+                <CircularProgress size={125} progress={currentPage / totalPages * 100} />
                 <Text className="text-[#fff] text-center text-[16px] mt-3 font-cygreregular max-w-[165px]">
-                    {`${tempMaxPageCount - currentPage} pages left or ${percentLeft}% left to finish`}
+                    {`${totalPages - currentPage} pages left or ${percentLeft}% left to finish`}
                 </Text>
             </View>
         </View>
@@ -191,19 +298,15 @@ const RecentSession = () => {
 
 }
 
-const TotalPages = () => {
-
-    const [value, setValue] = useState(13);
+const TotalPages = ({ currentPage, setCurrentPage, totalPages }) => {
 
     const handleReduceCounter = () => {
-        setValue(prev => prev - 1);
+        setCurrentPage(prev => prev - 1);
     }
 
     const handleAddCounter = () => {
-        setValue(prev => prev + 1);
+        setCurrentPage(prev => prev + 1);
     }
-
-    const tempMaxPageCount = 336;
 
     return (
         <View className="max-h-[267px] w-full items-center">
@@ -215,9 +318,9 @@ const TotalPages = () => {
                         <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">-</Text>
                     </TouchableOpacity>
                     <View>
-                        <Text className="text-[#fff] text-center text-[60px] font-cygrebold leading-[72px]">{value}</Text>
-                        <Text className="text-[#fff] text-center text-[16px] font-cygrebold">{`of ${tempMaxPageCount} pages`}</Text>
-                        <Text className="text-[#fff] text-center text-[12px] font-cygreregular">{`${tempMaxPageCount - value} pages left`}</Text>
+                        <Text className="text-[#fff] text-center text-[60px] font-cygrebold leading-[72px]">{currentPage}</Text>
+                        <Text className="text-[#fff] text-center text-[16px] font-cygrebold">{`of ${totalPages} pages`}</Text>
+                        <Text className="text-[#fff] text-center text-[12px] font-cygreregular">{`${totalPages - currentPage} pages left`}</Text>
                     </View>
                     <TouchableOpacity
                         onPress={handleAddCounter}
@@ -227,10 +330,10 @@ const TotalPages = () => {
                 </View>
                 <SliderCounter
                     showCounter={false}
-                    value={value}
-                    setValue={setValue} 
+                    value={currentPage}
+                    setValue={setCurrentPage} 
                     textColor={'text-[#fff]'}
-                    maxValue={tempMaxPageCount}
+                    maxValue={totalPages}
                 />
                 <View className="items-center mr-3 flex-row justify-center">
                     <Text className="text-[#FFFFFF] font-cygrebold leading-[19.2px] mr-2.5">Started At</Text>
