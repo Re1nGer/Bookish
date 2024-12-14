@@ -168,10 +168,10 @@ const ExistingCollection = ({ name, selected, onSelected, containerStyles }) => 
     return (
         <TouchableOpacity
             onPress={onSelected}
-            className={`bg-[#ffffff] mb-4 border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 ${selected ? 'border-[2px] border-primary': ''} w-full h-full ${containerStyles}`}>
+            className={`bg-[#ffffff] mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 ${selected ? 'border-[2px] border-primary': ''} h-full ${containerStyles}`}>
             <Text className={`font-cygrebold mb-7 text-[22px] leading-[26.4px] max-w-[105px] font-bold text-[#121F16] ${selected ? 'text-primary' : ''}`}>{name}</Text>
             <View
-                className="items-center self-end bg-[#ffffff] max-w-[61px] bottom-[.5px] right-0 relative -z-10 max-h-[61px] rounded-full justify-center p-4">
+                className="items-center  self-end bg-[#ffffff] max-w-[61px] bottom-0 relative -right-1 -z-10 max-h-[61px] rounded-full justify-center">
                 <Collection1Icon fill={selected && '#6592E3'} />
             </View>
         </TouchableOpacity>

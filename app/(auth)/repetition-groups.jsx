@@ -13,12 +13,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
+import { RepetitionGroupIcon } from "../../components/Svg";
 
 const RepetitionGroups = () => {
 
     const handleInputTextChange = () => {}
     
-    return <SafeAreaView>
+    return <SafeAreaView className="bg-[#F7F7F7] h-full max-h-full">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
                 <View className="flex-row items-center mt-2">
                     <TouchableOpacity
@@ -51,8 +52,62 @@ const RepetitionGroups = () => {
                         <MaterialIcons name='close' color={'#fff'} size={14} />
                     </TouchableOpacity>
                 </View>
-                </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+            <ScrollView className="px-5 flex-1">
+                <View className="flex-row w-full">
+                    <View className="w-full flex-[.5]">
+                        <NewGroup />
+                        <ExistingGroup name={"Self Development"} containerStyles={'my-4'} />
+                    </View>
+                    <View className="w-full flex-[.5]">
+                        <ExistingGroup name={"Anatomy Midterm"} />
+                    </View>
+                </View>
+
+            </ScrollView>
     </SafeAreaView>
+}
+
+
+const NewGroup = () => {
+
+    return <View className="rounded-[17px] flex-row rounded-br-[44px] bg-black max-w-[171px] w-full h-[114px] p-4">
+        <Text className="font-cygrebold max-w-[83px] text-[18px] text-[#fff] leading-[21.6px]">Add new group</Text>
+        <TouchableOpacity
+            className="items-center self-end flex-1 justify-center">
+                <View className="bg-[#fff] max-w-[50px] max-h-[50px] items-center justify-center w-full h-full rounded-full ">
+                    <MaterialIcons name="add" size={30} color={'black'} />
+                </View>
+        </TouchableOpacity>
+    </View>
+}
+
+const ExistingGroup = ({ name, cardsAmount, containerStyles }) => {
+
+    const breakTitleIfNecessaryAndRender = () => {
+        if (name && name.length >= 15) {
+            const names = name.split(' ')
+            return names.map(item => <Text 
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    className="font-cygrebold self-start bg-[#F7F7F7] px-2 py-1 text-[18px] rounded-[15px] text-black leading-[17.2px]">{item}</Text>)
+        }
+        return <Text className="font-cygrebold bg-[#F7F7F7] px-2 py-1 text-[18px] rounded-[15px] text-black text-center leading-[17.2px]">{name}</Text>
+    }
+
+    return <View
+            className={`rounded-[17px] overflow-hidden relative bg-[#F8846A] max-w-[171px] w-full h-[114px] px-4 pt-5 pb-2 ${containerStyles}`}>
+        <View className="mb-2 flex-wrap">
+            {breakTitleIfNecessaryAndRender()}
+        </View>
+        <View
+            className="items-end self-end bg-[#F7F7F7] rounded-[21px]">
+                <Text className="px-2.5 py-1 text-[12px] font-medium">20 cards</Text>
+        </View>
+        <View className="absolute right-0 -z-10">
+            <RepetitionGroupIcon />
+        </View>
+    </View>
 }
 
 

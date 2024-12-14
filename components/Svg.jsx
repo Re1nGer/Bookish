@@ -318,6 +318,14 @@ const QuoteIcon = () => {
     </Svg>
 }
 
+const RepetitionGroupIcon = () => {
+    return (
+        <Svg width="119" height="114" viewBox="0 0 119 114" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <Path d="M124.369 43.4875L83.1398 2.58977C75.6264 -4.86326 63.4092 -4.86326 55.8957 2.58977L14.6351 43.4875C7.12164 50.9405 7.12164 63.0595 14.6351 70.5125L55.8642 111.41C63.3776 118.863 75.5948 118.863 83.1082 111.41L124.337 70.5125C131.882 63.0595 131.882 50.9718 124.369 43.4875ZM80.6143 92.9342H58.3897V21.0971H80.6143V92.9342Z" fill="#FBCEC4"/>
+        </Svg>
+    );
+}
+
 export {
         GearsIcon,
         CollectionsIcon,
@@ -328,5 +336,6 @@ export {
         QuoteStarsIcon,
         TimerIcon,
         NoteIcon,
-        QuoteIcon
+        QuoteIcon,
+        RepetitionGroupIcon
     }
