@@ -186,7 +186,7 @@ const AddBook = () => {
     }
 
 
-    return <SafeAreaView className="bg-[#F7F7F7] h-full">
+    return <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5">
             <TouchableOpacity
                 className="flex-1" onPress={() => router.back()}>
@@ -198,7 +198,7 @@ const AddBook = () => {
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
             </TouchableOpacity>
         </View>
-        <ScrollView className="px-5 mt-5">
+        <ScrollView className="px-5 mt-5" contentInsetAdjustmentBehavior="automatic">
             <Text className="text-black mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Add Book</Text>
             <Image
                 source={{ uri: book.volumeInfo?.imageLinks?.thumbnail }}
@@ -207,7 +207,7 @@ const AddBook = () => {
                 className="self-center mt-6 rounded-[6px]"
                 resizeMode="contain" 
             />
-            <View className="mb-3 max-h-[100px]">
+            <View className="mb-3">
                 <FormField
                     title={"Title"}
                     placeholder={"Enter Title"} 
@@ -219,7 +219,7 @@ const AddBook = () => {
                     errorText={"Title cannot be empty"}
                 />
             </View>
-            <View className="max-h-[100px] mb-6">
+            <View className="mb-6">
                 <FormField
                     title={"Author"}
                     placeholder={"Enter Author"} 
@@ -244,7 +244,7 @@ const AddBook = () => {
                     />
                 </View>
             </View>
-            <View className="max-h-[100px] mt-6">
+            <View className="mt-6 flex-1">
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Page Count</Text>
                 <View className="bg-[#ffffff] mb-9 border-[.5px] border-[#8A8A8A] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[15px] px-5">
                     <TextInput
@@ -255,7 +255,7 @@ const AddBook = () => {
                     />
                 </View>
             </View>
-            <View className="max-h-[160px] mt-6">
+            <View className="mt-6">
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Status</Text>
 
                 <View className="flex-row">
@@ -292,11 +292,11 @@ const AddBook = () => {
                 </View>
             </View>
 
-            <View className="my-6 max-h-[130px]">
+            <View className="my-6 flex-1">
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Genres</Text>
-                <View className="max-h-[116px] h-full p-4 flex-row justify-between rounded-[20px] bg-black">
+                <View className="p-4 min-h-[116px] flex-row justify-between rounded-[20px] bg-black">
                     <View className="flex-wrap flex-row flex-1 items-start">
-                        { book.volumeInfo.categories.slice(0, 4).map(item =>
+                        { book.volumeInfo.categories.map(item =>
                              <Genre key={item} name={item} showCloseBtn={true} />) }
                     </View>
                     <TouchableOpacity
@@ -308,12 +308,12 @@ const AddBook = () => {
             </View>
 
 
-            <View className="mt-6 max-h-[180px]">
+            <View className="my-6 flex-1">
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Collections</Text>
                 { collections ? (
-                    <View className="max-h-[116px] h-full p-4 flex-row justify-between rounded-[20px] bg-black">
+                    <View className="min-h-[116px] p-4 flex-row justify-between rounded-[20px] bg-black">
                         <View className="flex-wrap flex-row flex-1 items-start">
-                            { collections.slice(0, 4).map(item =>
+                            { collections.map(item =>
                                 <Genre key={item.id} name={item.name} showCloseBtn={true} containerStyles={'max-w-full'} />) }
                         </View>
                         <TouchableOpacity
@@ -333,7 +333,7 @@ const AddBook = () => {
                 </TouchableOpacity>
                 ) }
             </View>
-
+            <View className="h-4"></View>
         </ScrollView>
     </SafeAreaView>
 }
