@@ -32,7 +32,26 @@ const Library = () => {
 
     const booksFinished = books.filter(item => item.status === 2).length;
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleCloseBtn = () => {}
+
+    const renderGifLoader = () => {
+    if (isLoading) {
+      return (
+        <View className="items-center justify-center">
+          <Image
+            source={require('../../assets/gifs/book-loader.gif')}
+            width={150}
+            height={150}
+            className="max-h-[150px] max-w-[150px]"
+          />
+          <Text className="text-black text-[24px] leading-[28.8px] font-cygreregular">Wait a bit...</Text>
+        </View>
+      );
+    }
+    return null;
+  };
 
     const getProgress = (totalPages, currentPage) => {
         return Math.round(currentPage / totalPages * 100).toString();
@@ -49,10 +68,14 @@ const Library = () => {
 
     const fetchBooks = async () => {
         try {
+            setIsLoading(true);
             const { data } = await axios.get('/users/books');
             setBooks(data);
         } catch (error) {
             console.log(error);
+        }
+        finally {
+            setIsLoading(false);
         }
     }
 
@@ -118,8 +141,13 @@ const Library = () => {
             <FlatList
                 className="flex-1 mx-5 mt-5"
                 data={books}
-                keyExtractor={item => item.id}
+                removeClippedSubviews={true}
                 maxToRenderPerBatch={10}
+                updateCellsBatchingPeriod={50}
+                windowSize={5}
+                initialNumToRender={10}
+                keyExtractor={item => item.id}
+                ListEmptyComponent={renderGifLoader()}
                 refreshControl={
                 <RefreshControl
                     refreshing={refreshing}
