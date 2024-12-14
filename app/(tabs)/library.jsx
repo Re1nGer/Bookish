@@ -11,8 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useEffect, useRef, useState, useCallback } from "react";
-import { router } from "expo-router";
+import { useRef, useState, useCallback } from "react";
+import { router, useFocusEffect } from "expo-router";
 import axios from '../../network/axios';
 
 
@@ -56,9 +56,11 @@ const Library = () => {
         }
     }
 
-    useEffect(() => {
-        fetchBooks()
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            fetchBooks()
+        }, [fetchBooks])
+    );
 
     //console.log(books[0], books.length)
 

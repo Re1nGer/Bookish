@@ -12,7 +12,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
 import BookStatusPicker from "../../components/ReadStatusDropdown";
 import SliderCounter from "../../components/SliderCounter";
-import { useState, useContext, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import SwipeableWrapper from "../../components/SwipeableWrapper";
 import CircularProgress from "../../components/CircleProgress";
 import Feather from '@expo/vector-icons/Feather';
@@ -72,6 +72,8 @@ const SavedBook = () => {
         author: '',
         description: '',
         pageCount: 0,
+        startedAt: null,
+        finishedAt: null,
         currentPage,
         categories: [],
         imageUrl: '',
@@ -86,7 +88,9 @@ const SavedBook = () => {
         pageCount,
         categories,
         imageUrl,
-        collections 
+        collections,
+        startedAt,
+        finishedAt 
     } = book;
 
     const [currentPage, setCurrentPage] = useState(book.currentPage);
@@ -116,7 +120,6 @@ const SavedBook = () => {
        return imageUrl ? { uri:imageUrl } : images.bookPlaceholder  
     }
 
-    const updatePageCount = () => {}
 
     const updateStatus = async (status) => {
 
@@ -129,7 +132,7 @@ const SavedBook = () => {
         }
     }
 
-    console.log(book)
+    //console.log(book)
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -176,6 +179,8 @@ const SavedBook = () => {
             <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mx-5 mt-8 mb-5">Reading Progress</Text>
             <SwipeableWrapper showDots={true}>
                 <TotalPages
+                    bookId={id}
+                    startedAt={startedAt}
                     totalPages={pageCount}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage} 
@@ -236,7 +241,7 @@ const SavedBook = () => {
                 <QuoteStarsIcon />
             </View>
 
-            <View className="mt-10 mx-5">
+            <View className="mt-10 mb-5 mx-5">
                 <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Description</Text>
                 <View className="border-[#8A8A8A] border-[.5px] rounded-[20px] ">
                     <Text className="font-cygreregular leading-[19.2px] text-black px-5 py-4">
@@ -301,15 +306,58 @@ const RecentSession = () => {
 
 }
 
-const TotalPages = ({ currentPage, setCurrentPage, totalPages }) => {
+const TotalPages = ({ currentPage, setCurrentPage, totalPages, bookId, startedAt }) => {
+
+    const timeoutRef = useRef(null);
 
     const handleReduceCounter = () => {
-        setCurrentPage(prev => prev - 1);
+        const page = currentPage > 0 ? currentPage - 1 : 0;
+        updatePageCount(page)
+            .then(() => setCurrentPage(prev => prev > 0 ? prev - 1 : 0))
     }
 
     const handleAddCounter = () => {
-        setCurrentPage(prev => prev + 1);
+        const page = currentPage < totalPages ? currentPage + 1 : currentPage;
+        updatePageCount(page)
+            .then(() => setCurrentPage(prev => prev < totalPages ? prev + 1 : prev))
     }
+
+    const updatePageCount = async (page) => {
+        try {
+            await axios.put(`users/books/${bookId}/currentPage`, { page })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const updateSliderCounter = (value) => {
+        setCurrentPage(value);
+        
+        // Clear any pending timeouts
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+        
+        // Set new timeout
+        //TODO: extract out into useDebounce hook
+        timeoutRef.current = setTimeout(() => {
+            updatePageCount(value)
+                .then(() => {
+                // Only update if the value hasn't changed during the delay
+                setCurrentPage(value);
+                });
+        }, 900);
+    }
+
+    useEffect(() => {
+        return () => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+    };
+    }, []);
+
+    //console.log(startedAt)
 
     return (
         <View className="max-h-[267px] w-full items-center">
@@ -332,18 +380,21 @@ const TotalPages = ({ currentPage, setCurrentPage, totalPages }) => {
                     </TouchableOpacity>
                 </View>
                 <SliderCounter
+                    minimumVal={1}
                     showCounter={false}
                     value={currentPage}
-                    setValue={setCurrentPage} 
+                    setValue={updateSliderCounter} 
                     textColor={'text-[#fff]'}
                     maxValue={totalPages}
                 />
-                <View className="items-center mr-3 flex-row justify-center">
-                    <Text className="text-[#FFFFFF] font-cygrebold leading-[19.2px] mr-2.5">Started At</Text>
-                    <View className="rounded-[20px] bg-primary px-3 py-1">
-                        <Text className="font-cygrebold text-[12px] leading-[14.4px] font-bold text-[#fff]">01.10.2024</Text>
+                { startedAt && (
+                    <View className="items-center mr-3 flex-row justify-center">
+                        <Text className="text-[#FFFFFF] font-cygrebold leading-[19.2px] mr-2.5">Started At</Text>
+                        <View className="rounded-[20px] bg-primary px-3 py-1">
+                            <Text className="font-cygrebold text-[12px] leading-[14.4px] font-bold text-[#fff]">{new Date(startedAt).toLocaleDateString('de-DE')}</Text>
+                        </View>
                     </View>
-                </View>
+                ) }
             </View>
         </View>
     );

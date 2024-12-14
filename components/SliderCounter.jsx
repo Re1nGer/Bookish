@@ -6,7 +6,7 @@ import Slider from '@react-native-community/slider';
 
 
 
-const SliderCounter = ({ value, setValue, textColor, maxValue = 100, showCounter = true }) => {
+const SliderCounter = ({ value, setValue, minimumVal = 13, textColor, maxValue = 100, showCounter = true }) => {
 
 
   //Slider's track height isn't customizable
@@ -18,7 +18,7 @@ const SliderCounter = ({ value, setValue, textColor, maxValue = 100, showCounter
         ) : <></> }
       <Slider
         style={{ height: 40, width: '100%' }}
-        minimumValue={13}
+        minimumValue={minimumVal}
         maximumValue={maxValue}
         step={1}
         value={value}
