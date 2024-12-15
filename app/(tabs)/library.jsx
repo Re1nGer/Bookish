@@ -11,9 +11,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useContext, useEffect, memo } from "react";
 import { router, useFocusEffect } from "expo-router";
 import axios from '../../network/axios';
+import { UserContext } from "../../context/UserContext";
 
 
 const Library = () => {
@@ -33,6 +34,9 @@ const Library = () => {
     const booksFinished = books.filter(item => item.status === 2).length;
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const { bookFilter } = useContext(UserContext);
+
 
     const handleCloseBtn = () => {}
 
@@ -67,9 +71,35 @@ const Library = () => {
     }, []);
 
     const fetchBooks = async () => {
+         const queryParams = new URLSearchParams();
+    
+        if (bookFilter.authors.length > 0) {
+            bookFilter.authors.forEach(author => {
+                queryParams.append('authors', author);
+            });
+        }
+        
+        if (bookFilter.readingStatuses.length > 0) {
+            bookFilter.readingStatuses.forEach(status => {
+                queryParams.append('statuses', status);
+            });
+        }
+        
+        if (bookFilter.categories.length > 0) {
+            bookFilter.categories.forEach(category => {
+                queryParams.append('categories', category);
+            });
+        }
+        
+        if (bookFilter.collections.length > 0) {
+            bookFilter.collections.forEach(collection => {
+                queryParams.append('collections', collection);
+            });
+        }
+
         try {
             setIsLoading(true);
-            const { data } = await axios.get('/users/books');
+            const { data } = await axios.get(`/users/books?${queryParams.toString()}`);
             setBooks(data);
         } catch (error) {
             console.log(error);
@@ -78,6 +108,11 @@ const Library = () => {
             setIsLoading(false);
         }
     }
+
+    const getFiltersCount = useCallback(() => {
+        return Object.values(bookFilter)
+        .filter(array => array.length > 0).length;
+    }, [bookFilter.collections, bookFilter.authors, bookFilter.categories, bookFilter.readingStatuses])
 
     useFocusEffect(
         useCallback(() => {
@@ -103,8 +138,13 @@ const Library = () => {
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => router.push('book-filters')}
-                className="bg-primary flex-1 mt-2.5 max-w-[44px] w-full items-center justify-center max-h-[44px] h-full rounded-[10px]">
+                className="bg-primary relative flex-1 mt-2.5 max-w-[44px] w-full items-center justify-center max-h-[44px] h-full rounded-[10px]">
                     <MaterialIcons name="filter-list" size={24} color="white" />
+                    { getFiltersCount() > 0 && (
+                        <View className="absolute -top-1 -right-1 rounded-full h-[16px] w-[16px] bg-black">
+                            <Text className="text-white text-center text-[11px]">{getFiltersCount()}</Text>
+                        </View>
+                    ) }
             </TouchableOpacity>
         </View>
             <View className="mx-5 max-h-[50px]">

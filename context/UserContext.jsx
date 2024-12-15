@@ -17,10 +17,26 @@ export const UserProvider = ({ children }) => {
     };
 
     const [note, setNote] = useState({
-        collections: [],
-        groups: [],
+        repetitionGroups: [],
         quote: null,
         text: ''
+    });
+
+    const [bookFilter, setBookFilter] = useState({
+        authors: [],
+        readingStatuses: [],
+        categories: [],
+        collections: []
+    });
+
+    const [selectedCategories, setSelectedCategories] = useState({});
+    const [selectedCollections, setSelectedCollections] = useState({});
+    const [selectedReadingStatuses, setSelectedReadingStatuses] = useState({
+        toRead: false,
+        reading: false,
+        done: false,
+        gaveUp: false,
+        paused: false
     });
 
     const [notes, setNotes] = useState([]);
@@ -76,6 +92,14 @@ export const UserProvider = ({ children }) => {
         setOnboarding,
         note,
         setNote,
+        bookFilter,
+        setBookFilter,
+        selectedCategories,
+        setSelectedCategories,
+        selectedCollections,
+        setSelectedCollections,
+        selectedReadingStatuses,
+        setSelectedReadingStatuses,
         //TODO: to remove
         user,
         setUser
