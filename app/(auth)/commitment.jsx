@@ -1,41 +1,15 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, TouchableOpacity, Platform } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useEffect, useState } from "react";
-import * as LocalAuthentication from 'expo-local-authentication';
 import { router } from "expo-router";
 
 
 const Commitment = () => {
 
-  const handleBiometricPrompt = async () => {
-    try {
-
-        const types = await LocalAuthentication.supportedAuthenticationTypesAsync();
-        const isFaceId = types.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION);
-    
-        // Set appropriate message based on device and platform
-        const promptMessage = Platform.OS === 'ios'
-        ? isFaceId 
-            ? 'Use Face ID to seal your commitment'
-            : 'Use Touch ID to seal your commitment'
-        : 'Use fingerprint to seal your commitment';
-
-      const result = await LocalAuthentication.authenticateAsync({
-        promptMessage: promptMessage,
-        disableDeviceFallback: false,
-        cancelLabel: 'Cancel'
-      });
-
-      if (result.success) {
-        router.push("/preparing-plan")
-      }
-    } catch (error) {
-      console.log('Authentication error:', error);
-    }
-  };
-
+    const handleBiometricPrompt = async () => {
+        router.push('/preparing-plan');
+    };
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
             <View className="px-[23px] flex-[2] self-center mt-6 py-[28px] bg-[#FFFFFF] border border-[#8A8A8A] max-h-[272px] max-w-[353px] mb-4 rounded-[15px]">
