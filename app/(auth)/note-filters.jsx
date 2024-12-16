@@ -6,10 +6,23 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons, Feather } from '@expo/vector-icons';
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { router } from "expo-router";
+import { UserContext } from "../../context/UserContext";
 
 const NoteFilters = () => {
+
+
+    const { noteFilter, setNoteFilter, setBooksSelected, booksSelected } = useContext(UserContext);
+
+    //on close we need to remove chip from filter and un-select it in select-books screen
+    const onClose = (id) => {
+        const filteredBooks = noteFilter.books.filter(item => item.id !== id);
+        setNoteFilter(prev => ({...prev, books: filteredBooks}))
+        if (booksSelected[id]) {
+            setBooksSelected(prev => ({...prev, [id]: false}))
+        }
+    }
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -40,6 +53,20 @@ const NoteFilters = () => {
         <View className="mx-5 mt-7">
             <Text className="text-black text-[18px] leading-[21.6px] font-cygrebold mb-2.5">Books</Text>
             <AuthorsDropdown />
+            { noteFilter.books && (
+                <FlatList
+                    className="mt-3"
+                    horizontal
+                    data={noteFilter.books}
+                    renderItem={({ item }) =>
+                        <SelectedBookChip
+                            name={item.name}
+                            containerStyles={'mr-2.5'}
+                            onClose={() => onClose(item.id)}
+                        />
+                    }
+                />
+            )}
         </View>
 
         <View className="mx-5 mt-7">
@@ -95,6 +122,17 @@ const TypesRow = () => {
             />}
         />
     );
+}
+
+const SelectedBookChip = ({ name, onClose, containerStyles }) => {
+    return <View className={`max-h-[32px] bg-black rounded-[5px] flex-row p-2 h-full items-center justify-center ${containerStyles}`}>
+        <Text className="text-[#FFFFFF] font-cygrebold leading-[16.8px] text-sm px-1" numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
+        <TouchableOpacity
+            onPress={onClose}
+            className="rounded-full bg-[#fff] items-center ml-1 mr-2.5 justify-center w-[16px] h-[16px]">
+            <MaterialIcons name='close' color={'#6592E3'} size={8} />
+        </TouchableOpacity>
+    </View>
 }
 
 const HasPhotoRow = () => {

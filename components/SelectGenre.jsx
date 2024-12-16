@@ -15,6 +15,8 @@ const SelectGenre = ({ selected, text, onPress, containerStyles }) => {
                 onPress={onPress}
             /> 
             <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
                 className={`text-[#FFFFFF] font-cygrebold leading-[19.2px] font-bold
                 ${selected ? 'text-[#ffffff]' : 'text-[#121F16]'}`}>{text}</Text>
     </View>

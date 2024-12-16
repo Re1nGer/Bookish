@@ -29,6 +29,15 @@ export const UserProvider = ({ children }) => {
         collections: []
     });
 
+    const [noteFilter, setNoteFilter] = useState({
+        books: [], //book ids
+        noteTypes: [], //note type ids
+        hasPhoto: false //bool parameter
+    });
+
+    const [booksSelected, setBooksSelected] = useState({});
+    const [noteTypesSelected, setNoteTypesSelected] = useState({});
+
     const [selectedCategories, setSelectedCategories] = useState({});
     const [selectedCollections, setSelectedCollections] = useState({});
     const [selectedReadingStatuses, setSelectedReadingStatuses] = useState({
@@ -100,6 +109,12 @@ export const UserProvider = ({ children }) => {
         setSelectedCollections,
         selectedReadingStatuses,
         setSelectedReadingStatuses,
+        noteFilter,
+        setNoteFilter,
+        booksSelected,
+        setBooksSelected,
+        noteTypesSelected,
+        setNoteTypesSelected,
         //TODO: to remove
         user,
         setUser

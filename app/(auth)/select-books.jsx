@@ -11,46 +11,60 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import SelectGenre from "../../components/SelectGenre";
+import axios from '../../network/axios';
+import { UserContext } from "../../context/UserContext";
 
 const SelectBooks = () => {
 
 
     const handleInputTextChange = () => {}
 
-
     //fetch authors from api selecting authors from already existing books
 
-    const [books, setBooks] = useState([
-        '1984',
-        'Atomic Habits',
-        'The Alchemist',
-        'Brain Rules',
-        'The Catcher in the Rye',
-        'The Great Gatsby',
-        'The Power of Habit',
-        'To Kill a Mockingbird',
-        'Thinking, Fast and Slow',
-        'Why We Sleep',
-    ]);
+    const [books, setBooks] = useState([]);
 
-    const [booksSelected, setBooksSelected] = useState({
-        '1984': false,
-        'Atomic Habits': false,
-        'The Alchemist': false,
-        'Brain Rules': false,
-        'The Catcher in the Rye': false,
-        'The Great Gatsby': false,
-        'The Power of Habit': false,
-        'To Kill a Mockingbird': false,
-        'Thinking, Fast and Slow': false,
-        'Why We Sleep': false,
-    })
+    const { noteFilter, setNoteFilter, booksSelected, setBooksSelected } = useContext(UserContext);
 
     const handleOnPress = (book) => {
         setBooksSelected(prev => ({...prev, [book]: !booksSelected[book]}))
     }
+
+    const getBookIds = () => {
+
+        const isSelectedIdx = 1;
+        const idIdx = 0;
+
+        return Object.entries(booksSelected) // entries { "1": true }
+            .filter(data => data[isSelectedIdx] === true)
+            .map(obj => ({ id: obj[idIdx],
+                 name: books.find(item => item.id == obj[idIdx])?.name}));
+    }
+
+    const fetchBooks = async () => {
+        try {
+            const { data } = await axios.get('users/notes/books');
+            setBooks(data);
+            const selectedBooksObj = Object.fromEntries(
+                data.map(item => [item.id, booksSelected[item.id] ?? false])
+            );
+            setBooksSelected(selectedBooksObj);
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchBooks();
+    }, []);
+
+
+    const handleSave = () => {
+        setNoteFilter(prev => ({...prev, books: getBookIds()}))
+        router.back();
+    }
+
     
     return <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -60,9 +74,9 @@ const SelectBooks = () => {
                         className="flex-1 mr-5 max-w-[44px] w-full items-center justify-center rounded-[10px]">
                             <MaterialIcons name="close" size={24} color="black" />
                     </TouchableOpacity>
-{/*                     <Text className="text-black font-cygrebold text-[22px] font-bold">Create Note</Text> */}
                 </View>
                 <TouchableOpacity
+                    onPress={handleSave}
                     className="bg-primary rounded-[30px] flex-1 mt-2.5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full py-2 px-4">
                         <Text className="leading-[19.2px] text-[#fff] font-cygrebold">Save</Text>
                 </TouchableOpacity>
@@ -91,10 +105,10 @@ const SelectBooks = () => {
                     className="mx-5 flex-1"
                     data={books}
                     renderItem={({ item }) => <SelectGenre
-                        key={item}
-                        selected={booksSelected[item]}
-                        text={item}
-                        onPress={() => handleOnPress(item)}
+                        key={item.id}
+                        selected={booksSelected[item.id]}
+                        text={item.name}
+                        onPress={() => handleOnPress(item.id)}
                         containerStyles={'mb-3.5'}
                     />}
                 />
