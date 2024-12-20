@@ -120,7 +120,7 @@ const SelectCollections = () => {
             </View>
 
 
-            <ScrollView className="px-5 flex-1">
+            <ScrollView className="px-5" showsVerticalScrollIndicator={false}>
                 <View className="flex-row  w-full">
                     <View className="w-full flex-[.5]">
                         <NewCollection />
@@ -139,7 +139,7 @@ const SelectCollections = () => {
                         />) }
                     </View>
                 </View>
-
+                <View className="h-20"></View>
             </ScrollView>
     </SafeAreaView>
 }
@@ -151,7 +151,7 @@ export default SelectCollections;
 const NewCollection = ({ containerStyles }) => {
 
     return <View className={`bg-primary rounded-[20px] mb-5 justify-between p-4 max-w-[169px] w-full max-h-[174px] ${containerStyles}`}>
-        <Text className="font-cygrebold mb-7 text-[22px] leading-[26.4px] max-w-[105px] font-bold text-[#ffffff]">New Collection</Text>
+        <Text className="font-cygrebold mb-7 text-[22px] leading-[26.4px] font-bold text-[#ffffff]" numberOfLines={2} ellipsizeMode="tail">New Collection</Text>
         <TouchableOpacity
             onPress={() => router.push('/create-collection')}
             className="items-center self-end bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
@@ -169,7 +169,9 @@ const ExistingCollection = ({ name, selected, onSelected, containerStyles }) => 
         <TouchableOpacity
             onPress={onSelected}
             className={`bg-[#ffffff] mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 ${selected ? 'border-[2px] border-primary': ''} h-full ${containerStyles}`}>
-            <Text className={`font-cygrebold mb-7 text-[22px] leading-[26.4px] max-w-[105px] font-bold text-[#121F16] ${selected ? 'text-primary' : ''}`}>{name}</Text>
+            <Text
+                className={`font-cygrebold mb-7 text-[22px] leading-[26.4px] font-bold text-[#121F16] ${selected ? 'text-primary' : ''}`}
+                numberOfLines={2} ellipsizeMode="tail">{name}</Text>
             <View
                 className="items-center  self-end bg-[#ffffff] max-w-[61px] bottom-0 relative -right-1 -z-10 max-h-[61px] rounded-full justify-center">
                 <Collection1Icon fill={selected && '#6592E3'} />
