@@ -275,7 +275,7 @@ const CategoryRow = ({ selectedCategories, setSelectedCategories }) => {
 
 const ReadingStatusRow = ({ selectedReadingStatuses, setSelectedReadingStatuses }) => {
 
-    const [statuses] = useState(["To Read", "Reading", "Done", "Gave Up", "Paused"]);
+    const [statuses] = useState(["To Read", "Reading", "Finished", "Gave Up", "Paused"]);
 
     return (
         <FlatList

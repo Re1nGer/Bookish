@@ -43,7 +43,7 @@ export const UserProvider = ({ children }) => {
     const [selectedReadingStatuses, setSelectedReadingStatuses] = useState({
         toRead: false,
         reading: false,
-        done: false,
+        finished: false,
         gaveUp: false,
         paused: false
     });

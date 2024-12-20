@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useRef, useState, useCallback, useContext, useEffect, memo } from "react";
+import { useRef, useState, useCallback, useContext } from "react";
 import { router, useFocusEffect } from "expo-router";
 import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
@@ -37,24 +37,35 @@ const Library = () => {
 
     const { bookFilter } = useContext(UserContext);
 
-
     const handleCloseBtn = () => {}
 
-    const renderGifLoader = () => {
-    if (isLoading) {
-      return (
-        <View className="items-center justify-center">
-          <Image
-            source={require('../../assets/gifs/book-loader.gif')}
-            width={150}
-            height={150}
-            className="max-h-[150px] max-w-[150px]"
-          />
-          <Text className="text-black text-[24px] leading-[28.8px] font-cygreregular">Wait a bit...</Text>
-        </View>
-      );
+    const defaultReadingStatuses = {
+        toRead: false,
+        reading: false,
+        finished: false
     }
-    return null;
+
+    const [currentReadingStatus, setCurrentReadingStatus] = useState({
+        toRead: false,
+        reading: false,
+        finished: false
+    });
+
+    const renderGifLoader = () => {
+        if (isLoading) {
+            return (
+                <View className="items-center justify-center">
+                <Image
+                    source={require('../../assets/gifs/book-loader.gif')}
+                    width={150}
+                    height={150}
+                    className="max-h-[150px] max-w-[150px]"
+                />
+                <Text className="text-black text-[24px] leading-[28.8px] font-cygreregular">Wait a bit...</Text>
+                </View>
+            );
+        }
+        return null;
   };
 
     const getProgress = (totalPages, currentPage) => {
@@ -70,7 +81,7 @@ const Library = () => {
 
     }, []);
 
-    const fetchBooks = async () => {
+    const fetchBooks = useCallback(async () => {
          const queryParams = new URLSearchParams();
     
         if (bookFilter.authors.length > 0) {
@@ -97,6 +108,8 @@ const Library = () => {
             });
         }
 
+        console.log(queryParams.toString());
+
         try {
             setIsLoading(true);
             const { data } = await axios.get(`/users/books?${queryParams.toString()}`);
@@ -107,12 +120,12 @@ const Library = () => {
         finally {
             setIsLoading(false);
         }
-    }
+    },[bookFilter]);
 
     const getFiltersCount = useCallback(() => {
         return Object.values(bookFilter)
         .filter(array => array.length > 0).length;
-    }, [bookFilter.collections, bookFilter.authors, bookFilter.categories, bookFilter.readingStatuses])
+    }, [bookFilter])
 
     useFocusEffect(
         useCallback(() => {
@@ -128,8 +141,10 @@ const Library = () => {
                 activeOpacity={0.7}
                 className="flex-1 pt-3 flex-row"
             >
-                <Text className="text-black text-[24px] leading-[28.8px] font-cygrebold font-bold">{"Books"}</Text>
+            <View className="flex-row">
+                <Text className="text-black text-[24px] leading-[28.8px] font-cygrebold font-bold">Books</Text>
                 <MaterialIcons name="arrow-drop-down" size={24} color="black" />
+            </View>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => router.push('search-book')}
@@ -167,15 +182,24 @@ const Library = () => {
                     statName={'To Read'}
                     count={booksToRead}
                     containerStyles={'mr-2'} 
+                    onPress={() =>
+                         setCurrentReadingStatus(prev =>
+                             ({...defaultReadingStatuses, toRead: !prev['toRead'] }))}
                 />
                 <BookStatBox
                     statName={'Reading'}
                     count={booksReading}
                     containerStyles={'mr-2'} 
+                    onPress={() =>
+                         setCurrentReadingStatus(prev =>
+                             ({...defaultReadingStatuses, reading: !prev['reading'] }))}
                 />
                 <BookStatBox
                     statName={'Finished'}
                     count={booksFinished}
+                    onPress={() =>
+                         setCurrentReadingStatus(prev =>
+                             ({...defaultReadingStatuses, finished: !prev['finished'] }))}
                 />
             </View>
             <FlatList
@@ -213,13 +237,15 @@ const Library = () => {
 }
 
 
-const BookStatBox = ({ statName, count, containerStyles }) => {
-    return <View className={`bg-[#121F16] rounded-[15px] max-w-[112px] items-center w-full max-h-[83px] h-full ${containerStyles}`}>
+const BookStatBox = ({ statName, onPress, count, containerStyles }) => {
+    return <TouchableOpacity
+        onPress={onPress}
+        className={`bg-[#121F16] rounded-[15px] max-w-[112px] items-center w-full max-h-[83px] h-full ${containerStyles}`}>
         <Text className="text-[14px] font-cygrebold leading-[16.8px] font-bold text-[#fff] my-4">{statName}</Text>
         <View className="bg-primary rounded-[22px] justify-center items-center max-w-[38px] w-full mb-5">
             <Text className="text-[14px] leading-[16.8px] font-cygreregular p-1 text-[#fff]">{count}</Text>
         </View>
-    </View>
+    </TouchableOpacity>
 }
 
 
