@@ -253,25 +253,25 @@ const BookStatBox = ({ statName, onPress, count, containerStyles }) => {
 const BookStatus = ({ name, author, progress, tag, imageUrl, onPress, containerStyles }) => {
     return <TouchableOpacity
         onPress={onPress}
-        className={`max-w-[353px] h-[172px] w-full flex-row border border-[#727272] px-3 py-4 rounded-[15px] ${containerStyles}`}>
+        className={`max-w-[353px] h-[172px] w-full flex-row border border-[#727272] px-3 py-3 rounded-[15px] ${containerStyles}`}>
         <Image
             source={imageUrl ? { uri: imageUrl } : images.book}
             className="max-w-[99px] max-h-[141px] w-full h-full mr-4"
             width={99}
             height={141}
         />
-        <View>
+        <View className="w-full flex-1">
             <Text className="text-black text-[18px] font-cygrebold leading-[21.6px] max-w-[200px]" numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
             <Text className="text-black text-sm font-cygreregular leading-[16.8px] max-w-[210px]">{author}</Text>
-            <Text className="text-primary text-right text-[12px] leading-[14.4px] mt-2">{`${progress}%`}</Text>
+            <Text className="text-primary text-right text-[12px] leading-[14.4px] mt-2 mr-2">{`${progress}%`}</Text>
             <View className="relative max-w-[195px] w-full max-h-[13px] h-full bg-[#EEEEEE] mb-7 rounded-[15px]">
                 <View className={`absolute h-full bg-primary rounded-[15px]`} style={{ width: `${progress}%` }}></View>
             </View>
-            { tag ? (
-                <View className="bg-primary rounded-[5px] max-h-[28px] py-1.5 px-2 max-w-[176px]">
-                    <Text className="text-[14px] leading-[16.8px] font-cygreregular text-[#fff] text-center">{tag}</Text>
-                </View>
-            ) : <></> }
+        { tag ? (
+            <View className="bg-primary rounded-[5px] self-start flex-1 max-h-[28px] py-1 px-2 items-center justify-center">
+                <Text className="text-[14px] leading-[16.8px] font-cygreregular text-[#fff] text-center">{tag}</Text>
+            </View>
+        ) : <></> }
         </View>
     </TouchableOpacity>
 }
