@@ -29,7 +29,7 @@ const SetStrike = () => {
                 <OnboardingProgress stage1={40} />
             </View>
             <View className="w-full mt-[77px] mb-[48px] items-center">
-                <Text className="font-bold max-w-[165px] text-[24px] text-center leading-[23px] font-cygrebold">
+                <Text className="font-bold max-w-[165px] text-[24px] text-center leading-[27px] font-cygrebold">
                     Set your daily goal on timing
                 </Text>
             </View>

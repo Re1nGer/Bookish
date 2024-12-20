@@ -15,7 +15,7 @@ const TopicsInterested = () => {
                 <OnboardingProgress stage1={100} stage2={25} />
             </View>
             <View className="w-full my-12 items-center flex-[.2]">
-                <Text className="font-bold text-[#000000] max-w-[349px] w-full text-[24px] text-center leading-[28px] px-16 font-cygrebold">
+                <Text className="font-bold text-[#000000] w-full text-[24px] text-center leading-[28px] px-16 font-cygrebold">
                     Choose areas you are interested in:
                 </Text>
             </View>

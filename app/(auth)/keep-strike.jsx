@@ -13,7 +13,7 @@ const KeepStrike = () => {
                 <OnboardingProgress stage1={16} />
             </View>
             <View className="w-full mt-12 mb-[5px] items-center flex-[.1]">
-                <Text className="font-bold max-w-[181px] text-[24px] mb-[20px] text-center leading-[23px] font-cygrebold">
+                <Text className="font-bold max-w-[181px] text-[24px] mb-[20px] text-center leading-[27px] font-cygrebold">
                     Keep the strike !
                 </Text>
                 <Text className="leading-[19.2px] text-center font-cygreregular max-w-[269px] w-full px-8">

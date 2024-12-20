@@ -38,7 +38,7 @@ const NeverForget = () => {
                 <OnboardingProgress stage1={56} />
             </View>
             <View className="w-full mt-[50px] mb-[38px] items-center">
-                <Text className="font-bold max-w-[165px] text-[24px] text-center leading-[23px] font-cygrebold">
+                <Text className="font-bold max-w-[165px] text-[24px] text-center leading-[27px] font-cygrebold">
                     Never Forget
                 </Text>
             </View>

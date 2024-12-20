@@ -30,7 +30,7 @@ const CommitToGrowing = () => {
                 <OnboardingProgress />
             </View>
             <View className="w-full mt-[77px] mb-[48px] items-center">
-                <Text className="font-bold text-[#000000] max-w-[229px] text-[24px] text-center leading-[23px] font-cygrebold">
+                <Text className="font-bold text-[#000000] max-w-[229px] text-[24px] text-center leading-[27px] font-cygrebold">
                     Commit to growing !
                 </Text>
             </View>
