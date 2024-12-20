@@ -57,6 +57,7 @@ const NoteFilters = () => {
                 <FlatList
                     className="mt-3"
                     horizontal
+                    showsVerticalScrollIndicator={false}
                     data={noteFilter.books}
                     renderItem={({ item }) =>
                         <SelectedBookChip

@@ -127,6 +127,7 @@ const LibraryFilters = () => {
             <AuthorsDropdown />
             { bookFilter.authors && (
                 <FlatList
+                    showsHorizontalScrollIndicator={false}
                     className="mt-3"
                     horizontal
                     data={bookFilter.authors}

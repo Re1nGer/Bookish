@@ -44,12 +44,13 @@ const Trending = ({ videos }) => {
 
     return (
         <FlatList
+            horizontal
             data={videos}
+            showsHorizontalScrollIndicator={false}
             keyExtractor={(item) => item.id}
             renderItem={({item}) => (
                 <TrendItem activeItem={activeItem} item={item} />
             )}
-            horizontal
         />
     )
 }

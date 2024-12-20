@@ -205,6 +205,7 @@ const Library = () => {
             <FlatList
                 className="flex-1 mx-5 mt-5"
                 data={books}
+                showsVerticalScrollIndicator={false}
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={10}
                 updateCellsBatchingPeriod={50}

@@ -108,6 +108,7 @@ const QuoteToConnect = () => {
                 <FlatList
                     className="mx-5 flex-1"
                     data={quotes}
+                    showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => <QuoteCard
                         book={item.book}
                         text={item.text}

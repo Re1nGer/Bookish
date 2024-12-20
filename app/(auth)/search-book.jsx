@@ -140,6 +140,7 @@ const SearchBook = () => {
             <View className="flex-1">
                 <FlatList
                     data={data}
+                    showsVerticalScrollIndicator={false}
                     keyExtractor={(item) => item.id}
                     renderItem={(bookItem) => <BookResult {...bookItem.item} key={bookItem.item.id} />}
                     ListEmptyComponent={() => 
