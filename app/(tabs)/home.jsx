@@ -11,7 +11,7 @@ const Home = () => {
 
 
   return <SafeAreaView className="bg-[#F7F7F7]" style={{ flex: 1 }}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <ThisWeekStatistics />
         <CurrentBook />
         <BookCalendar />
@@ -31,7 +31,7 @@ export default Home
 const PersonalizedChallenges = () => {
   return <View className="my-7 mx-3">
     <Text className="font-cygrebold mb-4 font-bold text-[22px] leading-[26.4px] text-[#000000]">Personolized Challenges</Text>
-    <ScrollView horizontal>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <Challenge title={'Success'} bottomLabel={'28-day challenge'} containerStyles={'mr-4'} />
       <Challenge title={'Morning Routine'} bottomLabel={'10-day challenge'} />
     </ScrollView>
@@ -61,7 +61,7 @@ const BrutalistIcon = () => {
 const CollectionForYou = () => {
   return <View className="mt-7 mx-3">
     <Text className="font-cygrebold mb-4 font-bold text-[22px] leading-[26.4px] text-[#000000]">Collections For You</Text>
-    <ScrollView horizontal>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <CollectionItem icon={'1'} title={'Dopamine Detox Guide'} desc={'No more scrolling addiction'} containerStyles={'mr-4'} />
       <CollectionItem icon={'2'} title={'TOP - 10'} desc={'To Know History Inside Out'} />
     </ScrollView>
@@ -97,7 +97,7 @@ const ToBoostIntelligence = () => {
 
   return <View className="mx-3 mt-7 max-h-[300px]">
     <Text className="font-cygrebold mb-4 font-bold text-[22px] leading-[26.4px] text-[#000000]">To Boost Intelligence</Text>
-    <ScrollView horizontal>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <Book
         src={images.book1}
         title={'The Body Keeps Th...'}
@@ -131,7 +131,7 @@ const Book = ({ src, title, containerStyles }) => {
 const Categories = () => {
   return <View className="mx-3 mt-10">
     <Text className="font-cygrebold mb-4 font-bold text-[22px] leading-[26.4px] text-[#000000]">Categories You Would Like</Text>
-    <ScrollView horizontal>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <Category icon={'psychology'} title={'Psychology'} containerStyles={'mr-2.5'} />
       <Category icon={'fantasy'} title={'Fantasy'} />
     </ScrollView>
@@ -276,7 +276,7 @@ const CurrentBook = () => {
 const PersonalPlan = () => {
   return <View className="mt-5 mx-3 flex-row bg-[#1C1C1C] items-center rounded-[15px] max-h-[114px] h-full px-5 justify-between">
     <LaptopIcon />
-    <Text className="text-[#FFFFFF] font-cygrebold text-[22px] leading-[21px] font-bold max-w-[145px]">
+    <Text className="text-[#FFFFFF] font-cygrebold text-[22px] leading-[25px] font-bold max-w-[145px]">
       Your Personal Reading Plan
     </Text>
   </View>;
