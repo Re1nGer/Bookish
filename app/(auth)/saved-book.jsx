@@ -156,7 +156,7 @@ const SavedBook = () => {
                 <Image source={getBookImage()} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" />
                 <View className="relative">
                     <Text className="text-black text-[18px] mb-0.5 leading-[21.6px] font-cygrebold max-w-[150px]" numberOfLines={1} ellipsizeMode='tail'>{title}</Text>
-                    <Text className="text-black text-[12px] leading-[14.4px] font-cygreregular mb-5">{author}</Text>
+                    <Text className="text-black text-[12px] leading-[14.4px] font-cygreregular mb-5 max-w-[150px]" numberOfLines={2} ellipsizeMode="tail">{author}</Text>
                     <BookStatusPicker
                         setSelectedStatus={setSelectedStatus}
                         selectedStatus={selectedStatus}
