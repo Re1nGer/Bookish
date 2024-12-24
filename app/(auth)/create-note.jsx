@@ -4,15 +4,15 @@ import {
     TouchableOpacity,
     TextInput,
     Pressable,
-    StyleSheet,
     ScrollView,
     KeyboardAvoidingView,
-    Platform
+    Platform,
+    FlatList
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useState, useRef, useEffect, useContext } from "react";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import Genre from "../../components/Genre";
 import { QuoteStarsIcon } from "../../components/Svg";
 import BookBottomDrawer from "../../components/BottomDrawer";
@@ -21,6 +21,7 @@ import FormField from '../../components/FormField';
 import { UserContext } from "../../context/UserContext";
 import QuoteCard from "../../components/QuoteCard";
 import { Alert } from 'react-native';
+import axios from '../../network/axios';
 
 
 
@@ -46,11 +47,9 @@ const CreateNote = () => {
 
     const inputRef = useRef(null);
 
+    const { id } = useLocalSearchParams();
+
     const [selection, setSelection] = useState({ start: 0, end: 0 });
-
-    const [isFocused, setIsFocused] = useState(false);
-
-    const [boldSelected, setBoldSelected] = useState(false);
 
     const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
 
@@ -58,11 +57,19 @@ const CreateNote = () => {
 
     const [isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen] = useState(false);
 
+    const [noteTypes, setNoteTypes] = useState([]);
+
+    const [noteTypesSelected, setNoteTypesSelected] = useState({});
+
     const { note, setNote } = useContext(UserContext);
 
     const handleSelectionChange = (event) => {
         setSelection(event.nativeEvent.selection);
     };
+
+    const getSelectedNoteTypeId = () => {
+        return Object.keys(noteTypesSelected).find(id => noteTypesSelected[id] === true);
+    }
 
     const handleQuoteDelete = () => {
         Alert.alert(
@@ -84,37 +91,44 @@ const CreateNote = () => {
         );
     }
 
-    const [colors, setColors] = useState({
-        black: true,
-        orange: false,
-        lightYellow: false,
-        brightYellow: false,
-        green: false,
-        blue: false,
-        violet: false,
-        pink: false,
-        turquoise: false,
-        red: false,
-        brown: false,
-        oliveGreen: false
-    });
+    const handleSaveNote = async () => {
+        try {
+            await axios.post(`books/${id}/note`, {
+                content: text,
+                typeId: getSelectedNoteTypeId(),
+                //TODO: to add collections ids, quoteId, repetition groups id
+            });
+            router.back();
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-    const FormatButton = ({ icon, onPress, label, containerStyles }) => (
-        <TouchableOpacity 
-            className={`bg-[#2B2B2B] rounded-[7px] p-2 ${containerStyles}`}
-            onPress={onPress}
-            accessibilityLabel={label}
-        >
-            <MaterialIcons name={icon} size={24} color="#fff" />
-        </TouchableOpacity>
-    );
+    const fetchNoteTypes = async () => {
+        try {
+            const { data } = await axios.get('users/note/type');
+            setNoteTypes(data);
+
+            //#[{id: bool}]
+            const noteTypesSelected =
+                Object.fromEntries(data.map(item => [item.id, false]));
+
+            setNoteTypesSelected(noteTypesSelected);
+
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchNoteTypes();
+    }, [])
 
     useEffect(() => {
         inputRef.current?.focus();
 
         return () => {
             setNote({
-                collections: [],
                 groups: [],
                 quote: null,
                 text: ''
@@ -122,36 +136,6 @@ const CreateNote = () => {
         }
     }, [])
 
-    const handleBoldPress = () => {
-
-        setBoldSelected(prev => !prev);
-
-        const { start, end } = selection;
-        
-        // If text is selected, wrap it in bold syntax
-        if (start !== end) {
-
-        const selectedText = text.slice(start, end);
-
-        const newText = 
-            text.slice(0, start) + 
-            `**${selectedText}**` + 
-            text.slice(end);
-        
-        setText(newText);
-
-        } else {
-            // If no text is selected, insert bold markers and place cursor between them
-            const newText = 
-                text.slice(0, start) + 
-                '****' + 
-                text.slice(end);
-            
-            setText(newText);
-            // Move cursor between asterisks
-            setSelection({ start: start + 2, end: start + 2 });
-        }
-    };
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full max-h-full">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -164,6 +148,7 @@ const CreateNote = () => {
                     <Text className="text-black font-cygrebold text-[22px] font-bold">Create Note</Text>
                 </View>
                 <TouchableOpacity
+                    onPress={async () => await handleSaveNote()}
                     className="bg-primary rounded-[30px] flex-1 mt-2.5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full py-2 px-4">
                         <Text className="leading-[19.2px] text-[#fff] font-cygrebold">Save</Text>
                 </TouchableOpacity>
@@ -186,105 +171,19 @@ const CreateNote = () => {
                         <Text className="text-white pl-9 font-cygrebold text-[18px]">Old</Text>
                     </TouchableOpacity>
             </BookBottomDrawer>
-            <BookBottomDrawer
-                height="55%"
-                isBottomSheetOpen={isNoteDrawerOpen}
-                setIsBottomSheetOpen={setIsNoteDrawerOpen}
-                containerStyles={'pb-0'}
-            >
-                    <Text className="font-cygrebold text-[22px] mt-9 leading-[26.4px] text-center">Choose Note’s Type</Text>
-                    <TouchableOpacity className="bg-[#519999] mt-7 flex-row justify-start pl-6 rounded-[15px] mb-2 max-h-[56px] items-center h-full w-full">
-                        <Fontisto name="quote-a-left" size={20} color="white" />
-                        <Text className="text-white pl-9 font-cygrebold text-[18px]">Thought</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="bg-[#03679A] flex-row justify-start pl-6 rounded-[15px] mb-2 max-h-[56px] items-center w-full h-full">
-                        <Fontisto name="quote-a-right" size={20} color="white" />
-                        <Text className="text-white pl-9 font-cygrebold text-[18px]">Question</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="bg-[#EEB63C] flex-row justify-start pl-6 rounded-[15px] mb-2 max-h-[56px] items-center w-full h-full">
-                        <Fontisto name="quote-a-right" size={20} color="white" />
-                        <Text className="text-white pl-9 font-cygrebold text-[18px]">Summary</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="bg-[#F8846A] flex-1 flex-row justify-start mb-10 pl-6 rounded-[15px] max-h-[56px] items-center w-full h-full">
-                        <Fontisto name="quote-a-right" size={20} color="white" />
-                        <Text className="text-white pl-9 font-cygrebold text-[18px]">Fact</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => setIsNoteTypeDrawerOpen(true)}
-                        className="bg-black mb-2 justify-center rounded-[34px] max-h-[56px] items-center w-full h-full">
-                        <Text className="text-white font-cygrebold text-[18px] text-center">Add New Type</Text>
-                    </TouchableOpacity>
-            </BookBottomDrawer>
-            <BookBottomDrawer
-                height="80%"
-                isBottomSheetOpen={isNoteTypeDrawerOpen}
-                setIsBottomSheetOpen={setIsNoteTypeDrawerOpen}
-                containerStyles={'pb-0'}
-            >
-                    <KeyboardAvoidingView
-                        className="w-full"
-                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                        style={{ flex: 1 }}
-                    >
-                    <Text className="font-cygrebold text-[22px] mt-9 leading-[26.4px] text-center">Create New Type</Text>
-
-                    <View className="my-6 rounded-[20px] justify-center border-[.5px] px-9 max-h-[137px] h-full">
-                        <View className="flex-row mb-6">
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, black: !colors["black"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#000] mr-5 ${colors["black"] ? 'bg-[#000]' : ''}`}></TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, orange: !colors["orange"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#F8846A] mr-5 ${colors["orange"] ? 'bg-[#F8846A]' : ''}`}></TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, lightYellow: !colors["lightYellow"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#FFCA57] mr-5 ${colors["lightYellow"] ? 'bg-[#FFCA57]' : ''}`}></TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, brightYellow: !colors["brightYellow"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#FFF946] mr-5 ${colors["brightYellow"] ? 'bg-[#FFF946]' : ''}`}></TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, green: !colors["green"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#1BBA3B] mr-5 ${colors["green"] ? 'bg-[#1BBA3B]' : ''}`}></TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, blue: !colors["blue"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#4D81E0] mr-5 ${colors["blue"] ? 'bg-[#4D81E0]' : ''}`}></TouchableOpacity>
-                        </View>
-                        <View className="flex-row">
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, violet: !colors["violet"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#633EE9] mr-5 ${colors["violet"] ? 'bg-[#633EE9]' : ''}`}></TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, pink: !colors["pink"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#F473C0] mr-5 ${colors["pink"] ? 'bg-[#F473C0]' : ''}`}></TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, turquoise: !colors["turquoise"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#7AD4DE] mr-5 ${colors["turquoise"] ? 'bg-[#7AD4DE]' : ''}`}></TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, red: !colors["red"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#9D1414] mr-5 ${colors["red"] ? 'bg-[#9D1414]' : ''}`}></TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, brown: !colors["brown"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#6F3416] mr-5 ${colors["brown"] ? 'bg-[#6F3416]' : ''}`}></TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => setColors(_ => ({...defaultColors, oliveGreen: !colors["oliveGreen"]}))}
-                                className={`border-[2px] rounded-[6px] w-[29px] h-[28px] border-[#65875A] mr-5 ${colors["oliveGreen"] ? 'bg-[#65875A]' : ''}`}></TouchableOpacity>
-                        </View>
-                    </View>
-                        <FormField
-                            title={'Name'}
-                            placeholder={'Enter name for this type'}   
-                            otherStyles={'mb-5'}
-                        />
-                        <FormField
-                            title={'Icon'}
-                            placeholder={'Enter emoji for this type'}   
-                            otherStyles={'flex-1'}
-                        />
-                    </KeyboardAvoidingView>
-                    <TouchableOpacity className="bg-black mb-4 justify-center rounded-[34px] max-h-[56px] items-center w-full h-full">
-                        <Text className="text-white font-cygrebold text-[18px] text-center">Save</Text>
-                    </TouchableOpacity>
-            </BookBottomDrawer>
+            <NoteTypeDrawer
+                noteTypes={noteTypes}
+                setNoteTypes={setNoteTypes} 
+                isNoteDrawerOpen={isNoteDrawerOpen}
+                setIsNoteDrawerOpen={setIsNoteDrawerOpen}
+                setIsNoteTypeDrawerOpen={setIsNoteTypeDrawerOpen}
+                setNoteTypesSelected={setNoteTypesSelected}
+                noteTypesSelected={noteTypesSelected}
+            />
+            <CreateNoteTypeDrawer
+                isNoteTypeDrawerOpen={isNoteTypeDrawerOpen}
+                setIsNoteTypeDrawerOpen={setIsNoteTypeDrawerOpen}
+            />
             <ScrollView>
                 <Pressable
                     onPress={() => inputRef.current?.focus()}
@@ -304,69 +203,12 @@ const CreateNote = () => {
                         placeholder="Enter your note here"
                         ref={inputRef}
                         onChangeText={(e) => setText(e)}
-                        onBlur={() => setIsFocused(false)}
-                        onFocus={() => setIsFocused(true)}
                         multiline
                         className="py-4 w-full max-h-[317px]"
                         onSelectionChange={handleSelectionChange}
                         selection={selection}
                     />
                 </Pressable>
-    {/*             { isFocused && (
-                    <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        contentInsetAdjustmentBehavior="automatic"
-                        className="mx-5 my-5 absolute bottom-0"
-                    >
-                        <FormatButton 
-                            icon="format-bold" 
-                            onPress={handleBoldPress}
-                            label="Bold"
-                            containerStyles={'mr-2.5'}
-                        />
-                        <FormatButton 
-                            icon="format-italic" 
-                            label="Italic"
-                            containerStyles={'mr-2.5'}
-                        />
-                        <FormatButton 
-                            icon="format-list-bulleted" 
-                            label="Bullet list"
-                            containerStyles={'mr-2.5'}
-                        />
-                        <FormatButton 
-                            icon="format-list-numbered" 
-                            label="Numbered list"
-                            containerStyles={'mr-2.5'}
-                        />
-                        <FormatButton 
-                            icon="link" 
-                            label="Link"
-                            containerStyles={'mr-2.5'}
-                        />
-                        <FormatButton 
-                            icon="title" 
-                            label="Heading"
-                            containerStyles={'mr-2.5'}
-                        />
-                        <FormatButton 
-                            icon="format-quote" 
-                            label="Quote"
-                            containerStyles={'mr-2.5'}
-                        />
-                        <FormatButton 
-                            icon="title" 
-                            label="Heading"
-                            containerStyles={'mr-2.5'}
-                        />
-                        <FormatButton 
-                            icon="format-quote" 
-                            label="Quote"
-                            containerStyles={'mr-2.5'}
-                        />
-                    </ScrollView>
-                ) } */}
                 <View className="mt-9 mx-5 max-h-[160px]">
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Spaced Repetition Groups</Text>
                     <View className="p-5 border bg-black max-h-[126px] w-full h-full justify-between flex-row items-center rounded-[20px]">
@@ -425,3 +267,248 @@ const CreateNote = () => {
 
 
 export default CreateNote;
+
+
+
+const NoteTypeDrawer = ({ 
+    noteTypes,
+    isNoteDrawerOpen,
+    setIsNoteDrawerOpen,
+    setIsNoteTypeDrawerOpen,
+    setNoteTypesSelected,
+    noteTypesSelected
+ }) => {
+
+
+    const handleChoseNoteType = (id) => {
+        //update single entry, the rest set to false
+        setNoteTypesSelected((prev) => {
+        const resetObj = Object.fromEntries(Object.keys(prev).map(key => [key, false]));
+            return {...resetObj, [id]: !prev[id]};
+        });
+    }
+
+    return (
+            <BookBottomDrawer
+                height="55%"
+                isBottomSheetOpen={isNoteDrawerOpen}
+                setIsBottomSheetOpen={setIsNoteDrawerOpen}
+                containerStyles={'pb-0 flex-1'}
+            >
+                    <Text className="font-cygrebold text-[22px] mt-9 leading-[26.4px] text-center mb-5">Choose Note’s Type</Text>
+                    <FlatList
+                        className="w-full mx-4 flex-1"
+                        data={noteTypes}
+                        ListEmptyComponent={() => <Text className="text-[20px] font-cygrebold">No Note Types Yet</Text>}
+                        renderItem={({ item }) =>
+                            <NoteType
+                                key={item.id}
+                                name={item.name}
+                                icon={item.icon}
+                                bgColor={item.bgColor}
+                                selected={noteTypesSelected[item.id]}
+                                onPress={() => handleChoseNoteType(item.id)}
+                            />}
+                    />
+                    <TouchableOpacity
+                        onPress={() => setIsNoteTypeDrawerOpen(true)}
+                        className="bg-black mb-2 justify-center rounded-[34px] max-h-[56px] items-center w-full h-full">
+                        <Text className="text-white font-cygrebold text-[18px] text-center">Add New Type</Text>
+                    </TouchableOpacity>
+            </BookBottomDrawer>
+        );
+}
+
+const NoteType = ({ name, icon, bgColor, selected, onPress }) => {
+    return (
+        <TouchableOpacity
+                onPress={onPress}
+                style={{backgroundColor: bgColor}}
+                className={`mt-2 flex-row justify-start pl-6 flex-1 mb-2 rounded-[15px] h-[56px] items-center ${selected ? 'border-black border' : ''}`}>
+            <Text className="text-[20px]">{icon}</Text>
+            <Text className="text-white pl-9 font-cygrebold text-[18px]">{name}</Text>
+        </TouchableOpacity>
+    );
+}
+
+const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen }) => {
+
+    const [name, setName] = useState('');
+    const [icon, setIcon] = useState('');
+    const [error, setError] = useState({ icon: '' });
+
+    const [colors, setColors] = useState({
+        black: true,
+        orange: false,
+        lightYellow: false,
+        brightYellow: false,
+        green: false,
+        blue: false,
+        violet: false,
+        pink: false,
+        turquoise: false,
+        red: false,
+        brown: false,
+        oliveGreen: false
+    });
+
+    const getColorHesh = (color) => {
+        switch(color) {
+            case 'black':
+                return '#000';
+            case 'orange':
+                return '#F8846A';
+            case 'lightYellow':
+                return '#FFCA57';
+            case 'brightYellow':
+                return '#FFF946';
+            case 'green':
+                return '#1BBA3B';
+            case 'blue':
+                return '#4D81E0';
+            case 'violet':
+                return '#633EE9';
+            case 'pink':
+                return '#F473C0';
+            case 'turquoise':
+               return '#7AD4DE';
+            case 'red':
+               return '#9D1414';
+            case 'brown':
+                return '#6F3416';
+            case 'oliveGreen':
+                return '#65875A';
+            default:
+                return '#fff';
+        }
+    }
+
+    const getColor = () => {
+        return Object.keys(colors).find(key => colors[key] === true);
+    }
+
+    const handleSaveNoteType = async () => {
+        console.log(getColorHesh(getColor()), name, icon)
+        try {
+            await axios.post('users/note/type', {
+                color: getColorHesh(getColor()),
+                name: name,
+                icon: icon
+            });
+            setIsNoteTypeDrawerOpen(false);
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    const handleNameChange = (name) => {
+        setName(name);
+    }
+
+    const handleIconChange = (iconArg) => {
+        if (isLetter(iconArg.at(-1))) {
+            //emoji takes up 2 letter spaces, so we should should take into account for two letter case
+            setIconError('input should be an icon')
+        } 
+        else {
+            setIconError('')
+        }
+        setIcon(iconArg);
+    }
+
+    const getIconError = () => {
+        return error['icon']
+    }
+
+    const setIconError = (error) => {
+        setError(prev => ({...prev, icon: error}));
+    }
+
+    const isLetter = (char) => {
+        return /^\p{L}$/u.test(char);
+    };
+
+    const ColorButton = ({ color, borderColor, bgColor }) => (
+        <TouchableOpacity
+            onPress={() => setColors(() => ({...defaultColors, [color]: !colors[color]}))}
+            className={`border-[2px] rounded-[6px] w-[29px] h-[28px] mr-5`}
+            style={{ backgroundColor: colors[color] ? bgColor : '', borderColor: borderColor }}
+        />
+    );
+
+    return (
+        <BookBottomDrawer
+                height="80%"
+                isBottomSheetOpen={isNoteTypeDrawerOpen}
+                setIsBottomSheetOpen={setIsNoteTypeDrawerOpen}
+                containerStyles={'pb-0'}
+            >
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{ flex: 1 }}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
+            >
+                <ScrollView 
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <View style={{ flex: 1, padding: 16 }}>
+                        <Text className="font-cygrebold text-[22px] mt-9 leading-[26.4px] text-center">
+                            Create New Type
+                        </Text>
+
+                        <View className="my-6 rounded-[20px] justify-center border-[.5px] px-9 py-4">
+                            <View className="flex-row mb-6">
+                                <ColorButton color="black" borderColor="#000" bgColor="#000" />
+                                <ColorButton color="orange" borderColor="#F8846A" bgColor="#F8846A" />
+                                <ColorButton color="lightYellow" borderColor="#FFCA57" bgColor="#FFCA57" />
+                                <ColorButton color="brightYellow" borderColor="#FFF946" bgColor="#FFF946" />
+                                <ColorButton color="green" borderColor="#1BBA3B" bgColor="#1BBA3B" />
+                                <ColorButton color="blue" borderColor="#4D81E0" bgColor="#4D81E0" />
+                            </View>
+                            <View className="flex-row">
+                                <ColorButton color="violet" borderColor="#633EE9" bgColor="#633EE9" />
+                                <ColorButton color="pink" borderColor="#F473C0" bgColor="#F473C0" />
+                                <ColorButton color="turquoise" borderColor="#7AD4DE" bgColor="#7AD4DE" />
+                                <ColorButton color="red" borderColor="#9D1414" bgColor="#9D1414" />
+                                <ColorButton color="brown" borderColor="#6F3416" bgColor="#6F3416" />
+                                <ColorButton color="oliveGreen" borderColor="#65875A" bgColor="#65875A" />
+                            </View>
+                        </View>
+
+                        <View style={{ flex: 1 }}>
+                            <FormField
+                                value={name}
+                                handleChangeText={handleNameChange}
+                                title={'Name'}
+                                placeholder={'Enter name for this type'}   
+                                otherStyles={'mb-5'}
+                            />
+                            <FormField
+                                value={icon}
+                                maxLength={2}
+                                handleChangeText={handleIconChange}
+                                title={'Icon'}
+                                placeholder={'Enter emoji for this type'}   
+                                otherStyles={'mb-5'}
+                                error={getIconError()}
+                                errorText={getIconError()}
+                            />
+                        </View>
+                    </View>
+                </ScrollView>
+
+                <View style={{ padding: 16 }}>
+                    <TouchableOpacity
+                        onPress={handleSaveNoteType} 
+                        className="bg-black justify-center rounded-[34px] h-[56px] items-center w-full"
+                    >
+                        <Text className="text-white font-cygrebold text-[18px] text-center">
+                            Save
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
+        </BookBottomDrawer>
+    );
+}

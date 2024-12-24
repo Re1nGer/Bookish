@@ -7,23 +7,21 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams, useFocusEffect } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
 import BookStatusPicker from "../../components/ReadStatusDropdown";
 import SliderCounter from "../../components/SliderCounter";
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import SwipeableWrapper from "../../components/SwipeableWrapper";
 import CircularProgress from "../../components/CircleProgress";
-import Feather from '@expo/vector-icons/Feather';
 import { QuoteStarsIcon } from "../../components/Svg";
 import Genre from "../../components/Genre";
 import { TimerIcon, NoteIcon, QuoteIcon } from "../../components/Svg";
-import { UserContext } from "../../context/UserContext";
 import axios from '../../network/axios';
 
 
-//extract out into utils
+//TODO: extract out into utils
 const statusOptions = {
     'To Read': 0,
     'Reading': 1,
@@ -48,11 +46,6 @@ const statusName = {
     4: 'Paused',
 }
 
-const bookNameToStatus = (status) => {
-
-  // Return the integer value or -1 if status is not found
-  return statusOptions[status];
-};
 
 const bookStatusToName = (status) => {
     return statusName[status]
@@ -78,7 +71,8 @@ const SavedBook = () => {
         categories: [],
         imageUrl: '',
         status: 0,
-        collections: []
+        collections: [],
+        notes: []
     })
 
     const {
@@ -90,13 +84,14 @@ const SavedBook = () => {
         imageUrl,
         collections,
         startedAt,
-        finishedAt 
+        finishedAt,
+        notes
     } = book;
 
     const [currentPage, setCurrentPage] = useState(book.currentPage);
     const [selectedStatus, setSelectedStatus] = useState(bookStatusToName(book.status));
 
-    const fetchBook = async () => {
+    const fetchBook = useCallback(async () => {
         try {
             const { data } = await axios.get(`/users/book/${id}`);
             setBook(data)
@@ -106,12 +101,13 @@ const SavedBook = () => {
         catch(error) {
             console.log(error);
         }
-    }
+    }, [])
 
-
-    useLayoutEffect(() => {
-        fetchBook();
-    }, [id])
+    useFocusEffect(
+        useCallback(() => {
+            fetchBook()
+        }, [fetchBook])
+    );
 
 
     //console.log(book)
@@ -122,7 +118,6 @@ const SavedBook = () => {
 
 
     const updateStatus = async (status) => {
-
         try {
             await axios.put(`/users/book/${id}/status?statusId=${statusOptions[status]}`);
             setBook(prev => ({...prev, status: statusOptions[status]}))
@@ -134,7 +129,7 @@ const SavedBook = () => {
 
     //console.log(book)
 
-    return <SafeAreaView className="bg-[#F7F7F7] h-full">
+    return <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
             <TouchableOpacity
                 className="flex-1"
@@ -198,33 +193,20 @@ const SavedBook = () => {
                     <Text className="text-primary underline font-cygrebold leading-[19.2px]">Show more</Text>
                 </TouchableOpacity>
             </View>
-
+{/*             Flat list doesn't really fit in, opted in for scroll view; gotta test performance for bigger amount of notes */}
             <ScrollView 
-                horizontal
-                className="mx-5">
+                className="mx-5 max-h-[250px] h-full"
+                initialNumToRender={10}
+                horizontal>
                     <TouchableOpacity
-                        onPress={() => router.push('create-note')}
-                        className="w-[97px] bg-primary items-center justify-center h-[97px] rounded-[20px] mr-3">
+                        onPress={() => router.push({pathname: 'create-note', params: { id }})}
+                        className="w-[97px] flex-1 bg-primary items-center justify-center max-h-[97px] rounded-[20px] mr-3">
                         <Text className="text-white text-[50px] pb-3">+</Text>
                     </TouchableOpacity>
-                    <View className="flex-row">
-                        <View className="max-w-[361px] w-full max-h-[267px] h-full border-[.5px] rounded-[20px] p-5">
-                            <View className="flex-row items-center mb-4">
-                                <View className="p-2 bg-primary rounded-[13px] max-h-[40px] h-full max-w-[130px] flex-row items-center justify-center mr-2.5">
-                                    <Feather name="book" size={13} color="white" style={{ marginRight: 5 }} />
-                                    <Text className="text-sm text-[#fff] font-cygresemibold leading-[16.8px]">Make It Stick</Text>
-                                </View>
-                                <View className="p-2 bg-[#EEEEEE] rounded-[13px] max-h-[40px] h-full">
-                                    <Text className="text-sm text-black font-cygresemibold leading-[16.8px]">30.09.2024</Text>
-                                </View>
-                            </View>
-                            <View className="rounded-[8px] bg-[#EEEEEE] pt-3 px-4 max-w-[327px] max-h-[148px] h-full w-full">
-                                <Text className="text-black font-cygreregular leading-[19.2px] font-medium">
-                                    One of the key strategies discussed in Make It Stick is the value of interleaving. Unlike traditional studying, where topics or skills are practiced in blocks, interleaving involves mixing different topics or problem types within a single session. 
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
+                    { notes.map(item =>
+                         <Note key={item.id}
+                         {...item}
+                        containerStyles={'mr-4'} />) }
             </ScrollView>
 
             <View className="mx-5 mb-3 mt-8 flex-row justify-between">
@@ -273,6 +255,32 @@ const SavedBook = () => {
 
         </ScrollView>
     </SafeAreaView>
+}
+
+
+const Note = ({ content, typeName, color, icon, createdAt, containerStyles }) => {
+    return (
+        <View className={`flex-row flex-1 w-full max-w-[361px] ${containerStyles}`}>
+            <View className="w-full max-h-[267px] h-full border-[.5px] rounded-[20px] p-5">
+                <View className="flex-row items-center mb-4">
+                    <View
+                        style={{backgroundColor: color}}
+                        className="p-2 rounded-[13px] max-h-[40px] h-full flex-row items-center justify-center mr-2.5">
+                        <Text className="text-[12px] mr-0.5">{icon}</Text>
+                        <Text className="text-sm text-[#fff] font-cygresemibold leading-[16.8px]" numberOfLines={1} ellipsizeMode="tail">{typeName}</Text>
+                    </View>
+                    <View className="p-2 bg-[#EEEEEE] rounded-[13px] max-h-[40px] h-full">
+                        <Text className="text-sm text-black font-cygresemibold leading-[16.8px]">{new Date(createdAt)?.toLocaleDateString('de-DE') ?? '30.09.2024'}</Text>
+                    </View>
+                </View>
+                <View className="rounded-[8px] bg-[#EEEEEE] pt-3 px-4 max-w-[327px] max-h-[148px] h-full w-full">
+                    <Text className="text-black font-cygreregular leading-[19.2px] font-medium">
+                        {content}
+                    </Text>
+                </View>
+            </View>
+        </View>
+    );
 }
 
 const TotalProgress = ({ totalPages, currentPage }) => {

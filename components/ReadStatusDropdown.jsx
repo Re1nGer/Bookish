@@ -53,7 +53,7 @@ const BookStatusDropdown = ({ statusOptions, onSelect, selectedStatus, setSelect
         <>
           {statusOptions.map((status) => {
               if (status === selectedStatus) {
-                  return <></>;
+                  return;
               }
               return <TouchableOpacity
                   key={status}

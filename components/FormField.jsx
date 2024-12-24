@@ -16,6 +16,7 @@ const FormField = ({
     error,
     errorText,
     hintText,
+    maxLength,
     ...rest
   }) => {
 
@@ -30,6 +31,7 @@ const FormField = ({
           value={value}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor ?? "#49454F"}
+          maxLength={maxLength}
           onChangeText={handleChangeText}
           secureTextEntry={title.includes('Password') && !showPassword}
          />
