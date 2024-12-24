@@ -195,14 +195,18 @@ const SavedBook = () => {
             </View>
 {/*             Flat list doesn't really fit in, opted in for scroll view; gotta test performance for bigger amount of notes */}
             <ScrollView 
-                className="mx-5 max-h-[250px] h-full"
+                showsHorizontalScrollIndicator={false}
+                className="mx-5 max-h-[250px]"
+                contentInsetAdjustmentBehavior="automatic"
                 initialNumToRender={10}
                 horizontal>
-                    <TouchableOpacity
-                        onPress={() => router.push({pathname: 'create-note', params: { id }})}
-                        className="w-[97px] flex-1 bg-primary items-center justify-center max-h-[97px] rounded-[20px] mr-3">
-                        <Text className="text-white text-[50px] pb-3">+</Text>
-                    </TouchableOpacity>
+                    <View className="flex-1">
+                        <TouchableOpacity
+                            onPress={() => router.push({pathname: 'create-note', params: { id }})}
+                            className="w-[97px] bg-primary items-center justify-center max-h-[97px] h-full rounded-[20px] mr-3">
+                            <Text className="text-white text-[50px] pb-3">+</Text>
+                        </TouchableOpacity>
+                    </View>
                     { notes.map(item =>
                          <Note key={item.id}
                          {...item}
