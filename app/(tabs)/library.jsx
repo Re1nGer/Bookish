@@ -177,29 +177,29 @@ const Library = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View className="mx-5 flex-row mt-5">
+            <View className="mx-5 flex-row justify-center items-center mt-5">
                 <BookStatBox
                     statName={'To Read'}
                     count={booksToRead}
-                    containerStyles={'mr-2'} 
-                    onPress={() =>
+                    containerStyles={'mr-1'} 
+/*                     onPress={() =>
                          setCurrentReadingStatus(prev =>
-                             ({...defaultReadingStatuses, toRead: !prev['toRead'] }))}
+                             ({...defaultReadingStatuses, toRead: !prev['toRead'] }))} */
                 />
                 <BookStatBox
                     statName={'Reading'}
                     count={booksReading}
-                    containerStyles={'mr-2'} 
-                    onPress={() =>
+                    containerStyles={'mr-1'} 
+/*                     onPress={() =>
                          setCurrentReadingStatus(prev =>
-                             ({...defaultReadingStatuses, reading: !prev['reading'] }))}
+                             ({...defaultReadingStatuses, reading: !prev['reading'] }))} */
                 />
                 <BookStatBox
                     statName={'Finished'}
                     count={booksFinished}
-                    onPress={() =>
+/*                     onPress={() =>
                          setCurrentReadingStatus(prev =>
-                             ({...defaultReadingStatuses, finished: !prev['finished'] }))}
+                             ({...defaultReadingStatuses, finished: !prev['finished'] }))} */
                 />
             </View>
             <FlatList

@@ -137,7 +137,7 @@ const CreateNote = () => {
     }, [])
 
 
-    return <SafeAreaView className="bg-[#F7F7F7] h-full max-h-full">
+    return <SafeAreaView className="bg-[#F7F7F7] h-full">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
                 <View className="flex-row items-center mt-2">
                     <TouchableOpacity
@@ -431,7 +431,7 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen })
     const ColorButton = ({ color, borderColor, bgColor }) => (
         <TouchableOpacity
             onPress={() => setColors(() => ({...defaultColors, [color]: !colors[color]}))}
-            className={`border-[2px] rounded-[6px] w-[29px] h-[28px] mr-5`}
+            className={`border-[2px] rounded-[6px] max-w-[29px] w-full h-[28px]`}
             style={{ backgroundColor: colors[color] ? bgColor : '', borderColor: borderColor }}
         />
     );
@@ -449,16 +449,18 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen })
                 keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
             >
                 <ScrollView 
-                    contentContainerStyle={{ flexGrow: 1 }}
+                    className="flex-1"
+                    contentInsetAdjustmentBehavior="automatic"
                     keyboardShouldPersistTaps="handled"
+                    
                 >
-                    <View style={{ flex: 1, padding: 16 }}>
+                    <View style={{ flex: 1 }} className="w-full">
                         <Text className="font-cygrebold text-[22px] mt-9 leading-[26.4px] text-center">
                             Create New Type
                         </Text>
 
-                        <View className="my-6 rounded-[20px] justify-center border-[.5px] px-9 py-4">
-                            <View className="flex-row mb-6">
+                        <View className="my-6 rounded-[20px] items-center border-[.5px] py-4">
+                            <View className="flex-row mb-6 justify-evenly w-full">
                                 <ColorButton color="black" borderColor="#000" bgColor="#000" />
                                 <ColorButton color="orange" borderColor="#F8846A" bgColor="#F8846A" />
                                 <ColorButton color="lightYellow" borderColor="#FFCA57" bgColor="#FFCA57" />
@@ -466,7 +468,7 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen })
                                 <ColorButton color="green" borderColor="#1BBA3B" bgColor="#1BBA3B" />
                                 <ColorButton color="blue" borderColor="#4D81E0" bgColor="#4D81E0" />
                             </View>
-                            <View className="flex-row">
+                            <View className="flex-row justify-evenly w-full">
                                 <ColorButton color="violet" borderColor="#633EE9" bgColor="#633EE9" />
                                 <ColorButton color="pink" borderColor="#F473C0" bgColor="#F473C0" />
                                 <ColorButton color="turquoise" borderColor="#7AD4DE" bgColor="#7AD4DE" />
