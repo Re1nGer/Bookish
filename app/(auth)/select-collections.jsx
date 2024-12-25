@@ -71,10 +71,14 @@ const SelectCollections = () => {
     };
 
     const handleSave = () => {
-        const first = firstHalfCollections.filter(item => item.selected).map(item => ({ id: item.id, name: item.name}))
-        const second = secondHalfCollections.filter(item => item.selected).map(item => ({ id: item.id, name: item.name }));
+        const first = firstHalfCollections.filter(item => item.selected)
+            .map(item => ({ id: item.id, name: item.name}))
+
+        const second = secondHalfCollections.filter(item => item.selected)
+            .map(item => ({ id: item.id, name: item.name }));
+
         const collections = first.concat(second);
-        console.log(collections);
+
         setBook(prev => ({...prev, collections: collections}))
         router.back();
     }
@@ -120,8 +124,8 @@ const SelectCollections = () => {
             </View>
 
 
-            <ScrollView className="px-5" showsVerticalScrollIndicator={false}>
-                <View className="flex-row  w-full">
+            <ScrollView className="mx-5" showsVerticalScrollIndicator={false}>
+                <View className="flex-row justify-between space-x-3 w-full">
                     <View className="w-full flex-[.5]">
                         <NewCollection />
                         { secondHalfCollections.map(item => 
@@ -129,6 +133,7 @@ const SelectCollections = () => {
                                 name={item.name}
                                 onSelected={() => handleSecondHalfSelection(item.id)}
                                 selected={item.selected}
+                                booksCount={item.booksCount}
                         />) }
                     </View>
                     <View className="w-full flex-[.5]">
@@ -136,6 +141,7 @@ const SelectCollections = () => {
                             onSelected={() => handleFirstHalfSelection(item.id)}
                             name={item.name} 
                             selected={item.selected}
+                            booksCount={item.booksCount}
                         />) }
                     </View>
                 </View>
@@ -150,7 +156,7 @@ export default SelectCollections;
 
 const NewCollection = ({ containerStyles }) => {
 
-    return <View className={`bg-primary rounded-[20px] mb-5 justify-between p-4 max-w-[169px] w-full max-h-[174px] ${containerStyles}`}>
+    return <View className={`bg-primary rounded-[20px] mb-4 justify-between p-4 max-w-[169px] flex-[.5] max-h-[174px] ${containerStyles}`}>
         <Text className="font-cygrebold mb-7 text-[22px] leading-[26.4px] font-bold text-[#ffffff]" numberOfLines={2} ellipsizeMode="tail">New Collection</Text>
         <TouchableOpacity
             onPress={() => router.push('/create-collection')}
@@ -161,17 +167,23 @@ const NewCollection = ({ containerStyles }) => {
 }
 
 
-const ExistingCollection = ({ name, selected, onSelected, containerStyles }) => {
+const ExistingCollection = ({ name, booksCount, selected, onSelected, containerStyles }) => {
 
     //push to collection with the name (it should be unique)
-    console.log(selected)
     return (
         <TouchableOpacity
             onPress={onSelected}
-            className={`bg-[#ffffff] mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 ${selected ? 'border-[2px] border-primary': ''} h-full ${containerStyles}`}>
-            <Text
-                className={`font-cygrebold mb-7 text-[22px] leading-[26.4px] font-bold text-[#121F16] ${selected ? 'text-primary' : ''}`}
-                numberOfLines={2} ellipsizeMode="tail">{name}</Text>
+            className={`bg-[#ffffff] relative mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 ${selected ? 'border-[2px] border-primary': ''} h-full ${containerStyles}`}>
+                <View>
+                    <Text
+                        className={`font-cygrebold mb-3 text-[22px] leading-[26.4px] font-bold text-[#121F16] ${selected ? 'text-primary' : ''}`}
+                        numberOfLines={2} ellipsizeMode="tail">{name}</Text>
+                        { booksCount > 0 && (
+                            <View className="bg-[#EEEEEE] self-start rounded-[21px] px-2.5 py-1">
+                                <Text className="text-black text-sm font-medium">{`${booksCount} books`}</Text>
+                            </View>
+                        ) }
+                </View>
             <View
                 className="items-center  self-end bg-[#ffffff] max-w-[61px] bottom-0 relative -right-1 -z-10 max-h-[61px] rounded-full justify-center">
                 <Collection1Icon fill={selected && '#6592E3'} />

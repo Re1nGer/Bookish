@@ -116,6 +116,9 @@ const SavedBook = () => {
        return imageUrl ? { uri:imageUrl } : images.bookPlaceholder  
     }
 
+    const handleNoteRedirect = () => {
+        router.push('create-note')
+    }
 
     const updateStatus = async (status) => {
         try {
@@ -166,7 +169,9 @@ const SavedBook = () => {
                         <TouchableOpacity className="p-3 rounded-full bg-primary">
                             <TimerIcon />
                         </TouchableOpacity>
-                        <TouchableOpacity className="p-3 rounded-full bg-primary">
+                        <TouchableOpacity
+                            onPress={handleNoteRedirect}
+                            className="p-3 rounded-full bg-primary">
                             <NoteIcon />
                         </TouchableOpacity>
                         <TouchableOpacity className="p-3 rounded-full bg-primary">
@@ -191,31 +196,36 @@ const SavedBook = () => {
                 <RecentSession />
             </SwipeableWrapper>
 
-            <View className="mx-5 mb-7 mt-10 flex-row justify-between">
-                <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Notes</Text>
-                <TouchableOpacity>
-                    <Text className="text-primary underline font-cygrebold leading-[19.2px]">Show more</Text>
-                </TouchableOpacity>
-            </View>
 {/*             Flat list doesn't really fit in, opted in for scroll view; gotta test performance for bigger amount of notes */}
-            <ScrollView 
-                showsHorizontalScrollIndicator={false}
-                className="mx-5 max-h-[250px]"
-                contentInsetAdjustmentBehavior="automatic"
-                initialNumToRender={10}
-                horizontal>
-                    <View className="flex-1">
-                        <TouchableOpacity
-                            onPress={() => router.push({pathname: 'create-note', params: { id }})}
-                            className="w-[97px] bg-primary items-center justify-center max-h-[97px] h-full rounded-[20px] mr-3">
-                            <Text className="text-white text-[50px] pb-3">+</Text>
-                        </TouchableOpacity>
-                    </View>
-                    { notes.map(item =>
-                         <Note key={item.id}
-                         {...item}
-                        containerStyles={'mr-4'} />) }
-            </ScrollView>
+
+        { notes?.length > 0 && (
+            <View className="flex-1">
+                <View className="mx-5 mb-7 mt-10 flex-row justify-between">
+                    <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Notes</Text>
+                    <TouchableOpacity>
+                        <Text className="text-primary underline font-cygrebold leading-[19.2px]">Show more</Text>
+                    </TouchableOpacity>
+                </View>
+                <ScrollView 
+                    showsHorizontalScrollIndicator={false}
+                    className="mx-5 max-h-[250px]"
+                    contentInsetAdjustmentBehavior="automatic"
+                    initialNumToRender={10}
+                    horizontal>
+                        <View className="flex-1">
+                            <TouchableOpacity
+                                onPress={() => router.push({pathname: 'create-note', params: { id }})}
+                                className="w-[97px] bg-primary items-center justify-center max-h-[97px] h-full rounded-[20px] mr-3">
+                                <Text className="text-white text-[50px] pb-3">+</Text>
+                            </TouchableOpacity>
+                        </View>
+                        { notes.map(item =>
+                            <Note key={item.id}
+                            {...item}
+                            containerStyles={'mr-4'} />) }
+                </ScrollView>
+            </View>
+            ) }
 
             <View className="mx-5 mb-3 mt-8 flex-row justify-between">
                 <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Quotes</Text>
