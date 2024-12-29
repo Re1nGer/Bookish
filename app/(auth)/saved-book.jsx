@@ -117,7 +117,7 @@ const SavedBook = () => {
     }
 
     const handleNoteRedirect = () => {
-        router.push('create-note')
+        router.push({ pathname: 'create-note', params: { id } })
     }
 
     const updateStatus = async (status) => {
@@ -140,6 +140,7 @@ const SavedBook = () => {
                 <Image source={images.leftArrowIcon} />
             </TouchableOpacity>
             <TouchableOpacity
+                onPress={() => router.push({pathname:'edit-book', params: { id }})}
                 className="bg-primary flex-1 mt-2.5 mr-2.5 max-w-[44px] w-full items-center justify-center max-h-[44px] h-full rounded-[10px]">
                     <MaterialIcons name="edit-note" size={27} color={'#fff'} />
             </TouchableOpacity>

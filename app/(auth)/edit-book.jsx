@@ -1,3 +1,4 @@
+
 import {
     TextInput,
     View,
@@ -29,27 +30,53 @@ const statusMap = {
     'paused': 4
 };
 
+const statusName = {
+    0: 'toRead',
+    1: 'reading',
+    2: 'finished',
+    3: 'gaveUp',
+    4: 'paused',
+}
+
 const bookStatusToInt = (status) => {
 
   // Return the integer value or -1 if status is not found
   return statusMap[status] ?? 0;
 };
 
-const defaultBook = {
-    id: '',
+const transformBookStructure = (originalBook) => {
+
+  // Split author string into array and trim each value
+  const authors = originalBook.author
+    ? originalBook.author.split(',').map(author => author.trim())
+    : [];
+
+  // Extract category names from the categories array of objects
+  const categories = originalBook.categories
+    ? originalBook.categories.map(category => category.name)
+    : [];
+
+ const collections = originalBook.collections
+    ? originalBook.collections.map(item => ({ id: item.id, name: item.name })) 
+    : [];
+
+  return {
+    id: originalBook.id,
     volumeInfo: {
-        title: '',
-        authors: [],
-        description: '',
-        pageCount: 0,
-        categories: [],
-        status: "",
-        imageLinks: {
-            thumbnail: ''
-        }
+      title: originalBook.title,
+      authors: authors,
+      description: originalBook.description,
+      pageCount: originalBook.pageCount,
+      categories: categories,
+      status: statusMap[originalBook.status] || 'unknown',
+      imageLinks: {
+        thumbnail: originalBook.imageUrl
+      }
     },
-    collections: []
-}
+    collections: collections
+  };
+};
+
 const defaultStatuses = {
     toRead: false,
     reading: false,
@@ -58,7 +85,7 @@ const defaultStatuses = {
     paused: false
 }
 
-const AddBook = () => {
+const EditBook = () => {
 
     const { id } = useLocalSearchParams();
 
@@ -67,7 +94,7 @@ const AddBook = () => {
     const navigator = useNavigation();
 
     const [status, setStatus] = useState({
-        toRead: true,
+        toRead: false,
         reading: false,
         finished: false,
         gaveUp: false,
@@ -79,17 +106,16 @@ const AddBook = () => {
         title: false,
     });
 
-    const { genres, book, setBook, setGenres } = useContext(UserContext);
+    const { setGenres, book, setBook } = useContext(UserContext);
 
     const { collections } = book;
 
-    const getGenres = () => {
-        return Object.keys(genres).filter(genre => genres[genre]);
+    const getStatus = () => {
+        return Object.keys(status).find(s => status[s] === true);
     }
 
-    const getStatus = () => {
-        const statuses = Object.keys(status).filter(s => status[s] === true);
-        return statuses[0];
+    const getStatusNameById = (statusId) => {
+        return statusName[statusId];
     }
 
     const getCollections = () => {
@@ -98,9 +124,11 @@ const AddBook = () => {
 
     const fetchBook = async () => {
         try {
-            console.log('fire')
-            const { data } = await axios.get(`/book/${id}`);
-            setBook(data)
+            const { data } = await axios.get(`users/book/${id}`);
+            setBook(transformBookStructure(data))
+            const statusName = getStatusNameById(data.status);
+            console.log(statusName)
+            setStatus(prev => ({...prev, [statusName]: true}))
         }
         catch(error) {
             console.log(error);
@@ -108,7 +136,7 @@ const AddBook = () => {
     }
 
     useEffect(() => {
-        if (id && book.id === '') {
+        if (id) {
             fetchBook();
         }
 
@@ -116,15 +144,13 @@ const AddBook = () => {
         return () => {
             setStatus(defaultStatuses);
             setGenres({})
-            setBook(defaultBook);
         }
     }, [id]);
 
 
-    const addBook = async () => {
+    const editBook = async () => {
 
         const { title, authors, description, pageCount, categories, imageLinks } = book.volumeInfo;
-
 
         if (!title) {
             setErrors(prev => ({...prev, title: true}))
@@ -137,17 +163,19 @@ const AddBook = () => {
 
         try {
             const body = {
+                id,
                 title,
-                authors,
+                author: authors.join(','),
                 description,
-                totalPages: pageCount,
-                categories: categories, //add getGenres() from a separate screen
+                pageCount,
+                categories, //add getGenres() from a separate screen
                 status: bookStatusToInt(getStatus()), // have to handle adding a new status 
                 imageUrl: imageLinks?.thumbnail,
                 collectionIds: getCollections()
             }
-            const { data } =  await axios.post('/book', body);
-            navigator.replace('saved-book', { id:data.id })
+            //console.log(body);
+            await axios.put('/users/book', body);
+            navigator.replace('saved-book', { id: id })
             console.log("success")
         } catch(error) {
             console.log(error);
@@ -186,6 +214,13 @@ const AddBook = () => {
         } }));
     }
 
+    const handlePageCount = (count) => {
+        setBook(prev => ({...prev, volumeInfo: {
+            ...prev.volumeInfo,
+            pageCount: count
+        }}))
+    }
+
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5">
@@ -194,13 +229,13 @@ const AddBook = () => {
                 <Image source={images.leftArrowIcon} />
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={async () => await addBook()}//async () => await addBook()}
+                onPress={async () => await editBook()}
                 className="bg-primary flex-1 mt-2.5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                 <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
             </TouchableOpacity>
         </View>
         <ScrollView className="px-5 mt-5" contentInsetAdjustmentBehavior="automatic">
-            <Text className="text-black mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Add Book</Text>
+            <Text className="text-black mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Edit Book</Text>
             <Image
                 source={{ uri: book.volumeInfo?.imageLinks?.thumbnail }}
                 width={134}
@@ -249,6 +284,7 @@ const AddBook = () => {
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Page Count</Text>
                 <View className="bg-[#ffffff] mb-9 border-[.5px] border-[#8A8A8A] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[15px] px-5">
                     <TextInput
+                        onChangeText={handlePageCount}
                         className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 text-[#000000] leading-[16.8px] text-sm"
                         placeholder="Page Count"
                         value={book.volumeInfo?.pageCount?.toString() === "0" ? "" : book.volumeInfo?.pageCount?.toString()}
@@ -338,4 +374,4 @@ const AddBook = () => {
     </SafeAreaView>
 }
 
-export default AddBook;
+export default EditBook;
