@@ -144,6 +144,20 @@ const EditBook = () => {
         return () => {
             setStatus(defaultStatuses);
             setGenres({})
+            setBook({
+                id: '',
+                volumeInfo: {
+                    title: '',
+                    authors: [],
+                    description: '',
+                    pageCount: 0,
+                    categories: [],
+                    imageLinks: {
+                        thumbnail: ''
+                    }
+                },
+                collections: []
+            });
         }
     }, [id]);
 
