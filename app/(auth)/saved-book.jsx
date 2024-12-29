@@ -151,7 +151,7 @@ const SavedBook = () => {
         </View>
         <ScrollView>
 
-            <View className="mx-5 border-[#8A8A8A] flex-row p-4 border-[.5px] rounded-[20px] max-w-[353px] max-h-[213px]">
+            <View className="mx-5 border-[#8A8A8A] flex-row p-4 border-[.5px] rounded-[20px] max-w-[353px]">
                 <Image source={getBookImage()} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" />
                 <View className="relative">
                     <Text className="text-black text-[18px] mb-0.5 leading-[21.6px] font-cygrebold max-w-[150px]"
@@ -271,7 +271,7 @@ const SavedBook = () => {
                     </View>
                 </View>
             ) : <></> }
-
+            <View className="h-8"></View>
         </ScrollView>
     </SafeAreaView>
 }
