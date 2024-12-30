@@ -9,8 +9,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Collection1Icon } from "../../components/Svg";
-import { router } from "expo-router";
-import { useContext, useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import { useContext, useState, useCallback } from "react";
 import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
 
@@ -36,7 +36,7 @@ const SelectCollections = () => {
 
     const { setBook, book: { collections } } = useContext(UserContext);
 
-    const fetchCollections = async () => {
+    const fetchCollections = useCallback(async () => {
         try {
             const { data } = await axios.get('users/collections');
             const [first, second] = splitArray(data);
@@ -48,7 +48,7 @@ const SelectCollections = () => {
         } catch (error) {
             console.log(error);
         }
-    }
+    }, [])
 
     const handleFirstHalfSelection = (selectedId) => {
         setFirstHalfCollections(prev => 
@@ -83,11 +83,13 @@ const SelectCollections = () => {
         router.back();
     }
 
-    useEffect(() => {
-        fetchCollections();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            fetchCollections()
+        }, [fetchCollections])
+    );
 
-    //console.log(firstHalfCollections, secondHalfCollections);
+    //console.log(firstHalfCollections, secondHalfCollections)
 
     return <SafeAreaView className="bg-[#F7F7F7] relative flex-1">
 
@@ -159,7 +161,7 @@ const NewCollection = ({ containerStyles }) => {
     return <View className={`bg-primary rounded-[20px] mb-4 justify-between p-4 max-w-[169px] flex-[.5] max-h-[174px] ${containerStyles}`}>
         <Text className="font-cygrebold mb-7 text-[22px] leading-[26.4px] font-bold text-[#ffffff]" numberOfLines={2} ellipsizeMode="tail">New Collection</Text>
         <TouchableOpacity
-            onPress={() => router.push('/create-collection')}
+            onPress={() => router.push({pathname: '/create-collection', params: { fromSelect: true }})}
             className="items-center self-end bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
             <MaterialIcons name="add" size={30} />
         </TouchableOpacity>

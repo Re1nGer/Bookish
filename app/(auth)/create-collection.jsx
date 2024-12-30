@@ -8,7 +8,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRef, useState, useEffect } from "react";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import axios from '../../network/axios';
 
 
@@ -19,6 +19,8 @@ const CreateCollection = () => {
 
     const [name, setName] = useState('');
 
+    const { fromSelect } = useLocalSearchParams();
+
     useEffect(() => {
         inputRef.current?.focus();
     }, [])
@@ -27,7 +29,11 @@ const CreateCollection = () => {
         if (!name) return;
         try {
             await axios.post('/users/collections', { name });
-            router.push({pathname: 'collection', params: { name } })
+            if (fromSelect) {
+                router.back();
+            } else {
+                router.push({pathname: 'collection', params: { name } })
+            }
         } catch(error) {
             console.log(error)
         }
