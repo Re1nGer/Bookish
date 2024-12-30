@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useContext, useCallback } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import Genre from "../../components/Genre";
 import { QuoteStarsIcon } from "../../components/Svg";
@@ -71,6 +71,12 @@ const CreateNote = () => {
         return Object.keys(noteTypesSelected).find(id => noteTypesSelected[id] === true);
     }
 
+    const getDefaultNoteType = useCallback(() => {
+        const noteTypeId = parseInt(getSelectedNoteTypeId());
+        return noteTypes.find(item => item.id === noteTypeId); //noteTypeId is string whereas item.id is number
+    }, [noteTypes, getSelectedNoteTypeId])
+
+
     const handleQuoteDelete = () => {
         Alert.alert(
             "Delete Quote",
@@ -113,6 +119,8 @@ const CreateNote = () => {
             const noteTypesSelected =
                 Object.fromEntries(data.map(item => [item.id, false]));
 
+            markFirstAsSelected(noteTypesSelected);
+
             setNoteTypesSelected(noteTypesSelected);
 
         } catch(error) {
@@ -120,9 +128,16 @@ const CreateNote = () => {
         }
     }
 
+    const markFirstAsSelected = (noteTypes) =>  {
+        const firstKey = Object.keys(noteTypes)[0];
+        if (Object.hasOwn(noteTypes, firstKey)) {
+            noteTypes[firstKey] = true;
+        }
+    }
+
     useEffect(() => {
         fetchNoteTypes();
-    }, [])
+    }, [isNoteTypeDrawerOpen])
 
     useEffect(() => {
         inputRef.current?.focus();
@@ -189,11 +204,11 @@ const CreateNote = () => {
                     onPress={() => inputRef.current?.focus()}
                     className="mt-5 mx-5 relative h-[317px] border-[#8A8A8A] rounded-[20px] border-[.5px] py-3 px-4">
                         <View className="flex-row">
-                            <TouchableOpacity
+                            <DefaultNoteType
                                 onPress={() => setIsNoteDrawerOpen(true)}
-                                className="bg-[#F8846A] max-w-[95px] mt-4 mr-2 max-h-[25px] w-full h-full justify-center items-center rounded-[13px]">
-                                <Text className="text-sm text-white font-cygre semibold leading-[16.8px] text-center">Fact</Text>
-                            </TouchableOpacity>
+                                bgColor={getDefaultNoteType()?.bgColor ?? '#000'}
+                                text={getDefaultNoteType()?.name ?? 'default'}
+                            />
                             <View className="bg-[#E6E6E6] max-w-[95px] mt-4 max-h-[25px] w-full h-full justify-center items-center rounded-[13px]">
                                 <Text className="text-sm text-white font-cygre semibold leading-[16.8px] text-center">{new Date().toLocaleDateString('de-DE')}</Text>
                             </View>
@@ -269,6 +284,17 @@ const CreateNote = () => {
 export default CreateNote;
 
 
+const DefaultNoteType = ({ onPress, bgColor, text }) => {
+
+   return (
+        <TouchableOpacity
+            onPress={onPress}
+            style={{ backgroundColor: bgColor }}
+            className="max-w-[95px] mt-4 mr-2 max-h-[25px] w-full h-full justify-center items-center rounded-[13px]">
+            <Text className="text-sm text-white font-cygrebold leading-[16.8px] text-center" numberOfLines={1} ellipsizeMode="tail">{text}</Text>
+        </TouchableOpacity>
+   );
+}
 
 const NoteTypeDrawer = ({ 
     noteTypes,
@@ -324,7 +350,7 @@ const NoteType = ({ name, icon, bgColor, selected, onPress }) => {
         <TouchableOpacity
                 onPress={onPress}
                 style={{backgroundColor: bgColor}}
-                className={`mt-2 flex-row justify-start pl-6 flex-1 mb-2 rounded-[15px] h-[56px] items-center ${selected ? 'border-black border' : ''}`}>
+                className={`mt-2 flex-row justify-start pl-6 flex-1 mb-1 rounded-[15px] h-[56px] items-center ${selected ? 'border-black border' : ''}`}>
             <Text className="text-[20px]">{icon}</Text>
             <Text className="text-white pl-9 font-cygrebold text-[18px]">{name}</Text>
         </TouchableOpacity>
