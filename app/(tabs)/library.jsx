@@ -15,6 +15,7 @@ import { useRef, useState, useCallback, useContext } from "react";
 import { router, useFocusEffect } from "expo-router";
 import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
+import BookPageDropdown from "../../components/BookPageDropdown";
 
 
 const Library = () => {
@@ -37,19 +38,17 @@ const Library = () => {
 
     const { bookFilter } = useContext(UserContext);
 
+    const [isOpen, setIsOpen] = useState(false);
+
     const handleCloseBtn = () => {}
 
-    const defaultReadingStatuses = {
-        toRead: false,
-        reading: false,
-        finished: false
-    }
+    const [selectedOption, setSelectedOption] = useState('Books');
 
-    const [currentReadingStatus, setCurrentReadingStatus] = useState({
-        toRead: false,
-        reading: false,
-        finished: false
-    });
+    const handleSelect = (option) => {
+        setSelectedOption(option);
+        setIsOpen(false)
+        router.push(option.toLowerCase())
+    }
 
     const renderGifLoader = () => {
         if (isLoading) {
@@ -141,10 +140,16 @@ const Library = () => {
                 activeOpacity={0.7}
                 className="flex-1 pt-3 flex-row"
             >
-            <View className="flex-row">
+{/*             <View className="flex-row">
                 <Text className="text-black text-[24px] leading-[28.8px] font-cygrebold font-bold">Books</Text>
                 <MaterialIcons name="arrow-drop-down" size={24} color="black" />
-            </View>
+            </View> */}
+            <BookPageDropdown
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                handleSelect={handleSelect} 
+                selectedOption={selectedOption}
+            />
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => router.push('search-book')}

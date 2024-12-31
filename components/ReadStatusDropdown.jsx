@@ -103,7 +103,7 @@ const BookStatusDropdown = ({ statusOptions, onSelect, selectedStatus, setSelect
               styles.dropdown,
               {
                 position: 'relative',
-                top: 210,
+                top: "25%",
                 left: dropdownLayout.x,
                 width: dropdownLayout.width,
               },
