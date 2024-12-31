@@ -54,18 +54,20 @@ const Notes = () => {
         setIsFilteredByBooks(true);
     }
 
-    const fetchBookNotes = async () => {
+    const fetchBookNotes = useCallback(async () => {
         try {
             const { data } = await axios.get('users/books/notes');
             setBookNotes(data);
         } catch (error) {
             console.log(error);
         }
-    }
-
-    useEffect(() => {
-        fetchBookNotes();
     }, [])
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchBookNotes()
+        }, [fetchBookNotes])
+    );
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
