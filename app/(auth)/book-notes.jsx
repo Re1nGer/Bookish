@@ -3,19 +3,22 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    FlatList,
-    RefreshControl
+    FlatList
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useRef, useState, useCallback, useContext, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import axios from '../../network/axios';
-import { UserContext } from "../../context/UserContext";
 import Feather from '@expo/vector-icons/Feather';
-import Fontisto from '@expo/vector-icons/Fontisto';
+import * as Clipboard from 'expo-clipboard';
+
+
+const copyToClipboard = async (text) => {
+  await Clipboard.setStringAsync(text);
+};
 
 
 const BookNotes = () => {
@@ -24,7 +27,7 @@ const BookNotes = () => {
 
     const [bookNotes, setBookNotes] = useState([]);
 
-    const fetchBookNotes = async () => {
+    const fetchBookNotes = useCallback(async () => {
         try {
             const { data } = await axios.get(`users/books/${id}/notes`);
             setBookNotes(data);
@@ -32,12 +35,13 @@ const BookNotes = () => {
         catch (error) {
             console.log(error);
         }
-    }
-
-
-    useEffect(() => {
-        fetchBookNotes();
     }, [])
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchBookNotes();
+        }, [fetchBookNotes])
+    );
     
     return <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -81,6 +85,11 @@ const BookNotes = () => {
 
 
 const BookNote = ({ bookName, text, date, noteTypeName, noteTypeIcon, containerStyles }) => {
+
+    const handleCopy = async () => {
+        await copyToClipboard(text);
+    }
+
     return <View className={`border-[.5px] border-[#8A8A8A] rounded-[20px] p-5 ${containerStyles}`}>
         <View className="flex-row">
             <View className="bg-black flex-row mr-2 rounded-[13px] px-3 py-1.5">
@@ -103,7 +112,9 @@ const BookNote = ({ bookName, text, date, noteTypeName, noteTypeIcon, containerS
                 <TouchableOpacity className="h-[34px] w-[34px] rounded-full bg-black items-center justify-center">
                     <MaterialIcons name="delete" size={15} color="#fff" />
                 </TouchableOpacity>
-                <TouchableOpacity className="h-[34px] w-[34px] rounded-full bg-black items-center justify-center">
+                <TouchableOpacity
+                    onPress={handleCopy}
+                    className="h-[34px] w-[34px] rounded-full bg-black items-center justify-center">
                     <MaterialIcons name="content-copy" size={15} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity className="h-[34px] w-[34px] rounded-full bg-black items-center justify-center">
