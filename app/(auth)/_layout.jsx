@@ -76,6 +76,7 @@ const AuthLayout = () => {
         <Stack.Screen name="collection" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
         <Stack.Screen name="note-filters" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
         <Stack.Screen name="notes" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
+        <Stack.Screen name="book-notes" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
 
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />

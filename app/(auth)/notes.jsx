@@ -3,7 +3,6 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    TextInput,
     FlatList,
     RefreshControl
 } from "react-native";
@@ -20,12 +19,6 @@ import Feather from '@expo/vector-icons/Feather';
 
 
 const Notes = () => {
-
-    const [text, setText] = useState('');
-
-    const inputRef = useRef(null);
-
-    const handleCloseBtn = () => {}
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -117,6 +110,7 @@ const Notes = () => {
             data={bookNotes}
             renderItem={({ item }) => <BookNoteCard
                 key={item.id}
+                onPress={() => router.push({pathname: 'book-notes', params: { name: item.bookName, id: item.id }})}
                 name={item.bookName}
                 author={item.author}
                 notesCount={item.notesCount}   
