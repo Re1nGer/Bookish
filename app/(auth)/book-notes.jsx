@@ -3,7 +3,8 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    FlatList
+    FlatList,
+    Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
@@ -28,10 +29,17 @@ const BookNotes = () => {
     const [bookNotes, setBookNotes] = useState([]);
 
 
-    const confirmDelete = () => {}
-
     const handleEdit = (noteId) => {
         router.push({pathname: 'edit-note', params: { bookId: id, noteId }})
+    }
+
+    const handleDelete = async (noteId) => {
+        try {
+            await axios.delete(`books/${id}/note/${noteId}`);
+            setBookNotes(prev => prev.filter(item => item.id !== noteId));
+        } catch(error) {
+            console.log(error);
+        }
     }
 
     const fetchBookNotes = useCallback(async () => {
@@ -78,6 +86,7 @@ const BookNotes = () => {
             renderItem={({ item }) => <BookNote
                 key={item.id}
                 id={item.id}
+                bookId={id}
                 bookName={item.bookName}
                 noteTypeName={item.noteTypeName} 
                 noteTypeIcon={item.noteTypeIcon}
@@ -86,6 +95,7 @@ const BookNotes = () => {
                 text={item.text}
                 containerStyles={'mb-5'}
                 handleEdit={handleEdit}
+                handleDelete={handleDelete}
             />}
         />
     </SafeAreaView>
@@ -102,10 +112,31 @@ const renderEmptyState = () => {
 
 
 
-const BookNote = ({ id, bookName, text, date, handleEdit, noteTypeColor, noteTypeName, noteTypeIcon, containerStyles }) => {
+const BookNote = ({ id, bookName, text, date, handleEdit, handleDelete, noteTypeColor, noteTypeName, noteTypeIcon, containerStyles }) => {
 
     const handleCopy = async () => {
         await copyToClipboard(text);
+    }
+
+
+    const confirmDelete = () => {
+        Alert.alert(
+            "Delete Note",
+            "Are you sure you want to delete this note? This action cannot be undone.",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { 
+                    text: "Delete", 
+                    onPress: async () => {
+                        await handleDelete(id);
+                    },
+                    style: "destructive" // This will make it red on iOS
+                }
+            ]
+        );
     }
 
     return <View className={`border-[.5px] border-[#8A8A8A] rounded-[20px] p-5 ${containerStyles}`}>
@@ -129,7 +160,9 @@ const BookNote = ({ id, bookName, text, date, handleEdit, noteTypeColor, noteTyp
                 <Text className="text-sm text-black font-cygresemibold leading-[16.8px]">{new Date(date)?.toLocaleDateString('de-DE') ?? '30.09.2024'}</Text>
             </View>
             <View className="flex-row gap-2">
-                <TouchableOpacity className="h-[34px] w-[34px] rounded-full bg-black items-center justify-center">
+                <TouchableOpacity
+                    onPress={confirmDelete}
+                    className="h-[34px] w-[34px] rounded-full bg-black items-center justify-center">
                     <MaterialIcons name="delete" size={15} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity
