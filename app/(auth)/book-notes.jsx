@@ -27,6 +27,13 @@ const BookNotes = () => {
 
     const [bookNotes, setBookNotes] = useState([]);
 
+
+    const confirmDelete = () => {}
+
+    const handleEdit = (noteId) => {
+        router.push({pathname: 'edit-note', params: { bookId: id, noteId }})
+    }
+
     const fetchBookNotes = useCallback(async () => {
         try {
             const { data } = await axios.get(`users/books/${id}/notes`);
@@ -63,28 +70,39 @@ const BookNotes = () => {
                     <Entypo name="dots-three-vertical" size={24} color="#fff" />
             </TouchableOpacity>
         </View>
-{/*         <View className="mx-5 mt-7">
-            <BookNoteCard name={'name'} author={'author'} notesCount={10} />
-        </View> */}
         <FlatList
-            className="mx-5 mt-7"
+            className="mx-5 mt-7 flex-1"
             maxToRenderPerBatch={10}
             data={bookNotes}
+            ListEmptyComponent={renderEmptyState}
             renderItem={({ item }) => <BookNote
                 key={item.id}
+                id={item.id}
                 bookName={item.bookName}
                 noteTypeName={item.noteTypeName} 
                 noteTypeIcon={item.noteTypeIcon}
+                noteTypeColor={item.noteTypeColor}
                 date={item.date}
                 text={item.text}
                 containerStyles={'mb-5'}
+                handleEdit={handleEdit}
             />}
         />
     </SafeAreaView>
 }
 
+const renderEmptyState = () => {
+    return (
+        <View className="items-center justify-end flex-1">
+            <Text className="text-[22px] mb-10 text-black leading-[26.4px] font-cygrebold">Can’t see anything here</Text>
+            <Image source={images.noteEyes} width={255} height={54} className="max-w-[255px] max-h-[54px]" />
+        </View>
+    );
+}
 
-const BookNote = ({ bookName, text, date, noteTypeName, noteTypeIcon, containerStyles }) => {
+
+
+const BookNote = ({ id, bookName, text, date, handleEdit, noteTypeColor, noteTypeName, noteTypeIcon, containerStyles }) => {
 
     const handleCopy = async () => {
         await copyToClipboard(text);
@@ -96,7 +114,9 @@ const BookNote = ({ bookName, text, date, noteTypeName, noteTypeIcon, containerS
                 <Feather name="book" size={18} color="white" />
                 <Text className="text-sm leading-[16.8px] ml-1 text-white text-center">{bookName}</Text>
             </View>
-            <View className="bg-[#F8846A] flex-row rounded-[13px] px-3 py-1.5">
+            <View
+                style={{backgroundColor: noteTypeColor}}
+                className="flex-row rounded-[13px] px-3 py-1.5">
                 <Text>{noteTypeIcon}</Text>
                 <Text className="text-sm leading-[16.8px] ml-1 text-white text-center">{noteTypeName}</Text>
             </View>
@@ -117,7 +137,9 @@ const BookNote = ({ bookName, text, date, noteTypeName, noteTypeIcon, containerS
                     className="h-[34px] w-[34px] rounded-full bg-black items-center justify-center">
                     <MaterialIcons name="content-copy" size={15} color="#fff" />
                 </TouchableOpacity>
-                <TouchableOpacity className="h-[34px] w-[34px] rounded-full bg-black items-center justify-center">
+                <TouchableOpacity
+                    onPress={() => handleEdit(id)}
+                    className="h-[34px] w-[34px] rounded-full bg-black items-center justify-center">
                     <MaterialIcons name="edit-note" size={20} color={'#fff'} />
                 </TouchableOpacity>
                 <TouchableOpacity className="h-[34px] w-[34px] rounded-full bg-black items-center justify-center">
