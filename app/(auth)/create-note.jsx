@@ -56,6 +56,10 @@ const CreateNote = () => {
         return Object.keys(noteTypesSelected).find(id => noteTypesSelected[id] === true);
     }
 
+    const getSelectedQuoteId = () => {
+        return note?.quote?.id ?? null;
+    }
+
     const getDefaultNoteType = useCallback(() => {
         const noteTypeId = parseInt(getSelectedNoteTypeId());
         return noteTypes.find(item => item.id === noteTypeId); //noteTypeId is string whereas item.id is number
@@ -87,6 +91,7 @@ const CreateNote = () => {
             await axios.post(`books/${id}/note`, {
                 content: text,
                 typeId: getSelectedNoteTypeId(),
+                quoteId: getSelectedQuoteId()
                 //TODO: to add collections ids, quoteId, repetition groups id
             });
             router.back();
@@ -153,24 +158,11 @@ const CreateNote = () => {
                         <Text className="leading-[19.2px] text-[#fff] font-cygrebold">Save</Text>
                 </TouchableOpacity>
             </View>
-            <BookBottomDrawer
-                isBottomSheetOpen={isQuoteDrawerOpen}
-                setIsBottomSheetOpen={setIsQuoteDrawerOpen}>
-                    <Text className="font-cygrebold text-[22px] leading-[26.4px] text-center">Connect Quote</Text>
-                    <TouchableOpacity className="bg-black mt-7 flex-row justify-start pl-6 rounded-[15px] mb-2 max-h-[56px] items-center h-full w-full">
-                        <Fontisto name="quote-a-left" size={20} color="white" />
-                        <Text className="text-white pl-9 font-cygrebold text-[18px]">New</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            setIsNoteTypeDrawerOpen(false);
-                            router.push('quote-to-connect');
-                        }}
-                        className="bg-black flex-row justify-start pl-6 rounded-[15px] max-h-[56px] items-center w-full h-full">
-                        <Fontisto name="quote-a-right" size={20} color="white" />
-                        <Text className="text-white pl-9 font-cygrebold text-[18px]">Old</Text>
-                    </TouchableOpacity>
-            </BookBottomDrawer>
+            <QuoteDrawer
+                isQuoteDrawerOpen={isQuoteDrawerOpen}
+                setIsQuoteDrawerOpen={setIsQuoteDrawerOpen}
+                bookId={id}
+            />
             <NoteTypeDrawer
                 noteTypes={noteTypes}
                 setNoteTypes={setNoteTypes} 
@@ -263,10 +255,37 @@ const CreateNote = () => {
             <View className="h-[50px]"></View>
             </ScrollView>
     </SafeAreaView>
+
 }
 
-
 export default CreateNote;
+
+const QuoteDrawer = ({ isQuoteDrawerOpen, setIsQuoteDrawerOpen, bookId }) => {
+
+    return <BookBottomDrawer
+        isBottomSheetOpen={isQuoteDrawerOpen}
+        setIsBottomSheetOpen={setIsQuoteDrawerOpen}>
+        <Text className="font-cygrebold text-[22px] leading-[26.4px] text-center">Connect Quote</Text>
+        <TouchableOpacity
+            onPress={() => {
+                setIsQuoteDrawerOpen(false);
+                router.push({ pathname: 'create-quote', params: { id: bookId } });
+            } }
+            className="bg-black mt-7 flex-row justify-start pl-6 rounded-[15px] mb-2 max-h-[56px] items-center h-full w-full">
+            <Fontisto name="quote-a-left" size={20} color="white" />
+            <Text className="text-white pl-9 font-cygrebold text-[18px]">New</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => {
+                setIsQuoteDrawerOpen(false);
+                router.push('quote-to-connect');
+            } }
+            className="bg-black flex-row justify-start pl-6 rounded-[15px] max-h-[56px] items-center w-full h-full">
+            <Fontisto name="quote-a-right" size={20} color="white" />
+            <Text className="text-white pl-9 font-cygrebold text-[18px]">Old</Text>
+        </TouchableOpacity>
+    </BookBottomDrawer>;
+}
 
 
 

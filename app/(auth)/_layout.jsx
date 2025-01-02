@@ -65,9 +65,11 @@ const AuthLayout = () => {
         <Stack.Screen name="saved-book" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'ios', headerShown: false }} /> 
 
         <Stack.Screen name="select-genres" options={{ title: "", headerTransparent: true, headerShown: false,  animation: 'slide_from_bottom' }} /> 
+        <Stack.Screen name="select-notes" options={{ title: "", headerTransparent: true, headerShown: false,  animation: 'slide_from_bottom' }} /> 
         <Stack.Screen name="select-collections" options={{ title: "", headerTransparent: true, headerBackVisible: false, headerShown: false, animation: 'slide_from_bottom' }} /> 
         <Stack.Screen name="book-filters" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
         <Stack.Screen name="create-note" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_left', headerShown: false }} /> 
+        <Stack.Screen name="create-quote" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_left', headerShown: false }} /> 
         <Stack.Screen name="quote-to-connect" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_right', headerShown: false }} /> 
         <Stack.Screen name="repetition-groups" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_right', headerShown: false }} /> 
         <Stack.Screen name="select-authors" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 

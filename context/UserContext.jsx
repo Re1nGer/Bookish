@@ -10,11 +10,11 @@ export const UserProvider = ({ children }) => {
 
     const [verificationCode, setVerificationCode] = useState('');
 
-    const quote = {
-        id: 0,
-        text: '',
-        book: ''
-    };
+    const [quote, setQuote] = useState({
+        collectionIds: [],
+        repetitionGroupIds: [],
+        notes: [],
+    });
 
     const [note, setNote] = useState({
         repetitionGroups: [],
@@ -99,6 +99,8 @@ export const UserProvider = ({ children }) => {
         setBook,
         onboarding,
         setOnboarding,
+        quote,
+        setQuote,
         note,
         setNote,
         bookFilter,

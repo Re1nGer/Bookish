@@ -12,12 +12,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useState, useContext, useEffect } from "react";
 import { router } from "expo-router";
 import { UserContext } from "../../context/UserContext";
-import QuoteCard from "../../components/QuoteCard";
-import axios from '../../network/axios';
+import RadioButton from "../../components/RadioButton";
+import axios from '../../network/axios'
 
 
 
-const QuoteToConnect = () => {
+const SelectNotes = () => {
 
     const [text, setText] = useState('')
 
@@ -25,69 +25,77 @@ const QuoteToConnect = () => {
         setText(text);
     }
 
-    const { setNote, note } = useContext(UserContext);
+    const { setQuote, quote } = useContext(UserContext);
+
+    const getSelectedState = (id) => {
+        return quote.notes.find(item => item.id === id)?.selected ?? false;
+    }
 
     //fetch from api
-    const [quotes, setQuotes] = useState([
+    const [notes, setNotes] = useState([
         {
             id: 1,
             text: 'Trying to solve a problem before being taught the solution leads to better learning, even when errors are made in the attempt.',
             book: 'Make It Stick',
-            selected: true
+            createdAt: '27.04.2021',
+            selected: getSelectedState(1)
         },
         {
             id: 2,
             text: 'Interleaving is a learning technique where different topics, subjects, or problem types are mixed within a single study session rather than focusing on just one topic in a blocked fashion. ',
             book: 'Make It Stick',
-            selected: false
+            createdAt: '27.04.2021',
+            selected: getSelectedState(2)
         },
         {
             id: 3,
             text: 'People who learn to extract the key ideas from new material and organize them into a mental model and connect that model to prior knowledge show an advantage in learning complex mastery. A mental model is a mental representation of some external reality.',
             book: 'Make It Stick',
-            selected: false
+            createdAt: '27.04.2021',
+            selected: getSelectedState(3)
         },
     ]);
 
     const handleQuoteSelection = (selectedId) => {
-        setQuotes(prev => 
-            prev.map(quote => 
-                quote.id === selectedId
-                    ? { ...quote, selected: true }
-                    : { ...quote, selected: false }
+        setNotes(prev => 
+            prev.map(note => 
+                note.id === selectedId
+                    ? { ...note, selected: !note.selected }
+                    : note
             )
         );
     };
 
-    const getQuoteSelectedState = (id) => {
-        return note?.quote?.id === id;
-    }
-
-    const handleSave = () => {
-        const selectedQuote = quotes.find(item => item.selected);
-        setNote(prev => ({...prev, quote: selectedQuote}))
-        router.back();
-    }
-
-    const fetchQuotes = async () => {
+    const fetchNotes = async () => {
         try {
-            const { data } = await axios.get('users/quotes');
-            const mappedQuotes = data.map(item => ({
+            const { data } = await axios.get('users/notes');
+            const mappedNotes = data.map(item => ({
                 id: item.id,
                 text: item.text,
                 book: item.bookName,
-                selected: getQuoteSelectedState(item.id)
+                createdAt: item.date,
+                noteTypeName: item.noteTypeName,
+                noteTypeColor: item.noteTypeColor,
+                noteTypeIcon: item.noteTypeIcon,
+                selected: getSelectedState(item.id)
             }));
-            setQuotes(mappedQuotes);
-        } catch(error) {
+            setNotes(mappedNotes);
+        } catch (error) {
             console.log(error);
         }
     }
 
-    useEffect(() => {
-        fetchQuotes();
-    }, []);
 
+    const handleSave = () => {
+        const selectedNotes = notes.filter(item => item.selected === true);
+        setQuote(prev => ({...prev, notes: selectedNotes}))
+        router.back();
+    }
+
+
+    useEffect(() => {
+        fetchNotes();
+    }, []);
 
     //fetch quotes set to notes object 
 
@@ -112,7 +120,7 @@ const QuoteToConnect = () => {
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
 
-                <Text className="text-black mt-6 text-[22px] font-cygrebold leading-[26.4px] font-bold">Select quote to connect</Text>
+                <Text className="text-black mt-6 text-[22px] font-cygrebold leading-[26.4px] font-bold">Select notes to add</Text>
                 <View className="bg-[#ffffff] mt-5 mb-7 border-[.3px] border-[#727272] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[26px] px-5">
                     <MaterialIcons name="search" color={'#1C1C1C'} size={22} />
                     <TextInput
@@ -130,9 +138,9 @@ const QuoteToConnect = () => {
                 </KeyboardAvoidingView>
                 <FlatList
                     className="mx-5 flex-1"
-                    data={quotes}
+                    data={notes}
                     showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => <QuoteCard
+                    renderItem={({ item }) => <NoteCard
                         book={item.book}
                         text={item.text}
                         selected={item.selected}
@@ -147,4 +155,31 @@ const QuoteToConnect = () => {
 
 
 
-export default QuoteToConnect;
+export default SelectNotes;
+
+
+
+const NoteCard = ({ text, book, selected, onRadioButtonPress, onDeleteButtonPress, showRadioButton = true, containerStyles }) => {
+
+    return <View className={`border-[#8A8A8A] py-5 px-4 border-[.5px] rounded-[20px] ${containerStyles}`}>
+        <View className="flex-row justify-between items-center mb-4">
+            <View className="bg-primary px-4 py-1 rounded-[13px] flex-row items-center">
+                <MaterialIcons name="book" color={'white'} />
+                <Text className="text-[#FFFFFF] text-sm leading-[16.8px] ml-1">{book}</Text>
+            </View>
+            { showRadioButton ? (
+                <RadioButton
+                    onPress={onRadioButtonPress}
+                    selected={selected} 
+                />
+            ) : <TouchableOpacity
+                    onPress={onDeleteButtonPress}
+                    className="bg-black rounded-full p-2">
+                    <MaterialIcons name="delete" size={24} color="white" />
+                </TouchableOpacity> }
+        </View>
+        <View className="py-3 px-4 rounded-[8px] bg-[#EEEEEE] w-full">
+            <Text className="text-black font-cygresemibold leading-[19.2px]">{text}</Text>
+        </View>
+    </View>
+}

@@ -117,7 +117,11 @@ const SavedBook = () => {
     }
 
     const handleNoteRedirect = () => {
-        router.push({ pathname: 'create-note', params: { id } })
+        router.push({ pathname: 'create-note', params: { id } }) //id of book to associate notes with
+    }
+
+    const handleQuoteRedirect = () => {
+        router.push({ pathname: 'create-quote', params: { id } }) //id of book to associate quotes with
     }
 
     const updateStatus = async (status) => {
@@ -175,7 +179,9 @@ const SavedBook = () => {
                             className="p-3 rounded-full bg-primary">
                             <NoteIcon />
                         </TouchableOpacity>
-                        <TouchableOpacity className="p-3 rounded-full bg-primary">
+                        <TouchableOpacity
+                            onPress={handleQuoteRedirect}
+                            className="p-3 rounded-full bg-primary">
                             <QuoteIcon />
                         </TouchableOpacity>
                     </View>
@@ -236,9 +242,11 @@ const SavedBook = () => {
             </View>
 
             <View className="mx-5 bg-black max-h-[106px] h-full flex-row items-center rounded-[20px]">
-                <View className="mx-7">
+                <TouchableOpacity
+                    onPress={handleQuoteRedirect}
+                    className="mx-7">
                     <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Add quotes you liked from this book</Text>
-                </View>
+                </TouchableOpacity>
                 <QuoteStarsIcon />
             </View>
 

@@ -83,12 +83,17 @@ const EditNote = () => {
         );
     }
 
+    const getSelectedQuoteId = () => {
+        return note?.quote?.id ?? null;
+    }
+
     const handleSaveNote = async () => {
         try {
             await axios.put(`books/${bookId}/note`, {
                 id: noteId,
                 content: text,
                 typeId: getSelectedNoteTypeId(),
+                quoteId: getSelectedQuoteId()
                 //TODO: to add collections ids, quoteId, repetition groups id
             });
             router.back();
@@ -119,6 +124,12 @@ const EditNote = () => {
         try {
             const { data } = await axios.get(`books/${bookId}/note/${noteId}`);
             setText(data.content);
+            const relatedQuote = {
+                id: data?.quote?.id,
+                book: data?.quote?.bookName,
+                text: data?.quote?.text
+            }
+            setNote(prev => ({...prev, quote: data.quote ? relatedQuote: null}))
             return data;
 
         } catch(error) {
@@ -136,7 +147,7 @@ const EditNote = () => {
     useEffect(() => {
         fetchNote()
         .then(data => {
-            fetchNoteTypes(data.type.id);
+            fetchNoteTypes(data.typeId);
         })
     }, [isNoteTypeDrawerOpen, noteId]);
 
