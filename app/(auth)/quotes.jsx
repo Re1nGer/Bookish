@@ -16,11 +16,11 @@ import BookPageDropdown from "../../components/BookPageDropdown";
 import Feather from '@expo/vector-icons/Feather';
 
 
-const Notes = () => {
+const Quotes = () => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const [selectedOption, setSelectedOption] = useState('Notes');
+    const [selectedOption, setSelectedOption] = useState('Quotes');
 
     const [bookNotes, setBookNotes] = useState([]);
 
@@ -30,7 +30,8 @@ const Notes = () => {
         //TODO:refactor
         if (option === 'Books') {
             router.push('library')
-        } else {
+        } 
+        else {
             router.push(option.toLowerCase())
         }
     }
@@ -47,7 +48,7 @@ const Notes = () => {
 
     const fetchBookNotes = useCallback(async () => {
         try {
-            const { data } = await axios.get('users/books/notes');
+            const { data } = await axios.get('users/books/quotes');
             setBookNotes(data);
         } catch (error) {
             console.log(error);
@@ -96,18 +97,16 @@ const Notes = () => {
                 <Text className={`${isFilteredByBooks ? 'text-black' : 'text-[#fff]'} text-sm text-center ml-2`}>By Collections</Text>
             </TouchableOpacity>
         </View>
-{/*         <View className="mx-5 mt-7">
-            <BookNoteCard name={'name'} author={'author'} notesCount={10} />
-        </View> */}
+
         <FlatList
             className="mx-5 mt-7"
             data={bookNotes}
-            renderItem={({ item }) => <BookNoteCard
+            renderItem={({ item }) => <QuoteCard
                 key={item.id}
-                onPress={() => router.push({pathname: 'book-notes', params: { name: item.bookName, id: item.id }})}
+                onPress={() => router.push({pathname: 'book-quotes', params: { name: item.bookName, id: item.id }})}
                 name={item.bookName}
                 author={item.author}
-                notesCount={item.notesCount}   
+                quotesCount={item.quotesCount}   
                 imageUrl={item.imageUrl}
                 containerStyles={'mb-4'}
             />}
@@ -115,7 +114,7 @@ const Notes = () => {
     </SafeAreaView>
 }
 
-const BookNoteCard = ({ name, author, notesCount, imageUrl, onPress, containerStyles }) => {
+const QuoteCard = ({ name, author, quotesCount, imageUrl, onPress, containerStyles }) => {
     return <TouchableOpacity
         onPress={onPress}
         className={`max-w-[353px] h-[172px] w-full flex-row border border-[#727272] px-3 py-3 rounded-[15px] ${containerStyles}`}>
@@ -130,11 +129,11 @@ const BookNoteCard = ({ name, author, notesCount, imageUrl, onPress, containerSt
             <Text className="text-black text-sm font-cygreregular leading-[16.8px] max-w-[210px]">{author}</Text>
             <View className="self-end items-end justify-end flex-1">
                 <View className="bg-[#D5E3FC] w-[63px] h-[63px] items-center justify-center rounded-full">
-                    <Text className="text-black text-[22px] leading-[26.4px]">{notesCount}</Text>
+                    <Text className="text-black text-[22px] leading-[26.4px]">{quotesCount}</Text>
                 </View>
             </View>
         </View>
     </TouchableOpacity>
 }
 
-export default Notes;
+export default Quotes;

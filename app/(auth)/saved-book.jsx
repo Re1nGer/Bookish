@@ -241,14 +241,15 @@ const SavedBook = () => {
                 </TouchableOpacity>
             </View>
 
-            <View className="mx-5 bg-black max-h-[106px] h-full flex-row items-center rounded-[20px]">
-                <TouchableOpacity
-                    onPress={handleQuoteRedirect}
+            <TouchableOpacity
+                onPress={handleQuoteRedirect}
+                className="mx-5 bg-black max-h-[106px] h-full flex-row items-center rounded-[20px]">
+                <View
                     className="mx-7">
                     <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Add quotes you liked from this book</Text>
-                </TouchableOpacity>
+                </View>
                 <QuoteStarsIcon />
-            </View>
+            </TouchableOpacity>
 
             <View className="mt-10 mb-5 mx-5">
                 <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Description</Text>
