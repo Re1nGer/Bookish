@@ -128,6 +128,10 @@ const SavedBook = () => {
         try {
             await axios.put(`/users/book/${id}/status?statusId=${statusOptions[status]}`);
             setBook(prev => ({...prev, status: statusOptions[status]}))
+            //redirect to you-finished-book screen if status is finished 
+            if (status === 'Finished') {
+                router.push({ pathname: 'you-finished-book', params: { imageUrl }});
+            }
         } 
         catch (error) {
             console.log(error);
