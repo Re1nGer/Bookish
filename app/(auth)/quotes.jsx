@@ -24,6 +24,8 @@ const Quotes = () => {
 
     const [bookNotes, setBookNotes] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleSelect = (option) => {
         setSelectedOption(option);
         setIsOpen(false)
@@ -46,12 +48,32 @@ const Quotes = () => {
         setIsFilteredByBooks(true);
     }
 
+    const renderGifLoader = () => {
+        if (isLoading) {
+            return (
+                <View className="items-center justify-center">
+                <Image
+                    source={require('../../assets/gifs/book-loader.gif')}
+                    width={150}
+                    height={150}
+                    className="max-h-[150px] max-w-[150px]"
+                />
+                <Text className="text-black text-[24px] leading-[28.8px] font-cygreregular">Wait a bit...</Text>
+                </View>
+            );
+        }
+        return null;
+  };
+
     const fetchBookNotes = useCallback(async () => {
         try {
+            setIsLoading(true);
             const { data } = await axios.get('users/books/quotes');
             setBookNotes(data);
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsLoading(false);
         }
     }, [])
 
@@ -101,6 +123,7 @@ const Quotes = () => {
         <FlatList
             className="mx-5 mt-7"
             data={bookNotes}
+            ListEmptyComponent={renderGifLoader()}
             renderItem={({ item }) => <QuoteCard
                 key={item.id}
                 onPress={() => router.push({pathname: 'book-quotes', params: { name: item.bookName, id: item.id }})}
