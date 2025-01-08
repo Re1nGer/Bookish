@@ -19,6 +19,7 @@ import { images } from "../../constants";
 import Genre from "../../components/Genre";
 import StatusBtn from "../../components/StatusBtn";
 import FormField from "../../components/FormField";
+import ImageHandler from "../../components/ImageHandler";
 
 
 const statusMap = {
@@ -186,6 +187,19 @@ const AddBook = () => {
         } }));
     }
 
+    const handleGenresRemove = (name) => {
+        setBook(prev => ({...prev, volumeInfo: {
+            ...prev.volumeInfo,
+            categories: prev.volumeInfo.categories.filter(item => item !== name)
+        }}));
+    }
+
+    const handleCollectionsRemove = (id) => {
+        setBook(prev => ({...prev, 
+            collections: prev.collections.filter(item => item.id !== id)
+        }));
+    }
+
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5">
@@ -304,7 +318,12 @@ const AddBook = () => {
                 <View className="p-4 min-h-[116px] flex-row justify-between rounded-[20px] bg-black">
                     <View className="flex-wrap flex-row flex-1 items-start">
                         { book.volumeInfo.categories.map(item =>
-                             <Genre key={item} name={item} showCloseBtn={true} />) }
+                             <Genre
+                                key={item}
+                                name={item}
+                                showCloseBtn={true}
+                                handleRemove={handleGenresRemove}
+                            />) }
                     </View>
                     <TouchableOpacity
                         onPress={() => router.push('/(auth)/select-genres')}
@@ -321,7 +340,14 @@ const AddBook = () => {
                     <View className="min-h-[116px] p-4 flex-row justify-between rounded-[20px] bg-black">
                         <View className="flex-wrap flex-row flex-1 items-start">
                             { collections.map(item =>
-                                <Genre key={item.id} name={item.name} showCloseBtn={true} containerStyles={'max-w-full'} />) }
+                                <Collection
+                                    id={item.id}
+                                    key={item.id}
+                                    name={item.name}
+                                    showCloseBtn={true}
+                                    containerStyles={'max-w-full'} 
+                                    handleRemove={handleCollectionsRemove}
+                                />) }
                         </View>
                         <TouchableOpacity
                             onPress={() => router.push('select-collections')}
@@ -343,6 +369,20 @@ const AddBook = () => {
             <View className="h-4"></View>
         </ScrollView>
     </SafeAreaView>
+}
+
+const Collection = ({ id, name, showCloseBtn, handleRemove, containerStyles }) => {
+
+    return <View className={`py-2 px-1 mr-2 mb-2 max-w-[116px] bg-primary flex-row items-center justify-between rounded-[5px] ${containerStyles}`}>
+        <Text className="text-[#FFFFFF] font-cygrebold leading-[16.8px] text-sm px-1" numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
+        { showCloseBtn ? (
+            <TouchableOpacity
+                onPress={() => handleRemove(id)}
+                className="rounded-full bg-[#fff] items-center ml-1 mr-2.5 justify-center w-[16px] h-[16px]">
+                <MaterialIcons name='close' color={'#6592E3'} size={8} />
+            </TouchableOpacity>
+        ) : <></> }
+    </View>
 }
 
 export default AddBook;
