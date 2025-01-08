@@ -16,6 +16,7 @@ import { router, useFocusEffect } from "expo-router";
 import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
 import BookPageDropdown from "../../components/BookPageDropdown";
+import ImageHandler from "../../components/ImageHandler";
 
 
 const Library = () => {
@@ -259,8 +260,14 @@ const BookStatus = ({ name, author, progress, tag, imageUrl, onPress, containerS
     return <TouchableOpacity
         onPress={onPress}
         className={`max-w-[353px] h-[172px] w-full flex-row border border-[#727272] px-3 py-3 rounded-[15px] ${containerStyles}`}>
-        <Image
+{/*         <Image
             source={imageUrl ? { uri: imageUrl } : images.book}
+            className="max-w-[99px] max-h-[141px] w-full h-full mr-4"
+            width={99}
+            height={141}
+        /> */}
+        <ImageHandler
+            source={imageUrl ? imageUrl : require('../../assets/images/book.png')}
             className="max-w-[99px] max-h-[141px] w-full h-full mr-4"
             width={99}
             height={141}

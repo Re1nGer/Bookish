@@ -17,6 +17,7 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { GearsIcon } from "../../components/Svg";
 import axios from "../../network/axios";
 import { router } from "expo-router";
+import ImageHandler from "../../components/ImageHandler";
 
 
 
@@ -175,13 +176,19 @@ const BookResult = ({ volumeInfo, id }) => {
             onPress={() => router.push({pathname: '/add-book', params: { id: id }})}
             className="max-w-[353px] p-3 w-full  mb-2 rounded-[15px] max-h-[132px] border-[.3px] bg-[#ffffff] border-[#727272] flex-row">
         <View className="max-w-[78px] max-h-[111px] mr-4">
-            <Image
-                source={{ uri: volumeInfo.imageLinks?.smallThumbnail }}
+            <ImageHandler source={volumeInfo.imageLinks?.smallThumbnail}
                 width={78}
                 height={111}
                 resizeMode="contain"
                 className="rounded-[6px]"
             />
+{/*             <Image
+                source={{ uri: volumeInfo.imageLinks?.smallThumbnail }}
+                width={78}
+                height={111}
+                resizeMode="contain"
+                className="rounded-[6px]"
+            /> */}
         </View>
         <View>
             <Text className="text-black text-[18px] leading-[21.6px] font-cygrebold max-w-[216px]" numberOfLines={2} ellipsizeMode='tail'>{volumeInfo.title}</Text>

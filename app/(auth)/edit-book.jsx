@@ -20,6 +20,7 @@ import { images } from "../../constants";
 import Genre from "../../components/Genre";
 import StatusBtn from "../../components/StatusBtn";
 import FormField from "../../components/FormField";
+import ImageHandler from "../../components/ImageHandler";
 
 
 const statusMap = {
@@ -240,7 +241,7 @@ const EditBook = () => {
         <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5">
             <TouchableOpacity
                 className="flex-1" onPress={() => router.back()}>
-                <Image source={images.leftArrowIcon} />
+                <Image source={require('../../assets/images/left_arrow.png')} />
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={async () => await editBook()}
@@ -250,7 +251,14 @@ const EditBook = () => {
         </View>
         <ScrollView className="px-5 mt-5" contentInsetAdjustmentBehavior="automatic">
             <Text className="text-black mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Edit Book</Text>
-            <Image
+{/*             <Image
+                source={{ uri: book.volumeInfo?.imageLinks?.thumbnail }}
+                width={134}
+                height={191}
+                className="self-center mt-6 rounded-[6px]"
+                resizeMode="contain" 
+            /> */}
+            <ImageHandler
                 source={{ uri: book.volumeInfo?.imageLinks?.thumbnail }}
                 width={134}
                 height={191}

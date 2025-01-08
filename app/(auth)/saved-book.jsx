@@ -19,6 +19,7 @@ import { QuoteStarsIcon } from "../../components/Svg";
 import Genre from "../../components/Genre";
 import { TimerIcon, NoteIcon, QuoteIcon } from "../../components/Svg";
 import axios from '../../network/axios';
+import ImageHandler from "../../components/ImageHandler";
 
 
 //TODO: extract out into utils
@@ -145,7 +146,7 @@ const SavedBook = () => {
             <TouchableOpacity
                 className="flex-1"
                 onPress={() => router.back()}>
-                <Image source={images.leftArrowIcon} />
+                <Image source={require('../../assets/images/left_arrow.png')} />
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => router.push({pathname:'edit-book', params: { id }})}
@@ -160,14 +161,21 @@ const SavedBook = () => {
         <ScrollView>
 
             <View className="mx-5 border-[#8A8A8A] flex-row p-4 border-[.5px] rounded-[20px] max-w-[353px]">
-                <Image source={getBookImage()} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" />
+                <ImageHandler source={getBookImage()} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" />
+{/*                 <Image source={getBookImage()} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" /> */}
                 <View className="relative">
                     <Text className="text-black text-[18px] mb-0.5 leading-[21.6px] font-cygrebold max-w-[150px]"
                         numberOfLines={1}
                         ellipsizeMode='tail'>
                             {title}
                     </Text>
-                    <Text className="text-black text-[12px] leading-[14.4px] font-cygreregular mb-5 max-w-[150px]" numberOfLines={2} ellipsizeMode="tail">{author}</Text>
+                    <Text
+                        className="text-black text-[12px] leading-[14.4px] font-cygreregular mb-5 max-w-[150px]"
+                        numberOfLines={2}
+                        ellipsizeMode="tail"
+                    >
+                        {author}
+                    </Text>
                     <BookStatusPicker
                         setSelectedStatus={setSelectedStatus}
                         selectedStatus={selectedStatus}

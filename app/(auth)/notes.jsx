@@ -4,16 +4,15 @@ import {
     TouchableOpacity,
     Image,
     FlatList,
-    RefreshControl
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useState, useCallback } from "react";
 import { router, useFocusEffect } from "expo-router";
 import axios from '../../network/axios';
 import BookPageDropdown from "../../components/BookPageDropdown";
 import Feather from '@expo/vector-icons/Feather';
+import ImageHandler from "../../components/ImageHandler";
 
 
 const Notes = () => {
@@ -142,8 +141,8 @@ const BookNoteCard = ({ name, author, notesCount, imageUrl, onPress, containerSt
     return <TouchableOpacity
         onPress={onPress}
         className={`max-w-[353px] h-[172px] w-full flex-row border border-[#727272] px-3 py-3 rounded-[15px] ${containerStyles}`}>
-        <Image
-            source={imageUrl ? { uri: imageUrl } : images.book}
+        <ImageHandler
+            source={imageUrl ? imageUrl : require('../../assets/images/book.png')}
             className="max-w-[99px] max-h-[141px] w-full h-full mr-4"
             width={99}
             height={141}

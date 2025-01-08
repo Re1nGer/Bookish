@@ -11,7 +11,7 @@ import {
 import PropTypes from 'prop-types';
 
 const { width } = Dimensions.get('window');
-const SWIPE_THRESHOLD = width / 3;
+const SWIPE_THRESHOLD = width / 5;
 
 const SwipeableWrapper = ({ children, showDots = true }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
