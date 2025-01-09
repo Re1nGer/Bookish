@@ -26,12 +26,13 @@ const NoteTypeDrawer = ({
                 height="55%"
                 isBottomSheetOpen={isNoteDrawerOpen}
                 setIsBottomSheetOpen={setIsNoteDrawerOpen}
-                containerStyles={'pb-0 flex-1'}
+                containerStyles={'pb-0'}
             >
                     <Text className="font-cygrebold text-[22px] mt-9 leading-[26.4px] text-center mb-5">Choose Note’s Type</Text>
                     <FlatList
-                        className="w-full mx-4 flex-1"
+                        className="w-full mx-4"
                         data={noteTypes}
+                        maxToRenderPerBatch={10}
                         ListEmptyComponent={() => <Text className="text-[20px] font-cygrebold">No Note Types Yet</Text>}
                         renderItem={({ item }) =>
                             <NoteType
@@ -44,7 +45,10 @@ const NoteTypeDrawer = ({
                             />}
                     />
                     <TouchableOpacity
-                        onPress={() => setIsNoteTypeDrawerOpen(true)}
+                        onPress={() => {
+                            setIsNoteTypeDrawerOpen(true)
+                            setIsNoteDrawerOpen(false);
+                        }}
                         className="bg-black mb-2 justify-center rounded-[34px] max-h-[56px] items-center w-full h-full">
                         <Text className="text-white font-cygrebold text-[18px] text-center">Add New Type</Text>
                     </TouchableOpacity>

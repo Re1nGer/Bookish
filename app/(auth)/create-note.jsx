@@ -125,6 +125,12 @@ const CreateNote = () => {
         }
     }
 
+    const handleCreateNoteTypeClose = () => {
+        setIsNoteTypeDrawerOpen(false);
+        setIsNoteDrawerOpen(true);
+    }
+
+
     useEffect(() => {
         fetchNoteTypes();
     }, [isNoteTypeDrawerOpen]);
@@ -175,6 +181,7 @@ const CreateNote = () => {
             <CreateNoteTypeDrawer
                 isNoteTypeDrawerOpen={isNoteTypeDrawerOpen}
                 setIsNoteTypeDrawerOpen={setIsNoteTypeDrawerOpen}
+                onClose={handleCreateNoteTypeClose}
             />
             <ScrollView>
                 <Pressable

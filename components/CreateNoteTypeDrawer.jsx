@@ -6,7 +6,7 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormField from './FormField';
 import BookBottomDrawer from "./BottomDrawer";
 import axios from '../network/axios';
@@ -27,11 +27,11 @@ const defaultColors = {
     oliveGreen: false
 }
 
-const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen }) => {
+const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen, onClose}) => {
 
     const [name, setName] = useState('');
     const [icon, setIcon] = useState('');
-    const [error, setError] = useState({ icon: '' });
+    const [error, setError] = useState({ icon: '', name: '', color: '' });
 
     const [colors, setColors] = useState({
         black: true,
@@ -83,14 +83,36 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen })
         return Object.keys(colors).find(key => colors[key] === true);
     }
 
+    const hasErrors = () => {
+        return !name || !icon || !getColor();
+    }
+
+    const validateAll = () => {
+        if (!name) setNameError('Name cannot be empty');
+        if (!icon || !isLetter(icon)) setIconError('Input should be an icon');
+        if (!getColor()) setColorError('Choose note color');
+    }
+
+    const clearAllErrors = () => {
+        setIconError('')
+        setNameError('')
+        setColorError('')
+    }
+
     const handleSaveNoteType = async () => {
-        console.log(getColorHesh(getColor()), name, icon)
         try {
+            const color = getColorHesh(getColor());
+            validateAll();
+            //console.log("hasError: ", hasErrors());
+            if (hasErrors()) return;
+            
             await axios.post('users/note/type', {
-                color: getColorHesh(getColor()),
+                color: color,
                 name: name,
                 icon: icon
             });
+            
+            clearAllErrors();
             setIsNoteTypeDrawerOpen(false);
         } catch(error) {
             console.log(error);
@@ -98,13 +120,22 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen })
     }
 
     const handleNameChange = (name) => {
-        setName(name);
+        if (!name) {
+            setNameError('Name cannot be empty');
+            setName(name);
+        } else {
+            setName(name);
+        }
+    }
+
+    const handleColorChange = (color) => {
+        setColors(() => ({...defaultColors, [color]: !colors[color]}))
     }
 
     const handleIconChange = (iconArg) => {
         if (isLetter(iconArg.at(-1))) {
             //emoji takes up 2 letter spaces, so we should should take into account for two letter case
-            setIconError('input should be an icon')
+            setIconError('Input should be an icon')
         } 
         else {
             setIconError('')
@@ -113,11 +144,27 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen })
     }
 
     const getIconError = () => {
-        return error['icon']
+        return error['icon'];
+    }
+
+    const getNameError = () => {
+        return error['name'];
+    }
+
+    const getColorError = () => {
+        return error['color'];
     }
 
     const setIconError = (error) => {
         setError(prev => ({...prev, icon: error}));
+    }
+
+    const setNameError = (error) => {
+        setError(prev => ({...prev, name: error}));
+    }
+
+    const setColorError = (error) => {
+        setError(prev => ({...prev, color: error}));
     }
 
     const isLetter = (char) => {
@@ -126,17 +173,24 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen })
 
     const ColorButton = ({ color, borderColor, bgColor }) => (
         <TouchableOpacity
-            onPress={() => setColors(() => ({...defaultColors, [color]: !colors[color]}))}
+            onPress={() => handleColorChange(color)}
             className={`border-[2px] rounded-[6px] max-w-[29px] w-full h-[28px]`}
             style={{ backgroundColor: colors[color] ? bgColor : '', borderColor: borderColor }}
         />
     );
+
+    useEffect(() => {
+        return () => {
+            clearAllErrors();
+        }
+    }, []);
 
     return (
         <BookBottomDrawer
                 height="80%"
                 isBottomSheetOpen={isNoteTypeDrawerOpen}
                 setIsBottomSheetOpen={setIsNoteTypeDrawerOpen}
+                onClose={onClose}
                 containerStyles={'pb-0'}
             >
             <KeyboardAvoidingView
@@ -148,14 +202,13 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen })
                     className="flex-1"
                     contentInsetAdjustmentBehavior="automatic"
                     keyboardShouldPersistTaps="handled"
-                    
                 >
                     <View style={{ flex: 1 }} className="w-full">
                         <Text className="font-cygrebold text-[22px] mt-9 leading-[26.4px] text-center">
                             Create New Type
                         </Text>
 
-                        <View className="my-6 rounded-[20px] items-center border-[.5px] py-4">
+                        <View className={`mt-6 rounded-[20px] items-center border-[.5px] py-4 ${!getColor() ? 'border-red' : ''}`}>
                             <View className="flex-row mb-6 justify-evenly w-full">
                                 <ColorButton color="black" borderColor="#000" bgColor="#000" />
                                 <ColorButton color="orange" borderColor="#F8846A" bgColor="#F8846A" />
@@ -173,14 +226,18 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen })
                                 <ColorButton color="oliveGreen" borderColor="#65875A" bgColor="#65875A" />
                             </View>
                         </View>
-
-                        <View style={{ flex: 1 }}>
+                        { !getColor() && (
+                            <Text className='font-cygrebold max-h-[20px] text-[12px] text-red'>{getColorError()}</Text>
+                        ) }
+                        <View className="mt-6" style={{ flex: 1 }}>
                             <FormField
                                 value={name}
                                 handleChangeText={handleNameChange}
                                 title={'Name'}
                                 placeholder={'Enter name for this type'}   
                                 otherStyles={'mb-5'}
+                                error={getNameError()}
+                                errorText={getNameError()}
                             />
                             <FormField
                                 value={icon}
@@ -196,7 +253,7 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen })
                     </View>
                 </ScrollView>
 
-                <View style={{ padding: 16 }}>
+                <View style={{ padding: 30 }}>
                     <TouchableOpacity
                         onPress={handleSaveNoteType} 
                         className="bg-black justify-center rounded-[34px] h-[56px] items-center w-full"

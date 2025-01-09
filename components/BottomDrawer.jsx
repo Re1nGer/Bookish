@@ -7,7 +7,16 @@ import {
 } from "react-native";
 import { useRef, useEffect } from "react";
 
-const BookBottomDrawer = ({ children, isBottomSheetOpen, setIsBottomSheetOpen, height = "30%", containerStyles }) => {
+const BookBottomDrawer = ({
+    children,
+    isBottomSheetOpen,
+    setIsBottomSheetOpen,
+    height = "30%",
+    pressableContainer,
+    onClose, //if onClose is defined, it overrides handleCloseBottom logic
+    onOpen,  //if onOpen is defined, it overrides handleCloseBottom logic
+    containerStyles 
+}) => {
 
     const windowHeight = Dimensions.get('window').height;
 
@@ -17,22 +26,30 @@ const BookBottomDrawer = ({ children, isBottomSheetOpen, setIsBottomSheetOpen, h
 
     // Function to open the bottom sheet 
     const handleOpenBottomSheet = () => {
-        setIsBottomSheetOpen(true);
+        if (onOpen) {
+            onOpen();
+        } else {
+            setIsBottomSheetOpen(true);
+        }
     };
 
     // Function to close the bottom sheet
     const handleCloseBottomSheet = () => {
-        setIsBottomSheetOpen(false);
+        if (onClose) {
+            onClose();
+        } else {
+            setIsBottomSheetOpen(false);
+        }
     };
 
     useEffect(() => {
         if (isBottomSheetOpen) {
-        slideAnim.setValue(0);
-        Animated.timing(slideAnim, {
-            toValue: 1,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
+            slideAnim.setValue(0);
+            Animated.timing(slideAnim, {
+                toValue: 1,
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
         }
     }, [isBottomSheetOpen]);
 
@@ -46,10 +63,11 @@ const BookBottomDrawer = ({ children, isBottomSheetOpen, setIsBottomSheetOpen, h
             animationType="fade"
             transparent={true}
             visible={isBottomSheetOpen}
+            className={pressableContainer}
             onRequestClose={handleOpenBottomSheet}>
                 <Pressable
                     onPress={handleCloseBottomSheet}
-                    className="absolute transition-opacity h-full w-full z-0 bg-[#3D3D3D61] opacity-[38]">
+                    className={`absolute transition-opacity h-full w-full  bg-[#3D3D3D61] opacity-[38] ${pressableContainer}`}>
                 </Pressable>
                 <Animated.View
                     className={`rounded-t-[30px] p-4 z-10 ${containerStyles}`}
