@@ -2,7 +2,6 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image,
     TextInput,
     ScrollView,
     StyleSheet
@@ -13,6 +12,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import Entypo from '@expo/vector-icons/Entypo';
 import Camera from "../../components/Camera";
+import ImageHandler from "../../components/ImageHandler";
 
 const YouFinishedBook = () => {
 
@@ -90,7 +90,7 @@ const YouFinishedBook = () => {
                         <Text className="text-black font-cygrebold text-[22px] leading-[26.4px] text-center">
                             You’ve finished the book!
                         </Text>
-                        <Image
+                        <ImageHandler
                             className="mt-7"
                             source={{uri: imageUrl}}
                             width={154}
