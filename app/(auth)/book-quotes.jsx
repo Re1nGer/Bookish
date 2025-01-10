@@ -29,14 +29,14 @@ const BookQuotes = () => {
     const [bookQuotes, setBookQuotes] = useState([]);
 
 
-    const handleEdit = (noteId) => {
-        router.push({pathname: 'edit-note', params: { bookId: id, noteId }})
+    const handleEdit = (quoteId) => {
+        router.push({pathname: 'edit-quote', params: { bookId: id, quoteId }})
     }
 
-    const handleDelete = async (noteId) => {
+    const handleDelete = async (quoteId) => {
         try {
-            await axios.delete(`books/${id}/note/${noteId}`);
-            setBookQuotes(prev => prev.filter(item => item.id !== noteId));
+            await axios.delete(`books/${id}/quote/${quoteId}`);
+            setBookQuotes(prev => prev.filter(item => item.id !== quoteId));
         } catch(error) {
             console.log(error);
         }
@@ -118,8 +118,8 @@ const BookQuote = ({ id, bookName, text, noteCount, handleEdit, handleDelete, co
 
     const confirmDelete = () => {
         Alert.alert(
-            "Delete Note",
-            "Are you sure you want to delete this note? This action cannot be undone.",
+            "Delete Quote",
+            "Are you sure you want to delete this quote? This action cannot be undone.",
             [
                 {
                     text: "Cancel",

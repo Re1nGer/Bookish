@@ -89,7 +89,7 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen, o
 
     const validateAll = () => {
         if (!name) setNameError('Name cannot be empty');
-        if (!icon || !isLetter(icon)) setIconError('Input should be an icon');
+        //if (!icon || !isLetter(icon)) setIconError('Input should be an icon');
         if (!getColor()) setColorError('Choose note color');
     }
 
@@ -133,13 +133,13 @@ const CreateNoteTypeDrawer = ({ isNoteTypeDrawerOpen, setIsNoteTypeDrawerOpen, o
     }
 
     const handleIconChange = (iconArg) => {
-        if (isLetter(iconArg.at(-1))) {
+/*         if (isLetter(iconArg.at(-1))) {
             //emoji takes up 2 letter spaces, so we should should take into account for two letter case
             setIconError('Input should be an icon')
         } 
         else {
             setIconError('')
-        }
+        } */
         setIcon(iconArg);
     }
 

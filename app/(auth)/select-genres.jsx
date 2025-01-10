@@ -110,6 +110,10 @@ const SelectGenres = () => {
         };
     }, [timeoutId]);
 
+    const handleSaveSelectedGenres = () => {
+        router.back();
+    }
+
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5">
@@ -118,7 +122,9 @@ const SelectGenres = () => {
                     <Image source={images.leftArrowIcon} />
                 </TouchableOpacity>
 
-                <TouchableOpacity className="bg-primary self-end mt-2 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
+                <TouchableOpacity
+                    onPress={handleSaveSelectedGenres}
+                    className="bg-primary self-end mt-2 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                     <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
                 </TouchableOpacity>
             </View>
