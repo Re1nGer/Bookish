@@ -27,6 +27,7 @@ const FormField = ({
       <Text className={`text-base font-cygresemibold text-[#1C1C1C] text-[18px] mb-1 ${titleStyles}`}>{title}</Text>
       <View className={`border w-full px-4 py-3 h-14 bg-white border-[#8A8A8A] rounded-xl items-center flex-row ${textInputContainerStyles} ${error ? 'border-red border-2' : ''}`}>
         <TextInput
+          autoCapitalize='none'
           className={`flex-1 bg-white font-cygreregular h-full justify-center items-center text-base max-h-[54px] ${textInputStyles}`}
           value={value}
           placeholder={placeholder}
