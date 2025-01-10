@@ -66,9 +66,9 @@ const SignIn = () => {
                 titleStyles={"font-cygrebold text-black font-semibold"}
                 placeholder={'Enter your email'}
                 placeholderTextColor={"#777"}
-                textInputStyles={'bg-[#EFEFEF] text-[12px] font-roboto font-semibold'}
+                textInputStyles={'bg-[#EFEFEF] text-[12px] font-semibold'}
                 textInputContainerStyles={'bg-[#EFEFEF] rounded-[5px] border-0'}
-                otherStyles={'max-h-[52px] h-full mb-[50px]'}
+                otherStyles={'mb-4'}
                 handleChangeText={(e) => setForm({ ...form, email: e }) }
                 value={form.email}
                 error={errors !== ""}
@@ -79,9 +79,8 @@ const SignIn = () => {
                   titleStyles={"font-cygrebold text-black font-semibold"}
                   placeholder={'At least 8 characters'}
                   placeholderTextColor={"#777"}
-                  textInputStyles={'bg-[#EFEFEF] text-[12px] font-roboto font-semibold'} 
+                  textInputStyles={'bg-[#EFEFEF] text-[12px] font-semibold'} 
                   textInputContainerStyles={'bg-[#EFEFEF] rounded-[5px] border-0'}
-                  otherStyles={"max-h-[90px] h-full space-y-0"}
                   handleChangeText={e => setForm({...form, password: e})}
                   error={errors !== ''}
                   errorText={errors}
