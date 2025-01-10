@@ -14,6 +14,7 @@ import { router, useFocusEffect } from "expo-router";
 import axios from '../../network/axios';
 import BookPageDropdown from "../../components/BookPageDropdown";
 import Feather from '@expo/vector-icons/Feather';
+import ImageHandler from "../../components/ImageHandler";
 
 
 const Quotes = () => {
@@ -141,8 +142,8 @@ const QuoteCard = ({ name, author, quotesCount, imageUrl, onPress, containerStyl
     return <TouchableOpacity
         onPress={onPress}
         className={`max-w-[353px] h-[172px] w-full flex-row border border-[#727272] px-3 py-3 rounded-[15px] ${containerStyles}`}>
-        <Image
-            source={imageUrl ? { uri: imageUrl } : images.book}
+        <ImageHandler
+            source={imageUrl ? imageUrl : images.book}
             className="max-w-[99px] max-h-[141px] w-full h-full mr-4"
             width={99}
             height={141}
