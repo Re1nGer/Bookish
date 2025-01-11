@@ -99,7 +99,6 @@ const AddBook = () => {
 
     const fetchBook = async () => {
         try {
-            console.log('fire')
             const { data } = await axios.get(`/book/${id}`);
             setBook(data)
         }

@@ -41,8 +41,10 @@ const SelectCollections = () => {
             const { data } = await axios.get('users/collections');
             const [first, second] = splitArray(data);
             //we need collections variable in case there are already selected collections
-            const firstMapped = first.map(item => ({...item, selected: collections?.some(j => j.id === item.id) ? true : false })); //probably wiser to receiver from backed selected false
-            const secondMapped = second.map(item => ({...item, selected: collections?.some(j => j.id === item.id) ? true : false }));
+            const firstMapped = first.map(item => ({...item, selected: collections
+                ?.some(j => j.id === item.id) ? true : false })); //probably wiser to receiver from backed selected false
+            const secondMapped = second.map(item => ({...item, selected: collections
+                ?.some(j => j.id === item.id) ? true : false }));
             setFirstHalfCollections(firstMapped);
             setSecondtHalfCollections(secondMapped);
         } catch (error) {
@@ -85,7 +87,7 @@ const SelectCollections = () => {
 
     useFocusEffect(
         useCallback(() => {
-            fetchCollections()
+            fetchCollections();
         }, [fetchCollections])
     );
 
@@ -108,7 +110,7 @@ const SelectCollections = () => {
 
 
             <View className="mx-5 max-h-[150px]">
-                <Text className="text-black mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Select genres</Text>
+                <Text className="text-black mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Select collections</Text>
                 <View className="bg-[#ffffff] mt-5 mb-7 border-[.3px] border-[#727272] items-center max-h-[43px] h-full flex-row justify-between w-full rounded-[26px] px-5">
                     <MaterialIcons name="search" color={'#1C1C1C'} size={22} />
                     <TextInput
@@ -158,7 +160,7 @@ export default SelectCollections;
 
 const NewCollection = ({ containerStyles }) => {
 
-    return <View className={`bg-primary rounded-[20px] mb-4 justify-between p-4 max-w-[169px] flex-[.5] max-h-[174px] ${containerStyles}`}>
+    return <View className={`bg-primary rounded-[20px] mb-4 justify-between p-4 max-w-[169px] flex-1 max-h-[174px] ${containerStyles}`}>
         <Text className="font-cygrebold mb-7 text-[22px] leading-[26.4px] font-bold text-[#ffffff]" numberOfLines={2} ellipsizeMode="tail">New Collection</Text>
         <TouchableOpacity
             onPress={() => router.push({pathname: '/create-collection', params: { fromSelect: true }})}
@@ -192,5 +194,4 @@ const ExistingCollection = ({ name, booksCount, selected, onSelected, containerS
             </View>
         </TouchableOpacity>
     );
-
 }

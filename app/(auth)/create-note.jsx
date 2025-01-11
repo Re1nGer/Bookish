@@ -229,7 +229,7 @@ const CreateNote = () => {
                             <Genre name={'For psychology classes'} showCloseBtn containerStyles={'max-w-[200px]'} />
                         </View>
                         <TouchableOpacity
-                            onPress={() => router.push('select-collections')}
+                            onPress={() => router.push('create-note-collection')}
                             className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
                             <MaterialIcons name="add" size={30} />
                         </TouchableOpacity>
