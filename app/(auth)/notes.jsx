@@ -220,7 +220,7 @@ const NoteCollections = () => {
                             <ExistingCollection
                                 key={item.id}
                                 onSelected={() => router.push({pathname:
-                                     'book-notes', params: { name: item.bookName, id: item.id, byCollection: true }})}
+                                     'book-notes', params: { name: item.name, id: item.id, byCollection: true }})}
                                 name={item.name} 
                                 selected={item.selected}
                                 notesCount={item.notesCount}
