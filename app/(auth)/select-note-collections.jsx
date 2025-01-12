@@ -7,11 +7,11 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
-import { Collection1Icon } from "../../components/Svg";
 import { router, useFocusEffect } from "expo-router";
 import { useContext, useState, useCallback } from "react";
 import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
+import { BookNoteIcon } from "../../components/Svg";
 
 
 function splitArray(arr) {
@@ -22,7 +22,7 @@ function splitArray(arr) {
 }
 
 
-const SelectCollections = () => {
+const SelectNoteCollections = () => {
 
 
     //when fetching the collection it has to be ordered in backend and then split in two here
@@ -33,11 +33,11 @@ const SelectCollections = () => {
 
     const handleInputTextChange = () => {}
 
-    const { setBook, book: { collections } } = useContext(UserContext);
+    const { setNote, note: { collections } } = useContext(UserContext);
 
     const fetchCollections = useCallback(async () => {
         try {
-            const { data } = await axios.get('users/collections');
+            const { data } = await axios.get('users/note-collections');
             const [first, second] = splitArray(data);
             //we need collections variable in case there are already selected collections
             const firstMapped = first.map(item => ({...item, selected: collections
@@ -80,7 +80,7 @@ const SelectCollections = () => {
 
         const collections = first.concat(second);
 
-        setBook(prev => ({...prev, collections: collections}))
+        setNote(prev => ({...prev, collections: collections}))
         router.back();
     }
 
@@ -115,7 +115,7 @@ const SelectCollections = () => {
                     <TextInput
                         onChangeText={handleInputTextChange}
                         className="bg-[#ffffff] font-cygreregular justify-center items-center flex-1 pl-4 text-[#000000] leading-[16.8px] text-sm"
-                        placeholder="Search a genre"
+                        placeholder="Search collections"
                     />
                     <TouchableOpacity
                         onPress={() => handleInputTextChange('')}
@@ -154,12 +154,12 @@ const SelectCollections = () => {
 }
 
 
-export default SelectCollections;
+export default SelectNoteCollections;
 
 
 const NewCollection = ({ containerStyles }) => {
 
-    return <View className={`bg-primary rounded-[20px] mb-4 justify-between p-4 max-w-[169px] flex-1 max-h-[174px] ${containerStyles}`}>
+    return <View className={`bg-black rounded-[20px] mb-4 justify-between p-4 max-w-[169px] flex-1 max-h-[174px] ${containerStyles}`}>
         <Text className="font-cygrebold mb-7 text-[22px] leading-[26.4px] font-bold text-[#ffffff]" numberOfLines={2} ellipsizeMode="tail">New Collection</Text>
         <TouchableOpacity
             onPress={() => router.push({pathname: '/create-collection', params: { fromSelect: true }})}
@@ -170,26 +170,27 @@ const NewCollection = ({ containerStyles }) => {
 }
 
 
-const ExistingCollection = ({ name, booksCount, selected, onSelected, containerStyles }) => {
+const ExistingCollection = ({ name, notesCount, onSelected, selected, containerStyles }) => {
 
     //push to collection with the name (it should be unique)
     return (
         <TouchableOpacity
             onPress={onSelected}
-            className={`bg-[#ffffff] relative mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 ${selected ? 'border-[2px] border-primary': ''} h-full ${containerStyles}`}>
+            className={`bg-[#D5E3FC] relative mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 h-full ${selected ? 'border-[2px] border-primary': ''} ${containerStyles}`}>
                 <View>
                     <Text
-                        className={`font-cygrebold mb-3 text-[22px] leading-[26.4px] font-bold text-[#121F16] ${selected ? 'text-primary' : ''}`}
-                        numberOfLines={2} ellipsizeMode="tail">{name}</Text>
-                        { booksCount > 0 && (
+                        className={`font-cygrebold mb-3 text-[22px] leading-[26.4px] font-bold text-[#121F16]`}
+                        numberOfLines={2}
+                        ellipsizeMode="tail">{name}</Text>
+                        { notesCount > 0 && (
                             <View className="bg-[#EEEEEE] self-start rounded-[21px] px-2.5 py-1">
-                                <Text className="text-black text-sm font-medium">{`${booksCount} books`}</Text>
+                                <Text className="text-black text-sm font-medium">{`${notesCount} notes`}</Text>
                             </View>
                         ) }
                 </View>
             <View
-                className="items-center  self-end bg-[#ffffff] max-w-[61px] bottom-0 relative -right-1 -z-10 max-h-[61px] rounded-full justify-center">
-                <Collection1Icon fill={selected && '#6592E3'} />
+                className="items-center  self-end max-w-[61px] bottom-0 relative -right-1 -z-10 max-h-[61px] rounded-full justify-center">
+                <BookNoteIcon fill={'#6592E3'} />
             </View>
         </TouchableOpacity>
     );
