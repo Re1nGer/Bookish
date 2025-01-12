@@ -107,7 +107,7 @@ const EditQuote = () => {
         return () => {
             setQuote(prev => ({...prev,
                 notes: [],
-                collectionIds: [],
+                collections: [],
                 repetitionGroupIds: []
             }));
         }
