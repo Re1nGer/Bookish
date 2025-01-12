@@ -3,7 +3,8 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    ScrollView
+    ScrollView,
+    Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
@@ -125,6 +126,15 @@ const SavedBook = () => {
         router.push({ pathname: 'create-quote', params: { id } }) //id of book to associate quotes with
     }
 
+    const handleNoteDelete = async (noteId) => {
+        try {
+            await axios.delete(`books/${id}/note/${noteId}`);
+            setBook(prev => ({...prev, notes: prev.notes.filter(item => item.id !== noteId)}));
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     const updateStatus = async (status) => {
         try {
             await axios.put(`/users/book/${id}/status?statusId=${statusOptions[status]}`);
@@ -241,6 +251,7 @@ const SavedBook = () => {
                         { notes.map(item =>
                             <Note key={item.id}
                             {...item}
+                            onDeleteButtonPress={handleNoteDelete}
                             containerStyles={'mr-4'} />) }
                 </ScrollView>
             </View>
@@ -298,7 +309,28 @@ const SavedBook = () => {
 }
 
 
-const Note = ({ content, typeName, color, icon, createdAt, containerStyles }) => {
+const Note = ({ id, content, typeName, onDeleteButtonPress, color, icon, createdAt, containerStyles }) => {
+
+    const confirmDelete = () => {
+        Alert.alert(
+            "Delete Note",
+            "Are you sure you want to delete this note? This action cannot be undone.",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { 
+                    text: "Delete", 
+                    onPress: async () => {
+                        await onDeleteButtonPress(id);
+                    },
+                    style: "destructive" // This will make it red on iOS
+                }
+            ]
+        );
+    }
+
     return (
         <View className={`flex-row flex-1 w-full max-w-[361px] ${containerStyles}`}>
             <View className="w-full max-h-[267px] h-full border-[.5px] rounded-[20px] p-5">
@@ -312,8 +344,15 @@ const Note = ({ content, typeName, color, icon, createdAt, containerStyles }) =>
                     <View className="p-2 bg-[#EEEEEE] rounded-[13px] max-h-[40px] h-full">
                         <Text className="text-sm text-black font-cygresemibold leading-[16.8px]">{new Date(createdAt)?.toLocaleDateString('de-DE') ?? '30.09.2024'}</Text>
                     </View>
+                    <View className="flex-1 items-end">
+                        <TouchableOpacity
+                            onPress={confirmDelete}
+                            className="bg-black rounded-full p-2 ">
+                                <MaterialIcons name="delete" size={24} color="white" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View className="rounded-[8px] bg-[#EEEEEE] pt-3 px-4 max-w-[327px] max-h-[148px] h-full w-full">
+                <View className="rounded-[8px] bg-[#EEEEEE] pt-3 px-4 max-w-[327px] max-h-[130px] h-full w-full">
                     <Text className="text-black font-cygreregular leading-[19.2px] font-medium">
                         {content}
                     </Text>
