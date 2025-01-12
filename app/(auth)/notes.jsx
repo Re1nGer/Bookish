@@ -178,8 +178,6 @@ const NoteCollections = () => {
 
     const [secondHalfCollections, setSecondtHalfCollections] = useState([]);
 
-    const handleInputTextChange = () => {}
-
     const fetchCollections = useCallback(async () => {
         try {
             const { data } = await axios.get('users/note-collections');
@@ -193,9 +191,11 @@ const NoteCollections = () => {
         }
     }, []);
 
-    useEffect(() => {
-        fetchCollections();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            fetchCollections()
+        }, [fetchCollections])
+    );
 
     return (
         <ScrollView className="m-5" showsVerticalScrollIndicator={false}>
