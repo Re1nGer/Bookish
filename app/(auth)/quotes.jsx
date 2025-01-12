@@ -129,7 +129,7 @@ const Quotes = () => {
                 ListEmptyComponent={renderGifLoader()}
                 renderItem={({ item }) => <QuoteCard
                     key={item.id}
-                    onPress={() => router.push({pathname: 'book-quotes', params: { name: item.bookName, id: item.id }})}
+                    onPress={() => router.push({pathname: 'book-quotes', params: { name: item.bookName, bookId: item.id }})}
                     name={item.bookName}
                     author={item.author}
                     quotesCount={item.quotesCount}   
@@ -208,7 +208,7 @@ const NoteCollections = () => {
                                 key={item.id}
                                 name={item.name}
                                 onSelected={() => router.push({pathname:
-                                     'book-quotes', params: { name: item.name, id: item.id, byCollection: true }})}
+                                     'book-quotes', params: { name: item.name, bookId: item.bookId, collectionId: item.id, byCollection: true }})}
                                 selected={item.selected}
                                 notesCount={item.notesCount}
                             />)
@@ -220,7 +220,8 @@ const NoteCollections = () => {
                             <ExistingCollection
                                 key={item.id}
                                 onSelected={() => router.push({pathname:
-                                     'book-quotes', params: { name: item.name, id: item.id, byCollection: true }})}
+                                     'book-quotes', params: { name: item.name,
+                                        bookId: item.bookId, collectionId: item.id, byCollection: true }})}
                                 name={item.name} 
                                 selected={item.selected}
                                 notesCount={item.notesCount}

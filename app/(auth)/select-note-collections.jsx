@@ -133,6 +133,7 @@ const SelectNoteCollections = () => {
                         <NewCollection />
                         { secondHalfCollections.map(item => 
                             <ExistingCollection
+                                key={item.id}
                                 name={item.name}
                                 onSelected={() => handleSecondHalfSelection(item.id)}
                                 selected={item.selected}
@@ -140,7 +141,9 @@ const SelectNoteCollections = () => {
                         />) }
                     </View>
                     <View className="w-full flex-[.5]">
-                        { firstHalfCollections.map(item => <ExistingCollection
+                        { firstHalfCollections.map(item =>
+                         <ExistingCollection
+                            key={item.id}
                             onSelected={() => handleFirstHalfSelection(item.id)}
                             name={item.name} 
                             selected={item.selected}

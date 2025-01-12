@@ -24,18 +24,18 @@ const copyToClipboard = async (text) => {
 
 const BookQuotes = () => {
 
-    const { name, id, byCollection } = useLocalSearchParams();
+    const { name, bookId, collectionId, byCollection } = useLocalSearchParams();
 
     const [bookQuotes, setBookQuotes] = useState([]);
 
 
     const handleEdit = (quoteId) => {
-        router.push({pathname: 'edit-quote', params: { bookId: id, quoteId }})
+        router.push({pathname: 'edit-quote', params: { bookId: bookId, quoteId }})
     }
 
     const handleDelete = async (quoteId) => {
         try {
-            await axios.delete(`books/${id}/quote/${quoteId}`);
+            await axios.delete(`books/${bookId}/quote/${quoteId}`);
             setBookQuotes(prev => prev.filter(item => item.id !== quoteId));
         } catch(error) {
             console.log(error);
@@ -44,8 +44,8 @@ const BookQuotes = () => {
 
     const fetchBookQuotes = useCallback(async () => {
         try {
-            const { data } = byCollection ? await axios.get(`users/quote-collections/${id}/quotes`)
-            : await axios.get(`users/books/${id}/quotes`);
+            const { data } = byCollection ? await axios.get(`users/quote-collections/${collectionId}/quotes`)
+            : await axios.get(`users/books/${bookId}/quotes`);
             setBookQuotes(data);
         }
         catch (error) {
@@ -87,7 +87,7 @@ const BookQuotes = () => {
             renderItem={({ item }) => <BookQuote
                 key={item.id}
                 id={item.id}
-                bookId={id}
+                bookId={bookId}
                 bookName={item.bookName}
                 text={item.text}
                 noteCount={item.noteCount}
