@@ -24,7 +24,7 @@ const copyToClipboard = async (text) => {
 
 const BookQuotes = () => {
 
-    const { name, id } = useLocalSearchParams();
+    const { name, id, byCollection } = useLocalSearchParams();
 
     const [bookQuotes, setBookQuotes] = useState([]);
 
@@ -44,7 +44,8 @@ const BookQuotes = () => {
 
     const fetchBookQuotes = useCallback(async () => {
         try {
-            const { data } = await axios.get(`users/books/${id}/quotes`);
+            const { data } = byCollection ? await axios.get(`users/quote-collections/${id}/quotes`)
+            : await axios.get(`users/books/${id}/quotes`);
             setBookQuotes(data);
         }
         catch (error) {

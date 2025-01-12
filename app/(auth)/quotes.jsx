@@ -4,7 +4,8 @@ import {
     TouchableOpacity,
     Image,
     FlatList,
-    RefreshControl
+    RefreshControl,
+    ScrollView
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
@@ -15,6 +16,7 @@ import axios from '../../network/axios';
 import BookPageDropdown from "../../components/BookPageDropdown";
 import Feather from '@expo/vector-icons/Feather';
 import ImageHandler from "../../components/ImageHandler";
+import { BookNoteIcon } from "../../components/Svg";
 
 
 const Quotes = () => {
@@ -120,21 +122,22 @@ const Quotes = () => {
                 <Text className={`${isFilteredByBooks ? 'text-black' : 'text-[#fff]'} text-sm text-center ml-2`}>By Collections</Text>
             </TouchableOpacity>
         </View>
-
-        <FlatList
-            className="mx-5 mt-7"
-            data={bookNotes}
-            ListEmptyComponent={renderGifLoader()}
-            renderItem={({ item }) => <QuoteCard
-                key={item.id}
-                onPress={() => router.push({pathname: 'book-quotes', params: { name: item.bookName, id: item.id }})}
-                name={item.bookName}
-                author={item.author}
-                quotesCount={item.quotesCount}   
-                imageUrl={item.imageUrl}
-                containerStyles={'mb-4'}
-            />}
-        />
+        { isFilteredByBooks ? (
+            <FlatList
+                className="mx-5 mt-7"
+                data={bookNotes}
+                ListEmptyComponent={renderGifLoader()}
+                renderItem={({ item }) => <QuoteCard
+                    key={item.id}
+                    onPress={() => router.push({pathname: 'book-quotes', params: { name: item.bookName, id: item.id }})}
+                    name={item.bookName}
+                    author={item.author}
+                    quotesCount={item.quotesCount}   
+                    imageUrl={item.imageUrl}
+                    containerStyles={'mb-4'}
+                />}
+            />
+        ) : <NoteCollections /> }
     </SafeAreaView>
 }
 
@@ -161,3 +164,109 @@ const QuoteCard = ({ name, author, quotesCount, imageUrl, onPress, containerStyl
 }
 
 export default Quotes;
+
+function splitArray(arr) {
+    const midpoint = Math.ceil(arr.length / 2);
+    const firstHalf = arr.slice(0, midpoint);
+    const secondHalf = arr.slice(midpoint);
+    return [firstHalf, secondHalf];
+}
+
+const NoteCollections = () => {
+
+    const [firstHalfCollections, setFirstHalfCollections] = useState([]);
+
+    const [secondHalfCollections, setSecondtHalfCollections] = useState([]);
+
+    const fetchCollections = useCallback(async () => {
+        try {
+            const { data } = await axios.get('users/quote-collections');
+            //console.log(data)
+            const [first, second] = splitArray(data);
+            //we need collections variable in case there are already selected collections
+            setFirstHalfCollections(first);
+            setSecondtHalfCollections(second);
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchCollections()
+        }, [fetchCollections])
+    );
+
+    return (
+        <ScrollView className="m-5" showsVerticalScrollIndicator={false}>
+            <View className="flex-row justify-between space-x-3 w-full">
+                <View className="w-full flex-[.5]">
+                    <NewCollection />
+                    { secondHalfCollections
+                        .map(item => 
+                            <ExistingCollection
+                                key={item.id}
+                                name={item.name}
+                                onSelected={() => router.push({pathname:
+                                     'book-quotes', params: { name: item.name, id: item.id, byCollection: true }})}
+                                selected={item.selected}
+                                notesCount={item.notesCount}
+                            />)
+                    }
+                </View>
+                <View className="w-full flex-[.5]">
+                    { firstHalfCollections
+                        .map(item =>
+                            <ExistingCollection
+                                key={item.id}
+                                onSelected={() => router.push({pathname:
+                                     'book-quotes', params: { name: item.name, id: item.id, byCollection: true }})}
+                                name={item.name} 
+                                selected={item.selected}
+                                notesCount={item.notesCount}
+                        />) }
+                </View>
+            </View>
+            <View className="h-20"></View>
+        </ScrollView>
+    );
+}
+
+
+const NewCollection = ({ containerStyles }) => {
+
+    return <View className={`bg-black rounded-[20px] mb-4 justify-between p-4 max-w-[169px] flex-1 max-h-[174px] ${containerStyles}`}>
+        <Text className="font-cygrebold mb-7 text-[22px] leading-[26.4px] font-bold text-[#ffffff]" numberOfLines={2} ellipsizeMode="tail">New Collection</Text>
+        <TouchableOpacity
+            onPress={() => router.push({pathname: '/create-quote-collection', params: { fromSelect: true }})}
+            className="items-center self-end bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
+            <MaterialIcons name="add" size={30} />
+        </TouchableOpacity>
+    </View>
+}
+
+const ExistingCollection = ({ name, notesCount, onSelected, containerStyles }) => {
+
+    //push to collection with the name (it should be unique)
+    return (
+        <TouchableOpacity
+            onPress={onSelected}
+            className={`bg-[#D5E3FC] relative mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 h-full ${containerStyles}`}>
+                <View>
+                    <Text
+                        className={`font-cygrebold mb-3 text-[22px] leading-[26.4px] font-bold text-[#121F16]`}
+                        numberOfLines={2}
+                        ellipsizeMode="tail">{name}</Text>
+                        { notesCount > 0 && (
+                            <View className="bg-[#EEEEEE] self-start rounded-[21px] px-2.5 py-1">
+                                <Text className="text-black text-sm font-medium">{`${notesCount} notes`}</Text>
+                            </View>
+                        ) }
+                </View>
+            <View
+                className="items-center  self-end max-w-[61px] bottom-0 relative -right-1 -z-10 max-h-[61px] rounded-full justify-center">
+                <BookNoteIcon fill={'#6592E3'} />
+            </View>
+        </TouchableOpacity>
+    );
+}
