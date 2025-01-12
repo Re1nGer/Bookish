@@ -205,6 +205,7 @@ const NoteCollections = () => {
                     { secondHalfCollections
                         .map(item => 
                             <ExistingCollection
+                                key={item.id}
                                 name={item.name}
                                 onSelected={() => router.push({pathname:
                                      'book-notes', params: { name: item.name, id: item.id, byCollection: true }})}
@@ -217,6 +218,7 @@ const NoteCollections = () => {
                     { firstHalfCollections
                         .map(item =>
                             <ExistingCollection
+                                key={item.id}
                                 onSelected={() => router.push({pathname:
                                      'book-notes', params: { name: item.bookName, id: item.id, byCollection: true }})}
                                 name={item.name} 
