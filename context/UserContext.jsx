@@ -18,6 +18,7 @@ export const UserProvider = ({ children }) => {
 
     const [note, setNote] = useState({
         repetitionGroups: [],
+        collections: [],
         quote: null,
         text: ''
     });

@@ -84,6 +84,9 @@ const CreateQuote = () => {
         }
     }, []);
 
+    const handleRemoveCollection = () => {}
+    const handleRemoveGroup = () => {}
+
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -123,7 +126,12 @@ const CreateQuote = () => {
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Spaced Repetition Groups</Text>
                     <View className="p-5 border bg-black max-h-[126px] w-full h-full justify-between flex-row items-center rounded-[20px]">
                         <View className="flex-wrap flex-row justify-start self-start flex-1">
-                            <Genre name={'Memory Improvement'} showCloseBtn containerStyles={'max-w-[200px]'} />
+                            <Genre
+                                name={'Memory Improvement'}
+                                showCloseBtn
+                                containerStyles={'max-w-[200px]'} 
+                                handleRemove={handleRemoveGroup}
+                            />
                         </View>
                         <TouchableOpacity
                             onPress={() => router.push('repetition-groups')}
@@ -137,7 +145,12 @@ const CreateQuote = () => {
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Collections</Text>
                     <View className="flex-wrap p-5 border bg-black max-h-[126px] h-full flex-row items-center rounded-[20px]">
                         <View className="flex-wrap flex-row justify-start self-start flex-1">
-                            <Genre name={'For psychology classes'} showCloseBtn containerStyles={'max-w-[200px]'} />
+                            <Genre
+                                name={'For psychology classes'}
+                                showCloseBtn
+                                containerStyles={'max-w-[200px]'} 
+                                handleRemove={handleRemoveCollection}
+                            />
                         </View>
                         <TouchableOpacity
                             onPress={() => router.push('select-collections')}

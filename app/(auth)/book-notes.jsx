@@ -24,10 +24,9 @@ const copyToClipboard = async (text) => {
 
 const BookNotes = () => {
 
-    const { name, id } = useLocalSearchParams();
+    const { name, id, byCollection } = useLocalSearchParams();
 
     const [bookNotes, setBookNotes] = useState([]);
-
 
     const handleEdit = (noteId) => {
         router.push({pathname: 'edit-note', params: { bookId: id, noteId }})
@@ -44,13 +43,15 @@ const BookNotes = () => {
 
     const fetchBookNotes = useCallback(async () => {
         try {
-            const { data } = await axios.get(`users/books/${id}/notes`);
+            const { data } = byCollection ? await axios.get(`users/note-collections/${id}/notes`)
+            : await axios.get(`users/books/${id}/notes`);
+            console.log(data);
             setBookNotes(data);
         }
         catch (error) {
             console.log(error);
         }
-    }, [])
+    }, []);
 
     useFocusEffect(
         useCallback(() => {
@@ -112,7 +113,18 @@ const renderEmptyState = () => {
 
 
 
-const BookNote = ({ id, bookName, text, date, handleEdit, handleDelete, noteTypeColor, noteTypeName, noteTypeIcon, containerStyles }) => {
+const BookNote = ({ 
+        id,
+        bookName,
+        text,
+        date,
+        handleEdit,
+        handleDelete,
+        noteTypeColor,
+        noteTypeName,
+        noteTypeIcon,
+        containerStyles 
+    }) => {
 
     const handleCopy = async () => {
         await copyToClipboard(text);

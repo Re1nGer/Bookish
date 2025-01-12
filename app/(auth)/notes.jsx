@@ -193,26 +193,6 @@ const NoteCollections = () => {
         }
     }, []);
 
-    const handleFirstHalfSelection = (selectedId) => {
-        setFirstHalfCollections(prev => 
-            prev.map(c => 
-                c.id === selectedId
-                    ? { ...c, selected: !c.selected }
-                    : {...c}
-            )
-        );
-    };
-
-    const handleSecondHalfSelection = (selectedId) => {
-        setSecondtHalfCollections(prev => 
-            prev.map(c => 
-                c.id === selectedId
-                    ? { ...c, selected: !c.selected }
-                    : {...c}
-            )
-        );
-    };
-
     useEffect(() => {
         fetchCollections();
     }, []);
@@ -226,7 +206,8 @@ const NoteCollections = () => {
                         .map(item => 
                             <ExistingCollection
                                 name={item.name}
-                                onSelected={() => handleSecondHalfSelection(item.id)}
+                                onSelected={() => router.push({pathname:
+                                     'book-notes', params: { name: item.name, id: item.id, byCollection: true }})}
                                 selected={item.selected}
                                 notesCount={item.notesCount}
                             />)
@@ -234,12 +215,14 @@ const NoteCollections = () => {
                 </View>
                 <View className="w-full flex-[.5]">
                     { firstHalfCollections
-                        .map(item => <ExistingCollection
-                            onSelected={() => handleFirstHalfSelection(item.id)}
-                            name={item.name} 
-                            selected={item.selected}
-                            notesCount={item.notesCount}
-                    />) }
+                        .map(item =>
+                            <ExistingCollection
+                                onSelected={() => router.push({pathname:
+                                     'book-notes', params: { name: item.bookName, id: item.id, byCollection: true }})}
+                                name={item.name} 
+                                selected={item.selected}
+                                notesCount={item.notesCount}
+                        />) }
                 </View>
             </View>
             <View className="h-20"></View>
@@ -260,16 +243,16 @@ const NewCollection = ({ containerStyles }) => {
     </View>
 }
 
-const ExistingCollection = ({ name, notesCount, selected, onSelected, containerStyles }) => {
+const ExistingCollection = ({ name, notesCount, onSelected, containerStyles }) => {
 
     //push to collection with the name (it should be unique)
     return (
         <TouchableOpacity
             onPress={onSelected}
-            className={`bg-[#D5E3FC] relative mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 ${selected ? 'border-[2px] border-primary': ''} h-full ${containerStyles}`}>
+            className={`bg-[#D5E3FC] relative mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 h-full ${containerStyles}`}>
                 <View>
                     <Text
-                        className={`font-cygrebold mb-3 text-[22px] leading-[26.4px] font-bold text-[#121F16] ${selected ? 'text-primary' : ''}`}
+                        className={`font-cygrebold mb-3 text-[22px] leading-[26.4px] font-bold text-[#121F16]`}
                         numberOfLines={2}
                         ellipsizeMode="tail">{name}</Text>
                         { notesCount > 0 && (
