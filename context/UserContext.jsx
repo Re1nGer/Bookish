@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
     const [verificationCode, setVerificationCode] = useState('');
 
     const [quote, setQuote] = useState({
-        collectionIds: [],
+        collections: [],
         repetitionGroupIds: [],
         notes: [],
     });

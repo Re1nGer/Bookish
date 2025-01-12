@@ -34,6 +34,10 @@ const CreateQuote = () => {
         setIsQuoteDrawerOpen(prev => !prev);
     }
 
+    const handleRemoveQuoteCollection = (collectionId) => {
+        setQuote(prev => ({...prev, collections: prev.collections.filter(item => item.id !== collectionId)})) ;
+    }
+
     const handleNoteDelete = (noteId) => {
         Alert.alert(
             "Delete Note",
@@ -59,12 +63,17 @@ const CreateQuote = () => {
         return quote.notes.map(item => item.id);
     }
 
+    const getSelectedCollectionIds = () => {
+        return quote.collections.map(item => item.id);
+    }
+
     const handleSaveQuote = async () => {
         try {
             await axios.post(`books/${id}/quote`, {
                 content: text,
-                noteIds: getNoteIds()
-                //TODO: to add collections ids, quoteId, repetition groups id
+                noteIds: getNoteIds(),
+                collectionIds: getSelectedCollectionIds()
+                //TODO: to add repetition groups id
             });
             router.back();
         } catch (error) {
@@ -78,7 +87,7 @@ const CreateQuote = () => {
         return () => {
             setQuote(prev => ({...prev,
                 notes: [],
-                collectionIds: [],
+                collections: [],
                 repetitionGroupIds: []
             }));
         }
@@ -145,15 +154,18 @@ const CreateQuote = () => {
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Collections</Text>
                     <View className="flex-wrap p-5 border bg-black max-h-[126px] h-full flex-row items-center rounded-[20px]">
                         <View className="flex-wrap flex-row justify-start self-start flex-1">
-                            <Genre
-                                name={'For psychology classes'}
-                                showCloseBtn
-                                containerStyles={'max-w-[200px]'} 
-                                handleRemove={handleRemoveCollection}
-                            />
+                            { quote?.collections?.map(item =>
+                                <Collection
+                                    key={item.id}
+                                    id={item.id}
+                                    name={item.name}
+                                    showCloseBtn={true}
+                                    handleRemove={handleRemoveQuoteCollection}
+                                  />
+                            ) }
                         </View>
                         <TouchableOpacity
-                            onPress={() => router.push('select-collections')}
+                            onPress={() => router.push('select-quote-collections')}
                             className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
                             <MaterialIcons name="add" size={30} />
                         </TouchableOpacity>
@@ -213,6 +225,20 @@ const CreateQuote = () => {
 
 
 export default CreateQuote;
+
+const Collection = ({ id, name, showCloseBtn, handleRemove, containerStyles }) => {
+
+    return <View className={`py-2 px-1 mr-2 mb-2 max-w-[116px] bg-primary flex-row items-center justify-between rounded-[5px] ${containerStyles}`}>
+        <Text className="text-[#FFFFFF] font-cygrebold leading-[16.8px] text-sm px-1" numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
+        { showCloseBtn ? (
+            <TouchableOpacity
+                onPress={() => handleRemove(id)}
+                className="rounded-full bg-[#fff] items-center ml-1 mr-2.5 justify-center w-[16px] h-[16px]">
+                <MaterialIcons name='close' color={'#6592E3'} size={8} />
+            </TouchableOpacity>
+        ) : <></> }
+    </View>
+}
 
 const Note = ({ id, text, noteTypeName, noteTypeColor, onDeleteButtonPress, noteTypeIcon, createdAt, containerStyles }) => {
     return (
