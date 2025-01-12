@@ -30,9 +30,10 @@ const NoteTypeDrawer = ({
             >
                     <Text className="font-cygrebold text-[22px] mt-9 leading-[26.4px] text-center mb-5">Choose Note’s Type</Text>
                     <FlatList
+                        initialNumToRender={20}  // Render fewer items initially
+                        windowSize={5}          // Reduce the render window
                         className="w-full mx-4"
                         data={noteTypes}
-                        maxToRenderPerBatch={10}
                         ListEmptyComponent={() => <Text className="text-[20px] font-cygrebold">No Note Types Yet</Text>}
                         renderItem={({ item }) =>
                             <NoteType
@@ -49,7 +50,7 @@ const NoteTypeDrawer = ({
                             setIsNoteTypeDrawerOpen(true)
                             setIsNoteDrawerOpen(false);
                         }}
-                        className="bg-black mb-2 justify-center rounded-[34px] max-h-[56px] items-center w-full h-full">
+                        className="bg-black my-5 justify-center rounded-[34px] max-h-[56px] items-center w-full h-full">
                         <Text className="text-white font-cygrebold text-[18px] text-center">Add New Type</Text>
                     </TouchableOpacity>
             </BookBottomDrawer>
