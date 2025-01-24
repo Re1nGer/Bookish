@@ -13,7 +13,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
 import BookStatusPicker from "../../components/ReadStatusDropdown";
 import SliderCounter from "../../components/SliderCounter";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Fragment } from "react";
 import SwipeableWrapper from "../../components/SwipeableWrapper";
 import CircularProgress from "../../components/CircleProgress";
 import { QuoteStarsIcon } from "../../components/Svg";
@@ -21,6 +21,7 @@ import Genre from "../../components/Genre";
 import { TimerIcon, NoteIcon, QuoteIcon } from "../../components/Svg";
 import axios from '../../network/axios';
 import ImageHandler from "../../components/ImageHandler";
+import Feather from '@expo/vector-icons/Feather';
 
 
 //TODO: extract out into utils
@@ -74,7 +75,8 @@ const SavedBook = () => {
         imageUrl: '',
         status: 0,
         collections: [],
-        notes: []
+        notes: [],
+        quotes: []
     })
 
     const {
@@ -87,7 +89,8 @@ const SavedBook = () => {
         collections,
         startedAt,
         finishedAt,
-        notes
+        notes,
+        quotes
     } = book;
 
     const [currentPage, setCurrentPage] = useState(book.currentPage);
@@ -130,6 +133,15 @@ const SavedBook = () => {
         try {
             await axios.delete(`books/${id}/note/${noteId}`);
             setBook(prev => ({...prev, notes: prev.notes.filter(item => item.id !== noteId)}));
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    const handleQuoteDelete = async (quoteId) => {
+        try {
+            await axios.delete(`books/${id}/quote/${quoteId}`);
+            setBook(prev => ({...prev, quotes: prev.quotes.filter(item => item.id !== quoteId)}));
         } catch(error) {
             console.log(error);
         }
@@ -227,7 +239,7 @@ const SavedBook = () => {
 
 {/*             Flat list doesn't really fit in, opted in for scroll view; gotta test performance for bigger amount of notes */}
 
-        { notes?.length > 0 && (
+        { notes?.length > 0 ? (
             <View className="flex-1">
                 <View className="mx-5 mb-7 mt-10 flex-row justify-between">
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Notes</Text>
@@ -255,24 +267,79 @@ const SavedBook = () => {
                             containerStyles={'mr-4'} />) }
                 </ScrollView>
             </View>
+            ) : (
+                <Fragment>
+                    <View className="mx-5 mb-3 mt-8 flex-row justify-between">
+                        <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Notes</Text>
+                        <TouchableOpacity>
+                            <Text className="text-primary underline font-cygrebold leading-[19.2px]">Show more</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity
+                        onPress={handleNoteRedirect}
+                        className="mx-5 bg-black max-h-[106px] h-full flex-row items-center rounded-[20px]">
+                        <View
+                            className="mx-7">
+                            <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Add notes you liked from this book</Text>
+                        </View>
+                        <QuoteStarsIcon />
+                    </TouchableOpacity>
+                </Fragment>
             ) }
 
-            <View className="mx-5 mb-3 mt-8 flex-row justify-between">
-                <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Quotes</Text>
-                <TouchableOpacity>
-                    <Text className="text-primary underline font-cygrebold leading-[19.2px]">Show more</Text>
-                </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity
-                onPress={handleQuoteRedirect}
-                className="mx-5 bg-black max-h-[106px] h-full flex-row items-center rounded-[20px]">
-                <View
-                    className="mx-7">
-                    <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Add quotes you liked from this book</Text>
+            { quotes.length > 0 ? (
+                <View className="flex-1">
+                    <View className="mx-5 mb-7 mt-10 flex-row justify-between">
+                        <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Quotes</Text>
+                        <TouchableOpacity>
+                            <Text className="text-primary underline font-cygrebold leading-[19.2px]">Show more</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <ScrollView 
+                        showsHorizontalScrollIndicator={false}
+                        className="mx-5 max-h-[250px]"
+                        contentInsetAdjustmentBehavior="automatic"
+                        initialNumToRender={10}
+                        horizontal>
+                            <View className="flex-1">
+                                <TouchableOpacity
+                                    onPress={() => router.push({pathname: 'create-quote', params: { id }})}
+                                    className="w-[97px] bg-primary items-center justify-center max-h-[97px] h-full rounded-[20px] mr-3">
+                                    <Text className="text-white text-[50px] pb-3">+</Text>
+                                </TouchableOpacity>
+                            </View>
+                            { quotes.map(item =>
+                                <Quote
+                                    key={item.id}
+                                    id={item.id}
+                                    book={item.bookName}
+                                    text={item.text}
+                                    showRadioButton={false}
+                                    onDeleteButtonPress={() => handleQuoteDelete(item.id)}
+                                    containerStyles={'mr-4 max-w-[361px] w-full flex-1'}
+                            />) }
+                    </ScrollView>
                 </View>
-                <QuoteStarsIcon />
-            </TouchableOpacity>
+            ) : <Fragment>
+                    <View className="mx-5 mb-3 mt-8 flex-row justify-between">
+                        <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Quotes</Text>
+                        <TouchableOpacity>
+                            <Text className="text-primary underline font-cygrebold leading-[19.2px]">Show more</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity
+                        onPress={handleQuoteRedirect}
+                        className="mx-5 bg-black max-h-[106px] h-full flex-row items-center rounded-[20px]">
+                        <View
+                            className="mx-7">
+                            <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Add quotes you liked from this book</Text>
+                        </View>
+                        <QuoteStarsIcon />
+                    </TouchableOpacity>
+                </Fragment>
+            }
+            
 
             <View className="mt-10 mb-5 mx-5">
                 <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Description</Text>
@@ -287,8 +354,12 @@ const SavedBook = () => {
                 <View className="my-5 mx-5 max-h-[160px]">
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Genres</Text>
                     <View className="flex-wrap p-5 border bg-black max-h-[126px] h-full flex-row items-center rounded-[20px]">
-                    { categories?.slice(0, 4)?.map(item =>
-                         <Genre key={item.id} name={item.name} showCloseBtn={false} />) }
+                    { categories?.map(item =>
+                         <Genre
+                            key={item.id}
+                            name={item.name}
+                            showCloseBtn={false} 
+                        />) }
                     </View>
                 </View>
             ) : <></> }
@@ -308,6 +379,55 @@ const SavedBook = () => {
     </SafeAreaView>
 }
 
+const Quote = ({ id, text, book, onDeleteButtonPress, containerStyles }) => {
+
+    const confirmDelete = () => {
+        Alert.alert(
+            "Delete Quote",
+            "Are you sure you want to delete this note? This action cannot be undone.",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { 
+                    text: "Delete", 
+                    onPress: async () => {
+                        await onDeleteButtonPress(id);
+                    },
+                    style: "destructive" // This will make it red on iOS
+                }
+            ]
+        );
+    }
+
+    return (
+        <View className={`flex-row flex-1 w-full max-w-[361px] ${containerStyles}`}>
+            <View className="w-full max-h-[267px] h-full border-[.5px] rounded-[20px] p-5">
+                <View className="flex-row items-center mb-4">
+                    <View className="p-2 bg-black flex-row rounded-[13px] max-h-[40px] h-full items-center justify-center">
+                        <Feather name="book" size={16} color="white" />
+                        <Text className="text-sm text-white ml-1 font-cygresemibold text-center leading-[16.8px]"
+                            numberOfLines={1}
+                            ellipsizeMode="trail">{book}</Text>
+                    </View>
+                    <View className="flex-1 items-end">
+                        <TouchableOpacity
+                            onPress={confirmDelete}
+                            className="bg-black rounded-full p-2 ">
+                                <MaterialIcons name="delete" size={24} color="white" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View className="rounded-[8px] bg-[#EEEEEE] pt-3 px-4 max-w-[327px] max-h-[130px] h-full w-full">
+                    <Text className="text-black font-cygreregular leading-[19.2px] font-medium">
+                        {text}
+                    </Text>
+                </View>
+            </View>
+        </View>
+    )
+}
 
 const Note = ({ id, content, typeName, onDeleteButtonPress, color, icon, createdAt, containerStyles }) => {
 
@@ -341,8 +461,8 @@ const Note = ({ id, content, typeName, onDeleteButtonPress, color, icon, created
                         <Text className="text-[12px] mr-0.5">{icon}</Text>
                         <Text className="text-sm text-[#fff] font-cygresemibold leading-[16.8px]" numberOfLines={1} ellipsizeMode="tail">{typeName}</Text>
                     </View>
-                    <View className="p-2 bg-[#EEEEEE] rounded-[13px] max-h-[40px] h-full">
-                        <Text className="text-sm text-black font-cygresemibold leading-[16.8px]">{new Date(createdAt)?.toLocaleDateString('de-DE') ?? '30.09.2024'}</Text>
+                    <View className="p-2 bg-[#EEEEEE] rounded-[13px] max-h-[40px] h-full items-center justify-center">
+                        <Text className="text-sm text-black font-cygresemibold leading-[16.8px] text-center">{new Date(createdAt)?.toLocaleDateString('de-DE') ?? '30.09.2024'}</Text>
                     </View>
                     <View className="flex-1 items-end">
                         <TouchableOpacity
