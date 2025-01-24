@@ -28,7 +28,7 @@ const CreateQuoteCollection = () => {
     const addCollection = async () => {
         if (!name) return;
         try {
-            await axios.post('/users/quote-collections', { name });
+            await axios.post('users/quote-collections', { name });
             if (fromSelect) {
                 router.back();
             } else {

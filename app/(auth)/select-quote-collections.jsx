@@ -165,7 +165,7 @@ const NewCollection = ({ containerStyles }) => {
     return <View className={`bg-black rounded-[20px] mb-4 justify-between p-4 max-w-[169px] flex-1 max-h-[174px] ${containerStyles}`}>
         <Text className="font-cygrebold mb-7 text-[22px] leading-[26.4px] font-bold text-[#ffffff]" numberOfLines={2} ellipsizeMode="tail">New Collection</Text>
         <TouchableOpacity
-            onPress={() => router.push({pathname: '/create-collection', params: { fromSelect: true }})}
+            onPress={() => router.push({pathname: 'create-quote-collection', params: { fromSelect: true }})}
             className="items-center self-end bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
             <MaterialIcons name="add" size={30} />
         </TouchableOpacity>
