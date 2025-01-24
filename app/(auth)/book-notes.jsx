@@ -168,8 +168,8 @@ const BookNote = ({
             <Text className="text-black leading-[19.2px] font-cygreregular">{text}</Text>
         </View>
         <View className="justify-self-end flex-row justify-between mt-7">
-            <View className="bg-[#EEEEEE] rounded-[31px] px-2.5 py-1.5">
-                <Text className="text-sm text-black font-cygresemibold leading-[16.8px]">{new Date(date)?.toLocaleDateString('de-DE') ?? '30.09.2024'}</Text>
+            <View className="bg-[#EEEEEE] rounded-[31px] px-2.5 py-1.5 justify-center items-center">
+                <Text className="text-sm text-black font-cygresemibold leading-[16.8px] text-center">{new Date(date)?.toLocaleDateString('de-DE') ?? '30.09.2024'}</Text>
             </View>
             <View className="flex-row gap-2">
                 <TouchableOpacity
