@@ -14,7 +14,7 @@ import axios from '../../network/axios';
 import BookPageDropdown from "../../components/BookPageDropdown";
 import Feather from '@expo/vector-icons/Feather';
 import ImageHandler from "../../components/ImageHandler";
-import { BookNoteIcon } from "../../components/Svg";
+import { COLLECTION_ICON_MAP } from "../../components/CollectionSvg";
 
 
 const Notes = () => {
@@ -211,6 +211,7 @@ const NoteCollections = () => {
                                      'book-notes', params: { name: item.name, id: item.id, byCollection: true }})}
                                 selected={item.selected}
                                 notesCount={item.notesCount}
+                                iconId={item.iconId}
                             />)
                     }
                 </View>
@@ -224,6 +225,7 @@ const NoteCollections = () => {
                                 name={item.name} 
                                 selected={item.selected}
                                 notesCount={item.notesCount}
+                                iconId={item.iconId}
                         />) }
                 </View>
             </View>
@@ -245,27 +247,25 @@ const NewCollection = ({ containerStyles }) => {
     </View>
 }
 
-const ExistingCollection = ({ name, notesCount, onSelected, containerStyles }) => {
+const ExistingCollection = ({ name, iconId, notesCount, onSelected, containerStyles }) => {
 
-    //push to collection with the name (it should be unique)
+    const IconElement = COLLECTION_ICON_MAP[iconId];
+
     return (
         <TouchableOpacity
             onPress={onSelected}
-            className={`bg-[#D5E3FC] relative mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between max-w-[169px] max-h-[174px] p-4 h-full ${containerStyles}`}>
-                <View>
-                    <Text
-                        className={`font-cygrebold mb-3 text-[22px] leading-[26.4px] font-bold text-[#121F16]`}
-                        numberOfLines={2}
-                        ellipsizeMode="tail">{name}</Text>
-                        { notesCount > 0 && (
-                            <View className="bg-[#EEEEEE] self-start rounded-[21px] px-2.5 py-1">
-                                <Text className="text-black text-sm font-medium">{`${notesCount} notes`}</Text>
-                            </View>
-                        ) }
-                </View>
+            className={`bg-[#D5E3FC] relative mb-4 overflow-hidden border-[#8A8A8A] border-[.5px] rounded-[20px] justify-between p-4 h-[174px] ${containerStyles}`}>
+            <Text
+                className={`font-cygrebold mb-3 text-[22px] leading-[26.4px] font-bold text-[#121F16]`}
+                numberOfLines={2} ellipsizeMode="tail">{name}</Text>
+                { notesCount > 0 ? (
+                    <View className="bg-[#EEEEEE] self-start rounded-[21px] px-2.5 py-1">
+                        <Text className="text-black text-sm font-medium">{`${notesCount} books`}</Text>
+                    </View>
+                ) : <View className="px-2.5 py-1"></View> }
             <View
                 className="items-center  self-end max-w-[61px] bottom-0 relative -right-1 -z-10 max-h-[61px] rounded-full justify-center">
-                <BookNoteIcon fill={'#6592E3'} />
+                    <IconElement fill={'#6592E3'} />
             </View>
         </TouchableOpacity>
     );
