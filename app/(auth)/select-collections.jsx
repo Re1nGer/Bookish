@@ -94,7 +94,7 @@ const SelectCollections = () => {
 
     return <SafeAreaView className="bg-[#F7F7F7] flex-1">
 
-            <View className="justify-between items-center flex-row mx-5">
+            <View className="justify-between max-h-[60px] h-full items-center flex-row mx-5">
 
                 <TouchableOpacity className="flex-1" onPress={() => router.back()}>
                     <MaterialIcons name='close' color={'black'} size={20} />
