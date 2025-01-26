@@ -25,9 +25,9 @@ const CreateQuote = () => {
 
     const inputRef = useRef(null);
 
-    const { id } = useLocalSearchParams();
+    const { id, selectNewlyCreated } = useLocalSearchParams();
 
-    const { quote, setQuote } = useContext(UserContext);
+    const { quote, setQuote, setNote } = useContext(UserContext);
 
     const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
 
@@ -70,12 +70,19 @@ const CreateQuote = () => {
 
     const handleSaveQuote = async () => {
         try {
-            await axios.post(`books/${id}/quote`, {
+            const { data } = await axios.post(`books/${id}/quote`, {
                 content: text,
                 noteIds: getNoteIds(),
                 collectionIds: getSelectedCollectionIds()
                 //TODO: to add repetition groups id
             });
+
+            //we came from create-notes and want to connect newly created quote to the note
+            if (selectNewlyCreated) {
+                const quote = { id: data.id, text: data.content, book: data.book.title };
+                setNote(prev => ({...prev, quote: quote}));
+            }
+
             router.back();
         } catch (error) {
             console.log(error);

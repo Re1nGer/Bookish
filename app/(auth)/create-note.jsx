@@ -311,7 +311,7 @@ const QuoteDrawer = ({ isQuoteDrawerOpen, setIsQuoteDrawerOpen, bookId }) => {
         <TouchableOpacity
             onPress={() => {
                 setIsQuoteDrawerOpen(false);
-                router.push({ pathname: 'create-quote', params: { id: bookId } });
+                router.push({ pathname: 'create-quote', params: { id: bookId, selectNewlyCreated: true } });
             } }
             className="bg-black mt-7 flex-row justify-start pl-6 rounded-[15px] mb-2 max-h-[56px] items-center h-full w-full">
             <Fontisto name="quote-a-left" size={20} color="white" />
