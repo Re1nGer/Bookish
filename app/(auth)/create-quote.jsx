@@ -16,6 +16,7 @@ import { Alert } from 'react-native';
 import axios from '../../network/axios';
 import BookBottomDrawer from "../../components/BottomDrawer";
 import Fontisto from '@expo/vector-icons/Fontisto';
+import { QuoteStarsIcon } from "../../components/Svg";
 
 
 const CreateQuote = () => {
@@ -194,28 +195,25 @@ const CreateQuote = () => {
                                 </TouchableOpacity>
                             </View>
                             { quote.notes.map(item =>
-                                <Note key={item.id}
-                                {...item}
-                                onDeleteButtonPress={handleNoteDelete}
-                                containerStyles={'mr-4'} />) }
+                                <Note
+                                    key={item.id}
+                                    {...item}
+                                    onDeleteButtonPress={handleNoteDelete}
+                                    containerStyles={'mr-4'}
+                                />) }
                     </ScrollView>
                 </View>
                 ) : (
-                    <View className="flex-1">
-                        <View className="mx-5 mt-5">
-                            <Text className="text-whtie text-[22px] leading-[26.4px] font-cygrebold">Notes</Text>
+                    <TouchableOpacity
+                        onPress={handleQuoteDrawerOpen}
+                        className="my-5 mx-5 bg-black h-[106px] flex-row items-center rounded-[20px] flex-1">
+                        <View className="mx-7">
+                            <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Is this quote related to some notes?</Text>
                         </View>
-
-                        <TouchableOpacity
-                            onPress={handleQuoteDrawerOpen}
-                            className="my-2.5 mx-5 h-[97px] flex-1 bg-primary items-center justify-center rounded-[11px]">
-                            <MaterialIcons name="add" size={30} color={'#fff'} />
-                        </TouchableOpacity>
-                    </View>
-                ) }
-
-
-{/*             <View className="h-[50px]"></View> */}
+                        <QuoteStarsIcon />
+                    </TouchableOpacity>
+                )
+            }
             </ScrollView>
     </SafeAreaView>
 }
