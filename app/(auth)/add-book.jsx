@@ -5,17 +5,16 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
-    Alert
+    Alert,
 } from "react-native";
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, Fragment } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { CollectionsIcon } from "../../components/Svg";
+import { CollectionsIcon, PinIcon } from "../../components/Svg";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import axios from "../../network/axios";
 import { UserContext } from "../../context/UserContext";
-import { images } from "../../constants";
 import Genre from "../../components/Genre";
 import StatusBtn from "../../components/StatusBtn";
 import FormField from "../../components/FormField";
@@ -214,13 +213,6 @@ const AddBook = () => {
         </View>
         <ScrollView className="px-5 mt-5" contentInsetAdjustmentBehavior="automatic">
             <Text className="text-black mt-6 text-[24px] font-cygrebold leading-[28.8px] font-bold">Add Book</Text>
-{/*             <Image
-                source={{ uri: book.volumeInfo?.imageLinks?.thumbnail }}
-                width={134}
-                height={191}
-                className="self-center mt-6 rounded-[6px]"
-                resizeMode="contain" 
-            /> */}
             <ImageHandler
                 source={book.volumeInfo?.imageLinks?.thumbnail}
                 width={134}
@@ -314,22 +306,28 @@ const AddBook = () => {
 
             <View className="my-6 flex-1">
                 <Text className="text-black mb-2.5 text-[18px] font-cygrebold leading-[21.6px]">Genres</Text>
-                <View className="p-4 min-h-[116px] flex-row justify-between rounded-[20px] bg-black">
-                    <View className="flex-wrap flex-row flex-1 items-start">
-                        { book.volumeInfo.categories.map(item =>
-                             <Genre
-                                key={item}
-                                name={item}
-                                showCloseBtn={true}
-                                handleRemove={handleGenresRemove}
-                            />) }
+                { book.volumeInfo.categories?.length > 0 ? (
+                    <View className="p-4 min-h-[116px] flex-row justify-between rounded-[20px] bg-black">
+                        <Fragment>
+                            <View className="flex-wrap flex-row flex-1 items-start">
+                                    { book.volumeInfo.categories.map(item =>
+                                        <Genre
+                                            key={item}
+                                            name={item}
+                                            showCloseBtn={true}
+                                            handleRemove={handleGenresRemove}
+                                        />)
+                                    }
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => router.push('/(auth)/select-genres')}
+                                className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
+                                <MaterialIcons name="add" size={30} />
+                            </TouchableOpacity>
+                        </Fragment>
                     </View>
-                    <TouchableOpacity
-                        onPress={() => router.push('/(auth)/select-genres')}
-                        className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
-                        <MaterialIcons name="add" size={30} />
-                    </TouchableOpacity>
-                </View>
+                    ) : <GenreEmptyState />
+                }
             </View>
 
 
@@ -382,6 +380,21 @@ const Collection = ({ id, name, showCloseBtn, handleRemove, containerStyles }) =
             </TouchableOpacity>
         ) : <></> }
     </View>
+}
+
+const GenreEmptyState = () => {
+   return  (
+        <TouchableOpacity
+            onPress={() => router.push('select-genres')}
+            className="max-h-[116px] overflow-hidden h-full pl-8 pr-5 flex-row justify-between rounded-[20px] bg-black">
+                <Text className="text-[#ffffff] max-w-[160px] font-semibold self-center leading-[19.2px]">
+                    Select genres for the book for easier filtering in the future
+                </Text>
+                <View className="self-end justify-start h-full -mt-3">
+                    <PinIcon />
+                </View>
+        </TouchableOpacity>
+   );
 }
 
 export default AddBook;
