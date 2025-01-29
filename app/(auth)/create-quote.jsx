@@ -16,7 +16,7 @@ import { Alert } from 'react-native';
 import axios from '../../network/axios';
 import BookBottomDrawer from "../../components/BottomDrawer";
 import Fontisto from '@expo/vector-icons/Fontisto';
-import { QuoteStarsIcon } from "../../components/Svg";
+import { QuoteStarsIcon, CollectionsIcon } from "../../components/Svg";
 
 
 const CreateQuote = () => {
@@ -166,24 +166,26 @@ const CreateQuote = () => {
 
                 <View className="mt-5 mx-5 max-h-[160px]">
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2.5">Collections</Text>
-                    <View className="flex-wrap p-5 border bg-black max-h-[126px] h-full flex-row items-center rounded-[20px]">
-                        <View className="flex-wrap flex-row justify-start self-start flex-1">
-                            { quote?.collections?.map(item =>
-                                <Collection
-                                    key={item.id}
-                                    id={item.id}
-                                    name={item.name}
-                                    showCloseBtn={true}
-                                    handleRemove={handleRemoveQuoteCollection}
-                                  />
-                            ) }
+                    { quote?.collections?.length > 0 ? (
+                        <View className="flex-wrap p-5 border bg-black max-h-[126px] h-full flex-row items-center rounded-[20px]">
+                            <View className="flex-wrap flex-row justify-start self-start flex-1">
+                                { quote?.collections?.map(item =>
+                                    <Collection
+                                        key={item.id}
+                                        id={item.id}
+                                        name={item.name}
+                                        showCloseBtn={true}
+                                        handleRemove={handleRemoveQuoteCollection}
+                                    />
+                                ) }
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => router.push('select-note-collections')}
+                                className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
+                                <MaterialIcons name="add" size={30} />
+                            </TouchableOpacity>
                         </View>
-                        <TouchableOpacity
-                            onPress={() => router.push('select-quote-collections')}
-                            className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
-                            <MaterialIcons name="add" size={30} />
-                        </TouchableOpacity>
-                    </View>
+                    ) : <CollectionEmptyState /> }
                 </View>
 
             { quote.notes?.length > 0 ? (
@@ -223,7 +225,9 @@ const CreateQuote = () => {
                         <View className="mx-7">
                             <Text className="font-cygrebold leading-[19.2px] font-bold text-[#fff] max-w-[157px]">Is this quote related to some notes?</Text>
                         </View>
-                        <QuoteStarsIcon />
+                        <View className="items-end flex-[.8]">
+                            <QuoteStarsIcon />
+                        </View>
                     </TouchableOpacity>
                 )
             }
@@ -249,6 +253,19 @@ const Collection = ({ id, name, showCloseBtn, handleRemove, containerStyles }) =
             </TouchableOpacity>
         ) : <></> }
     </View>
+}
+
+const CollectionEmptyState = () => {
+    return (
+        <TouchableOpacity
+            onPress={() => router.push('select-collections')}
+            className="max-h-[116px] overflow-hidden h-full pl-8 pr-4 flex-row justify-between rounded-[20px] bg-black">
+            <Text className="text-[#ffffff] max-w-[136px] font-cygrebold self-center text-sm leading-[16.8px] font-bold">Add book to your personal collections</Text>
+            <View className="self-start h-full -mt-3">
+                <CollectionsIcon />
+            </View>
+        </TouchableOpacity>
+    );
 }
 
 const Note = ({ id, text, noteTypeName, noteTypeColor, onDeleteButtonPress, noteTypeIcon, createdAt, containerStyles }) => {
