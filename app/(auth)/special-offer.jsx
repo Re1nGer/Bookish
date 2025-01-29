@@ -141,7 +141,7 @@ const OfferCard = ({ isSelected, setIsSelected, containerStyles }) => {
     //unknown rounding
     return <View
         className={`max-w-[353px] max-h-[88px] w-full h-full items-center bg-[#ffffff] flex-row justify-between rounded-[15px] border ${isSelected ? 'border-[#6592E3] border-[2px]' : 'border-[#1C1C1C]'} px-[30px] ${containerStyles} `}>
-        <Text className="font-semibold text-[18px] leading-[21px] font-cygrebold">3.49 €/month</Text>
+        <Text className={`font-semibold text-[18px] leading-[21px] font-cygrebold ${isSelected ? 'text-[#6592E3]' : 'text-[#1C1C1C]' }`}>3.49 €/month</Text>
         <RadioButton
             size={42}
             selected={isSelected}
