@@ -39,6 +39,12 @@ const CreateQuote = () => {
         setQuote(prev => ({...prev, collections: prev.collections.filter(item => item.id !== collectionId)})) ;
     }
 
+    const handleQuoteTextChange = (text) => setText(text);
+
+    const handleSelectNotesRedirect = () => {
+        router.push({pathname: 'select-notes', params: { id }});
+    }
+
     const handleNoteDelete = (noteId) => {
         Alert.alert(
             "Delete Note",
@@ -134,7 +140,7 @@ const CreateQuote = () => {
                         value={text}
                         placeholder="Enter your quote"
                         ref={inputRef}
-                        onChangeText={(e) => setText(e)}
+                        onChangeText={handleQuoteTextChange}
                         multiline
                         className="py-4 w-full max-h-[317px]"
                     />
@@ -196,7 +202,7 @@ const CreateQuote = () => {
                         horizontal>
                             <View className="flex-1">
                                 <TouchableOpacity
-                                    onPress={() => router.push({pathname: 'select-notes', params: { id }})}
+                                    onPress={handleSelectNotesRedirect}
                                     className="w-[97px] bg-primary items-center justify-center max-h-[97px] h-full rounded-[20px] mr-3">
                                     <Text className="text-white text-[50px] pb-3">+</Text>
                                 </TouchableOpacity>

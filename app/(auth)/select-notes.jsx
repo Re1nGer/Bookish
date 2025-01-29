@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useState, useContext, useEffect } from "react";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { UserContext } from "../../context/UserContext";
 import RadioButton from "../../components/RadioButton";
 import axios from '../../network/axios'
@@ -24,6 +24,8 @@ const SelectNotes = () => {
     const handleInputTextChange = (text) => {
         setText(text);
     }
+
+    const { id } = useLocalSearchParams();
 
     const { setQuote, quote } = useContext(UserContext);
 
@@ -68,7 +70,7 @@ const SelectNotes = () => {
 
     const fetchNotes = async () => {
         try {
-            const { data } = await axios.get('users/notes');
+            const { data } = await axios.get(`users/books/${id}/notes`);
             const mappedNotes = data.map(item => ({
                 id: item.id,
                 text: item.text,
