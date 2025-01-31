@@ -180,7 +180,7 @@ const CreateQuote = () => {
                                 ) }
                             </View>
                             <TouchableOpacity
-                                onPress={() => router.push('select-note-collections')}
+                                onPress={() => router.push('select-quote-collections')}
                                 className="items-center flex-1 self-center bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
                                 <MaterialIcons name="add" size={30} />
                             </TouchableOpacity>
