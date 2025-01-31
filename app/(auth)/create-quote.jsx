@@ -258,9 +258,9 @@ const Collection = ({ id, name, showCloseBtn, handleRemove, containerStyles }) =
 const CollectionEmptyState = () => {
     return (
         <TouchableOpacity
-            onPress={() => router.push('select-collections')}
+            onPress={() => router.push('select-quote-collections')}
             className="max-h-[116px] overflow-hidden h-full pl-8 pr-4 flex-row justify-between rounded-[20px] bg-black">
-            <Text className="text-[#ffffff] max-w-[136px] font-cygrebold self-center text-sm leading-[16.8px] font-bold">Add book to your personal collections</Text>
+            <Text className="text-[#ffffff] max-w-[136px] font-cygrebold self-center text-sm leading-[16.8px] font-bold">Add notes to your personal collections</Text>
             <View className="self-start h-full -mt-3">
                 <CollectionsIcon />
             </View>
