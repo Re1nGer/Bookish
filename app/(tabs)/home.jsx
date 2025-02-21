@@ -1,11 +1,14 @@
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Svg, G, Path, Rect, ClipPath, Defs } from 'react-native-svg'
 import { MaterialIcons } from '@expo/vector-icons';
 import { images } from '../../constants'
 import AddBookBottomDrawer from '../../components/AddBookBottomDrawer';
 import { LaptopIcon, TimerIcon, QuoteIcon, NoteIcon } from '../../components/Svg';
+import { router } from 'expo-router';
+import axios from '../../network/axios';
+import ImageHandler from '../../components/ImageHandler';
 
 const Home = () => {
 
@@ -209,68 +212,113 @@ const BookCalendar = () => {
       height={100} />
   </View>;
 }
+
 const CurrentBook = () => {
+
+
+  const [book, setBook] = useState(undefined);
+
+  const fetchLatestBook = async () => {
+    try {
+      const { data } = await axios.get('users/home');
+      setBook(data);
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchLatestBook();
+  }, []);
+
+  return  book ? (
+      <ScrollView
+          horizontal={true}
+          className="mx-4 h-[270px]"
+          showsHorizontalScrollIndicator={false}
+        >
+            <LatestBookCard book={book} />
+            <AddBookCard />
+        </ScrollView>
+    ) : (
+      <AddBookCard containerStyles={'mx-4'} />
+  ) }
+
+
+const LatestBookCard = ({ book }) => {
+  return (
+      <View className="rounded-[15px] mr-4 flex-row bg-[#ffffff] justify-between max-w-[320px] w-full max-h-[220px] h-full mb-5 border-[.5px] border-[#8A8A8A] p-3">
+        <ImageHandler
+          source={book?.imageUrl}
+          width={111}
+          height={194}
+          className="rounded-[6px] max-w-[111px] max-h-[194px] mr-[10px]" 
+        />
+        <View className="bg-[#1C1C1C] rounded-[6px] max-h-[194px] h-full">
+          <View className="px-3 py-4 flex-row justify-between w-[171px]">
+            <TouchableOpacity className="rounded-full bg-[#8A8A8A] items-center justify-center h-[45px] w-[42px]">
+              <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">-</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity className="rounded-full bg-[#6592E3] items-center justify-center h-[45px] w-[42px]">
+              <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">+</Text>
+            </TouchableOpacity>
+          </View>
+          <View className="items-center mb-6">
+            <Text className="text-[34px] leading-[40px] font-bold text-[#fff]">{book?.currentPage}</Text>
+            <Text className="text-sm leading-[16px] font-medium text-[#fff]">of {book?.pageCount}</Text>
+          </View>
+          <View className="flex-row justify-center">
+            <TouchableOpacity>
+              <TimerIcon />
+            </TouchableOpacity>
+            <View className="w-[1px] h-[25px] bg-[#fff] mx-4"></View>
+            <TouchableOpacity
+              onPress={() => router.push({ pathname: 'create-note', params: { id: book.id }})}
+            >
+              <NoteIcon />
+            </TouchableOpacity>
+            <View className="w-[1px] h-[25px] bg-[#fff] mx-4"></View>
+            <TouchableOpacity
+              onPress={() => router.push({ pathname: 'create-quote', params: { id: book.id }})}
+            >
+              <QuoteIcon />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+  )
+}
+
+const AddBookCard = ({ containerStyles }) => {
 
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
-  return <ScrollView
-    horizontal={true}
-    className="mx-4 h-[270px]"
-    showsHorizontalScrollIndicator={false}
-  >
-    <View className="rounded-[15px] mr-4 flex-row bg-[#ffffff] justify-between max-w-[320px] w-full max-h-[220px] h-full mb-5 border-[.5px] border-[#8A8A8A] p-3">
-      <Image source={images.homeBookCover} width={111} height={194} className="rounded-[6px] max-w-[111px] max-h-[194px] mr-[10px]" />
-      <View className="bg-[#1C1C1C] rounded-[6px] max-h-[194px] h-full">
-        <View className="px-3 py-4 flex-row justify-between w-[171px]">
-          <TouchableOpacity className="rounded-full bg-[#8A8A8A] items-center justify-center h-[45px] w-[42px]">
-            <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">-</Text>
-          </TouchableOpacity>
+  return (
+    <Fragment>
+      <View //style={{ width: book ? '320' : '100%' }}
+        className={`bg-[#1C1C1C] rounded-[15px] max-h-[220px] h-full min-w-[320px] px-5 py-3 ${containerStyles}`}>
+          <Text className="text-[#fff] text-[34px] leading-[40px] font-cygrebold font-bold">
+            Add a book
+          </Text>
+          <Text className="text-[#fff] text-sm leading-[16px] font-cygreregular font-light">Is there a book you are reading?</Text>
+          <View className="flex-row mt-6">
+            <TouchableOpacity
+              onPress={() => setIsBottomSheetOpen(true)}
+              className="bg-[#6592E3] h-[44px] justify-center items-center max-w-[126px] w-full flex-row flex-1 rounded-[25px] ">
+              <MaterialIcons name='add' color='#fff' size={33} />
+              <Text className="text-[18px] text-[#fff] font-cygrebold leading-[21px] font-bold">Add</Text>
+            </TouchableOpacity>
+            <Image source={images.magnifier} width={132} height={119} />
+          </View>
+        </View>
+        <AddBookBottomDrawer
+          isBottomSheetOpen={isBottomSheetOpen}
+          setIsBottomSheetOpen={setIsBottomSheetOpen}
+        />
+    </Fragment>
+  );
 
-          <TouchableOpacity className="rounded-full bg-[#6592E3] items-center justify-center h-[45px] w-[42px]">
-            <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">+</Text>
-          </TouchableOpacity>
-        </View>
-        <View className="items-center mb-6">
-          <Text className="text-[34px] leading-[40px] font-bold text-[#fff]">40</Text>
-          <Text className="text-sm leading-[16px] font-medium text-[#fff]">of 430</Text>
-        </View>
-        <View className="flex-row justify-center">
-          <TouchableOpacity>
-            <TimerIcon />
-          </TouchableOpacity>
-          <View className="w-[1px] h-[25px] bg-[#fff] mx-4"></View>
-          <TouchableOpacity>
-            <NoteIcon />
-          </TouchableOpacity>
-          <View className="w-[1px] h-[25px] bg-[#fff] mx-4"></View>
-          <TouchableOpacity>
-            <QuoteIcon />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-
-{/*     Extract out into separate component */}
-    <View className="bg-[#1C1C1C] rounded-[15px] max-h-[220px] h-full w-[320px] px-5 py-3">
-      <Text className="text-[#fff] text-[34px] leading-[40px] font-cygrebold font-bold">
-        Add a book
-      </Text>
-      <Text className="text-[#fff] text-sm leading-[16px] font-cygreregular font-light">Is there a book you are reading?</Text>
-      <View className="flex-row mt-6">
-        <TouchableOpacity
-          onPress={() => setIsBottomSheetOpen(true)}
-          className="bg-[#6592E3] h-[44px] justify-center items-center max-w-[126px] w-full flex-row flex-1 rounded-[25px] ">
-          <MaterialIcons name='add' color='#fff' size={33} />
-          <Text className="text-[18px] text-[#fff] font-cygrebold leading-[21px] font-bold">Add</Text>
-        </TouchableOpacity>
-        <Image source={images.magnifier} width={132} height={119} />
-      </View>
-    </View>
-    <AddBookBottomDrawer
-      isBottomSheetOpen={isBottomSheetOpen}
-      setIsBottomSheetOpen={setIsBottomSheetOpen}
-    />
-  </ScrollView>;
 }
 
 const PersonalPlan = () => {
