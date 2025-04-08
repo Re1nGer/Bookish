@@ -1,27 +1,35 @@
 import React, {useState, Fragment, useCallback, useMemo, useRef} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Image} from 'react-native';
-import {Calendar, CalendarUtils} from 'react-native-calendars';
+import {Calendar, CalendarUtils, LocaleConfig} from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../../constants';
 
-const INITIAL_DATE = '2024-11-06';
+const INITIAL_DATE = '2025-04-08';
 
-const getRandom = () => {
+const today = new Date().getDay()
 
-}
 
-const DayComponent = (props) => {
+const DayComponent = ({ date, state, marking, onPress }) => {
     //console.log(props)
+
+    const isSelected = state === 'today';
+    //array of read books at the day
+
     return (
-      <View>
-        <Text>
-          {props.date.day}
-        </Text>
-        <Image
-          className="z-50"
-          souce={images.book1}
-        />
-      </View>
+      <TouchableOpacity onPress={() => onPress(date)} className='relative h-[80px]'>
+        <View className={isSelected ? "w-[30px] h-[30px] rounded-full bg-black justify-center": ""}>
+          <Text className={`text-center ${isSelected ? 'text-white' : ''}`}>
+            {date.day}
+          </Text>
+        </View>
+{/*         <Image
+          className="max-w-[37px] max-h-[53px]"
+          height={53}
+          width={37}
+          source={images.book1}
+          resizeMode='cover'
+        /> */}
+      </TouchableOpacity>
     )
 }
 
@@ -39,8 +47,7 @@ const Header = (props) => {
 
 const BookCalendar = () => {
     const [selected, setSelected] = useState(INITIAL_DATE);
-
-    const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
+    const [markedDates, setMarkedDates] = useState({});
 
     const getDate = (count) => {
         const date = new Date(INITIAL_DATE);
@@ -52,7 +59,33 @@ const BookCalendar = () => {
         setSelected(day.dateString);
     }, []);
 
-    const marked = useMemo(() => {
+    const handleDayPress = (day) => {
+      setSelected(day.dateString);
+      setMarkedDates({
+        [day.dateString]: {
+          selected: true,
+          selectedColor: '#5E60CE',
+        }
+      });
+    };
+
+    const renderArrow = (direction) => {
+      if (direction === 'left') {
+        return (
+          <TouchableOpacity style={styles.arrowContainer}>
+            <Text style={styles.arrowText}>{'<'}</Text>
+          </TouchableOpacity>
+        );
+      } else {
+        return (
+          <TouchableOpacity style={styles.arrowContainer}>
+            <Text style={styles.arrowText}>{'>'}</Text>
+          </TouchableOpacity>
+        );
+      }
+    };
+
+/*     const marked = useMemo(() => {
         return {
         [getDate(-1)]: {
             dotColor: 'red',
@@ -65,26 +98,32 @@ const BookCalendar = () => {
             selectedTextColor: 'red'
         }
         };
-    }, [selected]);
+    }, [selected]); */
+
+    const theme = {
+      dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+    }
 
     const renderCalendarWithSelectableDate = () => {
         return (
         <Fragment>
             <Calendar
+              theme={theme}
                 enableSwipeMonths
-                current={INITIAL_DATE}
+                renderArrow={renderArrow}
+                //current={INITIAL_DATE}
                 style={styles.calendar}
-                onDayPress={onDayPress}
-                markedDates={marked}
+                onDayPress={handleDayPress}
+                markedDates={markedDates}
                 dayComponent={DayComponent}
-                //customHeader={Header}
             />
         </Fragment>
         );
     };
 
-    return <SafeAreaView className="flex-1 bg-[#F7F7F7]">
-      <View className="justify-center flex-1">
+
+    return <SafeAreaView className="flex-1 h-full bg-[#F7F7F7]">
+      <View className="justify-center h-full">
         <View className="mx-5 border rounded-[10px] border-[#8A8A8A]">
             {renderCalendarWithSelectableDate()}
         </View>
@@ -94,7 +133,8 @@ const BookCalendar = () => {
 
 const styles = StyleSheet.create({
   calendar: {
-    borderRadius: 20
+    borderRadius: 20,
+    //height: '80%'
   },
   switchContainer: {
     flexDirection: 'row',
@@ -118,7 +158,7 @@ const styles = StyleSheet.create({
     color: 'purple'
   },
   customCalendar: {
-    height: 250,
+    height: 150,
     borderBottomWidth: 1,
     borderBottomColor: 'lightgrey'
   },

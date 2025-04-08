@@ -5,9 +5,34 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'react-native';
 import { images } from '../constants';
 import { PrimaryButton, SignInWithProvider } from '../components/CustomButton';
+import { LocaleConfig } from 'react-native-calendars';
 
 // there's certain problem with welcome screen on galaxy s models
 // sign in link is not visible
+
+LocaleConfig.locales['en'] = {
+  monthNames: [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ],
+  monthNamesShort: ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'],
+  dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+  today: "Today"
+};
+
+
+LocaleConfig.defaultLocale = 'en';
 
 export default function App() {
 
