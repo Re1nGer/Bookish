@@ -72,17 +72,17 @@ const BookCalendar = () => {
     const renderArrow = (direction) => {
       if (direction === 'left') {
         return (
-          <TouchableOpacity style={styles.arrowContainer}>
-            <Text style={styles.arrowText}>{'<'}</Text>
-          </TouchableOpacity>
+          <View className="bg-primary items-center justify-center w-[42px] h-[43px] rounded-[12px]">
+            <Text className="text-white font-cygrebold font-bold text-lg">{'<'}</Text>
+          </View>
         );
-      } else {
-        return (
-          <TouchableOpacity style={styles.arrowContainer}>
-            <Text style={styles.arrowText}>{'>'}</Text>
-          </TouchableOpacity>
-        );
-      }
+      } 
+
+      return (
+        <View className="bg-primary items-center justify-center w-[42px] h-[43px] rounded-[12px]">
+          <Text className="text-white font-cygrebold font-bold text-lg">{'>'}</Text>
+        </View>
+      );
     };
 
 /*     const marked = useMemo(() => {
@@ -111,6 +111,11 @@ const BookCalendar = () => {
               theme={theme}
                 enableSwipeMonths
                 renderArrow={renderArrow}
+                  onPressArrowLeft={subtractMonth => {
+                    console.log('fire')
+                    return subtractMonth()
+                  }}
+                  onPressArrowRight={addMonth => addMonth()}
                 //current={INITIAL_DATE}
                 style={styles.calendar}
                 onDayPress={handleDayPress}
@@ -124,7 +129,7 @@ const BookCalendar = () => {
 
     return <SafeAreaView className="flex-1 h-full bg-[#F7F7F7]">
       <View className="justify-center h-full">
-        <View className="mx-5 border rounded-[10px] border-[#8A8A8A]">
+        <View className="mx-5 border rounded-[10px] max-h-[800px] border-[#8A8A8A]">
             {renderCalendarWithSelectableDate()}
         </View>
       </View>
