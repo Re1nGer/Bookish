@@ -88,6 +88,7 @@ const AuthLayout = () => {
         <Stack.Screen name="edit-note" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
         <Stack.Screen name="edit-quote" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
         <Stack.Screen name="you-finished-book" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
+        <Stack.Screen name="book-calendar" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
 
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
