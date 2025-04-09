@@ -13,6 +13,7 @@ import { useState } from "react";
 import Entypo from '@expo/vector-icons/Entypo';
 import Camera from "../../components/Camera";
 import ImageHandler from "../../components/ImageHandler";
+import { images } from "../../constants";
 
 const YouFinishedBook = () => {
 
@@ -96,19 +97,47 @@ const YouFinishedBook = () => {
                             width={154}
                             height={219} 
                         />
-                        <Text className="text-black font-cygrebold text-[22px] leading-[26.4px] mt-5 text-left">
+                        <View className="flex-row gap-1 items-center my-6">
+                          <ImageHandler
+                              source={images.filledStar}
+                              width={39}
+                              height={39} 
+                          />
+                          <ImageHandler
+                              source={images.filledStar}
+                              width={39}
+                              height={39} 
+                          />
+                          <ImageHandler
+                              source={images.filledStar}
+                              width={39}
+                              height={39} 
+                          />
+                          <ImageHandler
+                              source={images.filledStar}
+                              width={39}
+                              height={39} 
+                          />
+                          <ImageHandler
+                              source={images.emptyStar}
+                              width={39}
+                              height={39} 
+                          />
+                        </View>
+                        <Text className="text-black font-cygrebold text-[22px] leading-[26.4px] mt-5 self-start">
                             Keep The Memory
                         </Text>
-                        <Text className="text-black leading-[19.2px] font-cygreregular mt-2.5">Capture this precious moment, take a photo and write some final thoughts on this book.</Text>
+                        <Text className="text-black leading-[19.2px] self-start font-cygreregular mt-2.5">Capture this precious moment, take a photo and write some final thoughts on this book.</Text>
                         <TouchableOpacity
                             onPress={handleOpenCamera}
                             className="w-[108px] h-[108px] rounded-full bg-primary items-center justify-center mt-7">
                             <Entypo name="camera" size={40} color="white" />
                         </TouchableOpacity>
-                        <View className="flex-1 my-7 w-full">
+                        <View className="flex-1 my-7 w-full min-h-[137px]">
                             <TextInput
                                 placeholder="How do you feel about this book?" 
-                                className="border-[#8A8A8A] p-2 border-[.5px] rounded-[20px] w-full flex-1"
+                                className="border-[#8A8A8A] p-4 justify-start border-[.5px] rounded-[20px] w-full h-full flex-1"
+                                textAlignVertical="top"
                             />
                         </View>
                     </View>

@@ -39,6 +39,8 @@ import leftArrowIcon from "../assets/images/left_arrow.png";
 import bookPlaceholder from '../assets/images/make-it-stick.png';
 import noSession from '../assets/images/no_session.png';
 import noteEyes from '../assets/images/note_eyes.png';
+import emptyStar from '../assets/images/empty_star.png';
+import filledStar from '../assets/images/filled_star.png';
 
 
 export default {
@@ -82,5 +84,7 @@ export default {
     leftArrowIcon,
     bookPlaceholder,
     noSession,
-    noteEyes
+    noteEyes,
+    emptyStar,
+    filledStar
 };
