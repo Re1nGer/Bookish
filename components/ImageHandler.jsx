@@ -46,6 +46,7 @@ const ImageHandler = ({ source, style, ...props }) => {
   return (
     <Image
       source={getImageSource(source)}
+      className="rounded-[6px]"
       style={style}
       {...props}
     />

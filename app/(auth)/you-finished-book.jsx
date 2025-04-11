@@ -124,6 +124,14 @@ const YouFinishedBook = () => {
                               height={39} 
                           />
                         </View>
+                        <View className="border-[.3px] py-5 px-4 rounded-[20px] border-[#8A8A8A] flex-row w-full justify-center">
+                          <ImageHandler width={70} height={99} className="max-w-[70px] max-h-[99px] mr-2.5" source={images.book1} />
+                          <ImageHandler width={70} height={99} className="max-w-[70px] max-h-[99px] mr-2.5" source={images.book2} />
+                          <View className="bg-[#1C1C1C] rounded-[20px] items-center justify-center flex-1">
+                            <Text className="text-[22px] font-cygrebold font-bold text-[#fff]">5 more</Text>
+                            <Text className="text-sm font-cygreregular text-[#fff] max-w-[90px]">To finish your monthly goal</Text>
+                          </View>
+                        </View>
                         <Text className="text-black font-cygrebold text-[22px] leading-[26.4px] mt-5 self-start">
                             Keep The Memory
                         </Text>
