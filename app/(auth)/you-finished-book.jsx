@@ -84,7 +84,7 @@ const YouFinishedBook = () => {
                         </View>
                     </View>
 
-                    <View className="mx-5 mt-12 items-center flex-1">
+                    <View className="mx-5 mt-8 items-center flex-1">
                         <Text className="text-black font-cygrebold text-[22px] leading-[26.4px] text-center">
                         Congratulations!
                         </Text>
@@ -124,7 +124,7 @@ const YouFinishedBook = () => {
                               height={39} 
                           />
                         </View>
-                        <View className="border-[.3px] py-5 px-4 rounded-[20px] border-[#8A8A8A] flex-row w-full justify-center">
+                        <View className="border-[.3px] py-5 px-4 rounded-[20px] border-[#8A8A8A] flex-row w-full justify-center my-7">
                           <ImageHandler width={70} height={99} className="max-w-[70px] max-h-[99px] mr-2.5" source={images.book1} />
                           <ImageHandler width={70} height={99} className="max-w-[70px] max-h-[99px] mr-2.5" source={images.book2} />
                           <View className="bg-[#1C1C1C] rounded-[20px] items-center justify-center flex-1">
