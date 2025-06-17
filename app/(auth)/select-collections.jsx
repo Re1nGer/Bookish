@@ -134,6 +134,7 @@ const SelectCollections = () => {
                         <NewCollection />
                         { secondHalfCollections.map(item => 
                             <ExistingCollection
+                                key={item.id}
                                 name={item.name}
                                 onSelected={() => handleSecondHalfSelection(item.id)}
                                 iconId={item.iconId}
@@ -144,6 +145,7 @@ const SelectCollections = () => {
                     <View className="w-full flex-[.5]">
                         { firstHalfCollections.map(item =>
                          <ExistingCollection
+                            key={item.id}
                             onSelected={() => handleFirstHalfSelection(item.id)}
                             name={item.name} 
                             iconId={item.iconId}
