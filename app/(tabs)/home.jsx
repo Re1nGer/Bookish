@@ -246,6 +246,31 @@ const CurrentBook = () => {
 
 
 const LatestBookCard = ({ book }) => {
+
+  const { pageCount : totalPages } = book;
+
+  const [currentPage, setCurrentPage] = useState(book.currentPage);
+
+  const handleReduceCounter = () => {
+      const page = currentPage > 0 ? currentPage - 1 : 0;
+      updatePageCount(page)
+          .then(() => setCurrentPage(prev => prev > 0 ? prev - 1 : 0))
+  }
+
+  const handleAddCounter = () => {
+      const page = currentPage < totalPages ? currentPage + 1 : currentPage;
+      updatePageCount(page)
+          .then(() => setCurrentPage(prev => prev < totalPages ? prev + 1 : prev))
+  }
+
+  const updatePageCount = async (page) => {
+      try {
+          await axios.put(`users/books/${book.id}/currentPage`, { page })
+      } catch (error) {
+          console.log(error);
+      }
+  }
+
   return (
       <View className="rounded-[15px] mr-4 flex-row bg-[#ffffff] justify-between max-w-[320px] w-full max-h-[220px] h-full mb-5 border-[.5px] border-[#8A8A8A] p-3">
         <ImageHandler
@@ -256,16 +281,20 @@ const LatestBookCard = ({ book }) => {
         />
         <View className="bg-[#1C1C1C] rounded-[6px] max-h-[194px] h-full">
           <View className="px-3 py-4 flex-row justify-between w-[171px]">
-            <TouchableOpacity className="rounded-full bg-[#8A8A8A] items-center justify-center h-[45px] w-[42px]">
+            <TouchableOpacity
+              onPress={handleReduceCounter}
+              className="rounded-full bg-[#8A8A8A] items-center justify-center h-[45px] w-[42px]">
               <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">-</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity className="rounded-full bg-[#6592E3] items-center justify-center h-[45px] w-[42px]">
+            <TouchableOpacity
+              onPress={handleAddCounter}
+              className="rounded-full bg-[#6592E3] items-center justify-center h-[45px] w-[42px]">
               <Text className="text-[#FFFFFF] text-[31px] font-semibold leading-[37.5px]">+</Text>
             </TouchableOpacity>
           </View>
           <View className="items-center mb-6">
-            <Text className="text-[34px] leading-[40px] font-bold text-[#fff]">{book?.currentPage}</Text>
+            <Text className="text-[34px] leading-[40px] font-bold text-[#fff]">{currentPage}</Text>
             <Text className="text-sm leading-[16px] font-medium text-[#fff]">of {book?.pageCount}</Text>
           </View>
           <View className="flex-row justify-center">
