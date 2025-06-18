@@ -1,19 +1,20 @@
-import React, {useState, Fragment, useCallback, useMemo, useRef} from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
+import React, { useState, Fragment, useCallback, useMemo, useRef, useEffect } from 'react';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { router } from 'expo-router';
-import { Calendar, CalendarUtils } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
+import axios from '../../network/axios';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { images } from '../../constants';
+import ImageHandler from '../../components/ImageHandler';
 
 const INITIAL_DATE = '2025-04-08';
 
 
 const DayComponent = ({ date, state, marking, onPress, ...rest }) => {
-    //console.log(props)
 
     const isSelected = state === 'today';
-    console.log(marking)
+    console.log(marking?.imageUrls && marking?.imageUrls)
     //array of read books at the day
 
     return (
@@ -23,14 +24,25 @@ const DayComponent = ({ date, state, marking, onPress, ...rest }) => {
             {date.day}
           </Text>
         </View>
-        { marking && (
-          <Image
+        { marking?.imageUrls && (
+          <ScrollView>
+            { marking.imageUrls.map(item => <ImageHandler
+                key={item}
+                id={item}
+                className={`max-w-[37px] flex-1 ${isSelected ? 'mt-1' : ''} max-h-[53px]`}
+                height={53}
+                width={37}
+                source={images.book1}
+                resizeMode='cover'
+            />) }
+          </ScrollView>
+/*           <Image
             className={`max-w-[37px] ${isSelected ? 'mt-1' : ''} max-h-[53px]`}
             height={53}
             width={37}
             source={images.book1}
             resizeMode='cover'
-          />
+          /> */
         ) }
       </TouchableOpacity>
     )
@@ -42,18 +54,46 @@ const BookCalendar = () => {
     const [selected, setSelected] = useState(INITIAL_DATE);
 
     const [markedDates, setMarkedDates] = useState({
-      '2025-06-06': {selected: true, marked: true, selectedColor: 'blue'},
+      '2025-06-06': {selected: true, marked: true, selectedColor: 'blue', imageUrl: 'awdw'},
     });
 
     const handleDayPress = (day) => {
       setSelected(day.dateString);
-      setMarkedDates({
+/*       setMarkedDates({
         [day.dateString]: {
           selected: true,
           selectedColor: '#5E60CE',
         }
-      });
+      }); */
     };
+
+
+    const getReadEvents = async () => {
+      try {
+        const { data } = await axios.get(`users/read-events?date=${new Date().toISOString()}`);
+        console.log(data)
+        const result = data.reduce((acc, item) => {
+        const dateKey = new Date(item.finishedAt).toISOString().split('T')[0];
+          if (acc[dateKey]) {
+            acc[dateKey].imageUrls.push(item.imageUrl);
+          } else {
+            acc[dateKey] = {
+              marked: true,
+              imageUrls: [item.imageUrl]
+            };
+          }
+          
+          return acc;
+        }, {});
+        setMarkedDates(result);
+      } catch(error) {
+        console.log(error);
+      }
+    }
+
+    useEffect(() => {
+      getReadEvents();
+    }, []);
 
     const renderArrow = (direction) => {
       if (direction === 'left') {
@@ -79,6 +119,7 @@ const BookCalendar = () => {
         return (
         <Fragment>
             <Calendar
+              markingType={'custom'} 
               theme={theme}
                 enableSwipeMonths
                 headerStyle={styles.headerStyle}

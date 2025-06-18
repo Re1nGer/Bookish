@@ -193,7 +193,13 @@ const FantasyIcon = () => {
 
 const BookCalendar = () => {
 
-  return <View className="mx-3 mt-5 border-[.5px] p-3 border-[#727272] items-center justify-between flex-row rounded-[15px] bg-[#ffffff]">
+  const handleRedirectToCalendar = () => {
+    router.push('book-calendar')
+  }
+
+  return <TouchableOpacity
+      onPress={handleRedirectToCalendar}
+      className="mx-3 mt-5 border-[.5px] p-3 border-[#727272] items-center justify-between flex-row rounded-[15px] bg-[#ffffff]">
     <View className="flex-1">
       <Text className="text-[28px] leading-[33.6px] font-cygrebold mb-6">Book Calendar</Text>
       <View className="flex-row">
@@ -210,7 +216,7 @@ const BookCalendar = () => {
       resizeMode='cover'
       width={103}
       height={100} />
-  </View>;
+  </TouchableOpacity>;
 }
 
 const CurrentBook = () => {
