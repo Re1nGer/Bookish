@@ -1,12 +1,11 @@
-import React, { useState, Fragment, useCallback, useMemo, useRef, useEffect } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, FlatList } from 'react-native';
+import React, { useState, Fragment, useEffect } from 'react';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
 import { router } from 'expo-router';
 import { Calendar } from 'react-native-calendars';
 import axios from '../../network/axios';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons';
-import { images } from '../../constants';
 import ImageHandler from '../../components/ImageHandler';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 const INITIAL_DATE = '2025-04-08';
 
@@ -14,8 +13,10 @@ const INITIAL_DATE = '2025-04-08';
 const DayComponent = ({ date, state, marking, onPress, ...rest }) => {
 
     const isSelected = state === 'today';
-    console.log(marking?.imageUrls && marking?.imageUrls)
-    //array of read books at the day
+
+    const handleRedirect = () => {
+      router.push('books-finished')
+    }
 
     return (
       <TouchableOpacity onPress={() => onPress(date)} className='relative h-[80px]'>
@@ -25,24 +26,28 @@ const DayComponent = ({ date, state, marking, onPress, ...rest }) => {
           </Text>
         </View>
         { marking?.imageUrls && (
-          <ScrollView>
+          <ScrollView
+          className="relative"
+            contentContainerStyle={{
+                padding: 0,
+                flexGrow: 1, // This might help with height issues
+              }}
+              style={{
+                flex: 1, // Ensures ScrollView takes full available height
+                padding: 0,
+              }}
+            horizontal
+          >
             { marking.imageUrls.map(item => <ImageHandler
                 key={item}
                 id={item}
-                className={`max-w-[37px] flex-1 ${isSelected ? 'mt-1' : ''} max-h-[53px]`}
-                height={53}
+                className={`max-w-[37px] ${isSelected ? 'mt-1' : ''} h-full max-h-[58px]`}
+                height={58}
                 width={37}
-                source={images.book1}
-                resizeMode='cover'
+                source={item}
+                resizeMode='contain'
             />) }
           </ScrollView>
-/*           <Image
-            className={`max-w-[37px] ${isSelected ? 'mt-1' : ''} max-h-[53px]`}
-            height={53}
-            width={37}
-            source={images.book1}
-            resizeMode='cover'
-          /> */
         ) }
       </TouchableOpacity>
     )
@@ -59,12 +64,6 @@ const BookCalendar = () => {
 
     const handleDayPress = (day) => {
       setSelected(day.dateString);
-/*       setMarkedDates({
-        [day.dateString]: {
-          selected: true,
-          selectedColor: '#5E60CE',
-        }
-      }); */
     };
 
 
@@ -99,14 +98,14 @@ const BookCalendar = () => {
       if (direction === 'left') {
         return (
           <View className="bg-primary ml-[-15px] items-center justify-center w-[42px] h-[43px] rounded-[12px]">
-            <Text className="text-white font-cygrebold font-bold text-lg">{'<'}</Text>
+            <AntDesign name="left" size={24} color="white" />
           </View>
         );
       } 
 
       return (
         <View className="bg-primary mr-[-15px] items-center justify-center w-[42px] h-[43px] rounded-[12px]">
-          <Text className="text-white font-cygrebold font-bold text-lg">{'>'}</Text>
+          <AntDesign name="right" size={24} color="white" />
         </View>
       );
     };
@@ -127,7 +126,7 @@ const BookCalendar = () => {
                 onPressArrowLeft={subtractMonth => subtractMonth()}
                 onPressArrowRight={addMonth => addMonth()}
                 style={styles.calendar}
-                onDayPress={handleDayPress}
+                //onDayPress={handleDayPress}
                 markedDates={markedDates}
                 dayComponent={DayComponent}
             />
@@ -149,7 +148,7 @@ const BookCalendar = () => {
       <View className="justify-start h-full">
         <View className="mx-5 mb-7 flex-[.5] justify-start">
           <Text className="text-black font-cygrebold text-[28px]">Book Calendar</Text>
-          <Text className="text-black font-cygresemibold max-w-[75%]">See your finished books and captured emotions when finishing the book here.</Text>
+          <Text className="text-black font-cygreregular max-w-[75%]">See your finished books and captured emotions when finishing the book here.</Text>
         </View>
         <View className="mx-5 rounded-[10px] justify-center max-h-[2000px]">
             {renderCalendarWithSelectableDate()}

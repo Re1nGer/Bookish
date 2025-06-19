@@ -14,15 +14,40 @@ import Entypo from '@expo/vector-icons/Entypo';
 import Camera from "../../components/Camera";
 import ImageHandler from "../../components/ImageHandler";
 import { images } from "../../constants";
+import axios from '../../network/axios';
 
 const YouFinishedBook = () => {
 
-    const { imageUrl } = useLocalSearchParams();
+    const { imageUrl, id } = useLocalSearchParams();
 
     const [hasPermission, setHasPermission] = useState(null);
     const [cameraVisible, setCameraVisible] = useState(false);
+    const [memo, setMemo] = useState('');
 
-    const handleSave = () => {}
+
+    const handleMemoChange = (text) => {
+      setMemo(text)
+    }
+
+    const handleSave = async () => {
+      try {
+        const formData = new FormData();
+        formData.append('memo', memo);
+        formData.append('bookId', id);
+        formData.append('rating', 4); // for file uploads
+        
+        await axios.post('users/books/read-events', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        router.back();
+
+      } catch(error) {
+        console.log(error);
+      }
+    }
 
     const handleOpenCamera = () => {
         setCameraVisible(true);
@@ -60,6 +85,8 @@ const YouFinishedBook = () => {
     if (hasPermission) {
         return renderCamera()
     }
+
+    //when camera btn is pressed should redirect to a new screen
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] flex-1">
@@ -146,6 +173,8 @@ const YouFinishedBook = () => {
                                 placeholder="How do you feel about this book?" 
                                 className="border-[#8A8A8A] p-4 justify-start border-[.5px] rounded-[20px] w-full h-full flex-1"
                                 textAlignVertical="top"
+                                value={memo}
+                                onChangeText={handleMemoChange}
                             />
                         </View>
                     </View>

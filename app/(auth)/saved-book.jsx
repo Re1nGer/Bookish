@@ -153,7 +153,7 @@ const SavedBook = () => {
             setBook(prev => ({...prev, status: statusOptions[status]}))
             //redirect to you-finished-book screen if status is finished 
             if (status === 'Finished') {
-                router.push({ pathname: 'you-finished-book', params: { imageUrl }});
+                router.push({ pathname: 'you-finished-book', params: { imageUrl, id }});
             }
         } 
         catch (error) {
