@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
 import { router } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const BooksFinished = () => {

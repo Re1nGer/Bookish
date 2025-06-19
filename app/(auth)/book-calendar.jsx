@@ -19,7 +19,7 @@ const DayComponent = ({ date, state, marking, onPress, ...rest }) => {
     }
 
     return (
-      <TouchableOpacity onPress={() => onPress(date)} className='relative h-[80px]'>
+      <TouchableOpacity onPress={handleRedirect} className='relative h-[80px]'>
         <View className={isSelected ? "w-[30px] h-[30px] rounded-full bg-black justify-center": ""}>
           <Text className={`text-center ${isSelected ? 'text-white' : ''}`}>
             {date.day}
@@ -27,7 +27,7 @@ const DayComponent = ({ date, state, marking, onPress, ...rest }) => {
         </View>
         { marking?.imageUrls && (
           <ScrollView
-          className="relative"
+            className="relative"
             contentContainerStyle={{
                 padding: 0,
                 flexGrow: 1, // This might help with height issues
@@ -56,25 +56,19 @@ const DayComponent = ({ date, state, marking, onPress, ...rest }) => {
 
 const BookCalendar = () => {
 
-    const [selected, setSelected] = useState(INITIAL_DATE);
-
     const [markedDates, setMarkedDates] = useState({
       '2025-06-06': {selected: true, marked: true, selectedColor: 'blue', imageUrl: 'awdw'},
     });
 
-    const handleDayPress = (day) => {
-      setSelected(day.dateString);
-    };
-
-
     const getReadEvents = async () => {
       try {
-        const { data } = await axios.get(`users/read-events?date=${new Date().toISOString()}`);
-        console.log(data)
+        const { data } = await axios.get(`users/read-events`);
         const result = data.reduce((acc, item) => {
         const dateKey = new Date(item.finishedAt).toISOString().split('T')[0];
           if (acc[dateKey]) {
-            acc[dateKey].imageUrls.push(item.imageUrl);
+            if (acc[dateKey].imageUrls.length < 2) {
+              acc[dateKey].imageUrls.push(item.imageUrl);
+            }
           } else {
             acc[dateKey] = {
               marked: true,
