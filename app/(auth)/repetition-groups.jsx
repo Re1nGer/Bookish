@@ -14,10 +14,88 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
 import { RepetitionGroupIcon } from "../../components/Svg";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/UserContext";
+import axios from '../../network/axios';
+
+
+//TODO: extract out into utility functions
+function splitArray(arr) {
+    const midpoint = Math.ceil(arr.length / 2);
+    const firstHalf = arr.slice(0, midpoint);
+    const secondHalf = arr.slice(midpoint);
+    return [firstHalf, secondHalf];
+}
 
 const RepetitionGroups = () => {
 
     const handleInputTextChange = () => {}
+
+    const [firstHalfCollections, setFirstHalfCollections] = useState([]);
+
+    const [secondHalfCollections, setSecondtHalfCollections] = useState([]);
+
+    const [selectedGroups, setSelectedGroups] = useState([]);
+
+    const { setNote, note: { repetitinGroups } } = useContext(UserContext);
+
+    const handleSave = () => {
+
+        const first = firstHalfCollections
+            .filter(item => item.selected)
+            .map(item => ({ id: item.id, name: item.name}))
+        const second = secondHalfCollections
+            .filter(item => item.selected)
+            .map(item => ({ id: item.id, name: item.name }));
+
+        const groups = first.concat(second);
+
+        console.log(groups);
+
+        setNote(prev => ({...prev, repetitinGroups: groups}))
+
+        router.back();
+    }
+
+    const handleFirstHalfSelection = (selectedId) => {
+        setFirstHalfCollections(prev => 
+            prev.map(c => 
+                c.id === selectedId
+                    ? { ...c, selected: !c.selected }
+                    : {...c}
+            )
+        );
+    };
+
+    const handleSecondHalfSelection = (selectedId) => {
+        setSecondtHalfCollections(prev => 
+            prev.map(c => 
+                c.id === selectedId
+                    ? { ...c, selected: !c.selected }
+                    : {...c}
+            )
+        );
+    };
+
+    const fetchGroups = async () => {
+        try {
+            const { data } = await axios.get('users/repetition-groups');
+
+            const [first, second] = splitArray(data);
+            
+            //we need groups variable in case there are already selected collections
+            const firstMapped = first.map(item => ({...item, selected: repetitinGroups?.some(j => j.id === item.id) ? true : false })); //probably wiser to receiver from backed selected false
+            const secondMapped = second.map(item => ({...item, selected: repetitinGroups?.some(j => j.id === item.id) ? true : false }));
+            setFirstHalfCollections(firstMapped);
+            setSecondtHalfCollections(secondMapped);
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchGroups();
+    }, []);
     
     return <SafeAreaView className="bg-[#F7F7F7] h-full max-h-full">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -82,12 +160,13 @@ const NewGroup = () => {
     </View>
 }
 
-const ExistingGroup = ({ name, cardsAmount, containerStyles }) => {
+const ExistingGroup = ({ name, cardsAmount, selected, onSelect, containerStyles }) => {
 
     const breakTitleIfNecessaryAndRender = () => {
         if (name && name.length >= 15) {
             const names = name.split(' ')
             return names.map(item => <Text 
+                    key={item}
                     numberOfLines={1}
                     ellipsizeMode="tail"
                     className="font-cygrebold self-start bg-[#F7F7F7] px-2 py-1 text-[18px] rounded-[15px] text-black leading-[17.2px]">{item}</Text>)
