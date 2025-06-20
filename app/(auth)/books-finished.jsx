@@ -39,7 +39,9 @@ const BooksFinished = () => {
 
 
 const BookCard = ({ bookImgSrc, name, rating, memoImgSrc }) => {
-    return <View className="bg-[#fff] border-[.3px] border-[#8A8A8A] rounded-[20px] pl-4 py-3 pr-7 flex-row mb-4">
+    return <TouchableOpacity
+        onPress={() => router.push('book-memory')}
+        className="bg-[#fff] border-[.3px] border-[#8A8A8A] rounded-[20px] pl-4 py-3 pr-7 flex-row mb-4">
         <View className="flex-row flex-1 gap-x-2">
             <ImageHandler source={bookImgSrc} className="max-w-[82px] max-h-[118px]" />
             <View className="gap-y-2 justify-start">
@@ -55,7 +57,7 @@ const BookCard = ({ bookImgSrc, name, rating, memoImgSrc }) => {
                 <ImageHandler source={memoImgSrc} className="rounded-[80px] max-w-[80px] max-h-[80px]" />
             </View>
         ) : <></> }
-    </View>
+    </TouchableOpacity>
 }
 
 
