@@ -7,15 +7,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ImageHandler from '../../components/ImageHandler';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-const INITIAL_DATE = '2025-04-08';
-
 
 const DayComponent = ({ date, state, marking, onPress, ...rest }) => {
 
     const isSelected = state === 'today';
 
     const handleRedirect = () => {
-      router.push('books-finished')
+      router.push({ pathname: 'books-finished', params: { date: date.dateString }})
     }
 
     return (
@@ -112,15 +110,14 @@ const BookCalendar = () => {
         return (
         <Fragment>
             <Calendar
-              markingType={'custom'} 
-              theme={theme}
+                markingType={'custom'} 
+                theme={theme}
                 enableSwipeMonths
                 headerStyle={styles.headerStyle}
                 renderArrow={renderArrow}
                 onPressArrowLeft={subtractMonth => subtractMonth()}
                 onPressArrowRight={addMonth => addMonth()}
                 style={styles.calendar}
-                //onDayPress={handleDayPress}
                 markedDates={markedDates}
                 dayComponent={DayComponent}
             />
