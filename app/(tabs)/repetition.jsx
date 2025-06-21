@@ -45,7 +45,7 @@ const Repetition = () => {
                     </View>
                 </View>
                 <ScrollView className="flex-1">
-                    <View className="flex-row w-full">
+                    <View className="flex-row justify-between space-x-3 w-full">
                         <View className="w-full flex-[.5]">
                             <NewGroup />
                             <ExistingGroup name={"Self Development"}
