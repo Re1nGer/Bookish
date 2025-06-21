@@ -48,11 +48,15 @@ const Repetition = () => {
                     <View className="flex-row w-full">
                         <View className="w-full flex-[.5]">
                             <NewGroup />
-                            <ExistingGroup name={"Self Development"} containerStyles={'my-4'} />
+                            <ExistingGroup name={"Self Development"}
+                                containerStyles={'my-4'} 
+                            />
                         </View>
                         <View className="w-full flex-[.5]">
                             <ExistingGroup name={"Anatomy Midterm"} />
-                            <ExistingGroup name={"For Business Ideas"} containerStyles={'my-4'} />
+                            <ExistingGroup name={"For Business Ideas"}
+                                containerStyles={'my-4'} 
+                            />
                         </View>
                     </View>
 
@@ -67,6 +71,7 @@ const NewGroup = () => {
     return <View className="rounded-[17px] flex-row rounded-br-[44px] bg-black max-w-[171px] w-full h-[114px] p-4">
         <Text className="font-cygrebold max-w-[83px] text-[18px] text-[#fff] leading-[21.6px]">Add new group</Text>
         <TouchableOpacity
+            onPress={() => router.push('add-repetition-group')}
             className="items-center self-end flex-1 justify-center">
                 <View className="bg-[#fff] max-w-[50px] max-h-[50px] items-center justify-center w-full h-full rounded-full ">
                     <MaterialIcons name="add" size={30} color={'black'} />
