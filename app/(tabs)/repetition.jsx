@@ -2,10 +2,6 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image,
-    TextInput,
-    FlatList,
-    RefreshControl,
     ScrollView
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,7 +9,7 @@ import { images } from "../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useRef, useState, useCallback, useContext } from "react";
-import { router, useFocusEffect } from "expo-router";
+import { router } from "expo-router";
 import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
 import BookPageDropdown from "../../components/BookPageDropdown";

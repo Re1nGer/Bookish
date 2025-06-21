@@ -108,8 +108,6 @@ const Library = () => {
             });
         }
 
-        console.log(queryParams.toString());
-
         try {
             setIsLoading(true);
             const { data } = await axios.get(`/users/books?${queryParams.toString()}`);
