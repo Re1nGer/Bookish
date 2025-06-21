@@ -158,6 +158,8 @@ const CreateNote = () => {
     }, []);
 
 
+    console.log(note);
+
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
                 <View className="flex-row items-center mt-2">
@@ -310,7 +312,7 @@ const Collection = ({ id, name, showCloseBtn, handleRemove, containerStyles }) =
 const CollectionEmptyState = () => {
     return (
         <TouchableOpacity
-            onPress={() => router.push('select-collections')}
+            onPress={() => router.push('select-note-collections')}
             className="max-h-[116px] overflow-hidden h-full pl-8 pr-4 flex-row justify-between rounded-[20px] bg-black">
             <Text className="text-[#ffffff] max-w-[136px] font-cygrebold self-center text-sm leading-[16.8px] font-bold">Add book to your personal collections</Text>
             <View className="self-start h-full -mt-3">
