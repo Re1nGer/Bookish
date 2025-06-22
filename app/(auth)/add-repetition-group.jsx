@@ -52,7 +52,7 @@ const AddRepetitionGroup = () => {
 
     const [timeFormats, setTimeFormats] = useState("AM");
 
-    const [selectedDates, setSelectedDates] = useState([]);
+    const [selectedDateTime, setSelectedDateTime] = useState([]);
 
     const handleNotificationTogglePermission = async () => {
         const currentPermissions = await Notifications.getPermissionsAsync();
@@ -74,6 +74,40 @@ const AddRepetitionGroup = () => {
             ]
         );
     };
+
+    const [selectedDates, setSelectedDates] = useState({});
+
+    const onDayPress = (day) => {
+
+        const dateString = day.dateString;
+
+        const newSelectedDates = { ...selectedDates };
+        
+        if (newSelectedDates[dateString]) {
+            // Remove if already selected
+            delete newSelectedDates[dateString];
+        } else {
+            // Add if not selected
+                newSelectedDates[dateString] = {
+                selected: true,
+            };
+        }
+        
+        setSelectedDates(newSelectedDates);
+    };
+
+
+    const handleAddDateTime = () => {
+
+    }
+
+    const handleSelectQuotesRedirect = () => {
+        router.push('quote-to-connect');
+    }
+
+    const handleSelectNotesRedirect = () => {
+        router.push('select-notes')
+    }
 
     useEffect(() => {
         const checkPermissions = async () => {
@@ -109,7 +143,9 @@ const AddRepetitionGroup = () => {
                 </View>
                 <View className="px-4 max-h-[160px] mb-5">
                     <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Add Quotes to repeat</Text>
-                    <TouchableOpacity className="bg-[#1C1C1C] max-h-[116px] h-full items-center justify-center rounded-[20px]"> 
+                    <TouchableOpacity
+                        onPress={handleSelectQuotesRedirect}
+                        className="bg-[#1C1C1C] max-h-[116px] h-full items-center justify-center rounded-[20px]"> 
                         <View className="justify-center items-center">
                             <Entypo name="plus" size={54} color="white" />
                             <Text className="text-white font-cygreregular text-center">Add Quotes</Text>
@@ -118,7 +154,9 @@ const AddRepetitionGroup = () => {
                 </View>
                 <View className="px-4 max-h-[160px] mb-14">
                     <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Add Notes to repeat</Text>
-                    <TouchableOpacity className="bg-[#1C1C1C] max-h-[116px] h-full items-center justify-center rounded-[20px]"> 
+                    <TouchableOpacity
+                        onPress={handleSelectNotesRedirect}
+                        className="bg-[#1C1C1C] max-h-[116px] h-full items-center justify-center rounded-[20px]"> 
                         <View className="justify-center items-center">
                             <Entypo name="plus" size={54} color="white" />
                             <Text className="text-white font-cygreregular text-center">Add Notes</Text>
@@ -154,6 +192,8 @@ const AddRepetitionGroup = () => {
                     <Calendar
                         theme={theme}
                         headerStyle={styles.headerStyle}
+                        onDayPress={onDayPress}
+                        markedDates={selectedDates}
                         onPressArrowLeft={subtractMonth => subtractMonth()}
                         onPressArrowRight={addMonth => addMonth()}
                         style={styles.calendar}
@@ -218,19 +258,22 @@ const DayTimeSelectedChip = () => {
 }
 
 const DayComponent = ({ date, state, marking, onPress, ...rest }) => {
-
-    const isSelected = state === 'today';
-
-    return (
-      <TouchableOpacity className='relative h-[45px]'>
-        <View className={isSelected ? "w-[30px] h-[30px] rounded-full bg-black justify-center": ""}>
-          <Text className={`text-center ${isSelected ? 'text-white' : ''}`}>
-            {date.day}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    )
-}
+  // Check if the day is selected from marking prop
+  const isSelected = marking?.selected || false;
+  
+  return (
+    <TouchableOpacity 
+      className='relative h-[45px]' 
+      onPress={() => onPress(date)} // Important: call onPress
+    >
+      <View className={isSelected ? "w-[30px] h-[30px] rounded-full bg-black justify-center" : ""}>
+        <Text className={`text-center ${isSelected ? 'text-white' : ''}`}>
+          {date.day}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   calendar: {
