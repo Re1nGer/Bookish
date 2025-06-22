@@ -6,10 +6,11 @@ import {
     Image,
     ScrollView,
     Alert,
-    StyleSheet
+    StyleSheet,
+    Switch,
+    Linking
 } from "react-native";
-import Switch from "../../components/Switch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
@@ -19,17 +20,20 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { Calendar } from 'react-native-calendars';
 import WheelPicker from '@quidone/react-native-wheel-picker';
 import { PrimaryButton } from "../../components/CustomButton";
+import * as Notifications from 'expo-notifications';
 
 
 const AddRepetitionGroup = () => {
+
+    const [hasNotificationPermission, setNotificationPermission] = useState(false);
 
     const theme = {
       dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
     }
 
     const hours = [...Array(12).keys()].map((index, val) => ({
-        value: val,
-        label: val,
+        value: val + 1,
+        label: val + 1,
     }));
 
     const minutes = [...Array(60).keys()].map((index, val) => ({
@@ -47,6 +51,38 @@ const AddRepetitionGroup = () => {
     const [minute, setMinute] = useState(0);
 
     const [timeFormats, setTimeFormats] = useState("AM");
+
+    const [selectedDates, setSelectedDates] = useState([]);
+
+    const handleNotificationTogglePermission = async () => {
+        const currentPermissions = await Notifications.getPermissionsAsync();
+        if (!currentPermissions.granted) {
+            const newPermissions = await Notifications.requestPermissionsAsync();
+            setNotificationPermission(newPermissions.granted);
+        } else {
+            showDisableAlert();
+        }
+    }
+
+    const showDisableAlert = () => {
+        Alert.alert(
+            "Disable Notifications",
+            "To disable notifications, please go to Settings > Bookish > Notifications and turn them off.",
+            [
+                { text: "Cancel", style: "cancel" },
+                { text: "Open Settings", onPress: () => Linking.openSettings() }
+            ]
+        );
+    };
+
+    useEffect(() => {
+        const checkPermissions = async () => {
+            const permissions = await Notifications.getPermissionsAsync();
+            setNotificationPermission(permissions.granted);
+        };
+        
+        checkPermissions();
+    }, [])
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
@@ -98,10 +134,15 @@ const AddRepetitionGroup = () => {
                             </View>
                             <Switch
                                 size="medium"
-                                activeColor="#6592E3"
-                                inactiveColor="#767577" 
                                 thumbColor="#ffffff" 
+                                trackColor={{
+                                    true: '#6592E3',
+                                    false: '#767577'
+                                }}
+                                initialValue={hasNotificationPermission}
+                                value={hasNotificationPermission}
                                 containerStyles={'flex-[.2]'}
+                                onValueChange={handleNotificationTogglePermission}
                             />
                         </View>
                     </View>
@@ -112,7 +153,6 @@ const AddRepetitionGroup = () => {
                 <View className="px-4 max-h-[450px] mb-10">
                     <Calendar
                         theme={theme}
-                        enableSwipeMonths
                         headerStyle={styles.headerStyle}
                         onPressArrowLeft={subtractMonth => subtractMonth()}
                         onPressArrowRight={addMonth => addMonth()}
@@ -145,13 +185,13 @@ const AddRepetitionGroup = () => {
                 <View className="px-4 mb-8">
                     <PrimaryButton title={'Add Time'} containerStyles={'rounded-[47px]'} />
                 </View>
-                <View className="px-4 flex-row justify-between mb-5">
-                    <View>
+                <View className="px-4 flex-row gap-2 justify-between mb-5">
+                    <View className="flex-[.5]">
                         <DayTimeSelectedChip />
                         <DayTimeSelectedChip />
                         <DayTimeSelectedChip />
                     </View>
-                    <View>
+                    <View className="flex-[.5]">
                         <DayTimeSelectedChip />
                         <DayTimeSelectedChip />
                         <DayTimeSelectedChip />
@@ -169,8 +209,8 @@ export default AddRepetitionGroup;
 const DayTimeSelectedChip = () => {
 
 
-    return <View className="rounded-[5px] bg-[#121F16] h-[32px] m-1 w-[175px] justify-between items-center px-2 py-1 flex-row">
-        <Text className="text-white text-[14px] font-cygrebold leading-[16.8px]">28.08 AT 8:00 PM</Text>
+    return <View className="rounded-[5px] bg-[#121F16] h-[32px] m-1 w-full max-w-[200px] justify-between items-center px-2 py-1 flex-row">
+        <Text className="text-white text-[14px] font-cygrebold mr-2 leading-[16.8px]">28.08 AT 8:00 PM</Text>
         <TouchableOpacity className="bg-white rounded-full p-.0.5 justify-center items-center">
             <MaterialIcons name="close" />
         </TouchableOpacity>
