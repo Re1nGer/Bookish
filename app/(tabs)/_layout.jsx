@@ -99,7 +99,7 @@ const TabsLayout = () => {
                         icon={icons.stats}
                         color={color}
                         focused={focused}
-                        name="Profile"
+                        name="Stats"
                     />
                  }}
             ></Tabs.Screen>
