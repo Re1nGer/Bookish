@@ -6,19 +6,14 @@ import {
     StyleSheet,
     Button
 } from "react-native";
-
 import { useContext, useRef, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import { router } from 'expo-router';
 
 const Camera = () => {
-
     const cameraRef = useRef();
-
     const { setMemoImg } = useContext(UserContext);
-
     const [facing, setFacing] = useState('back');
-
     const [permission, requestPermission] = useCameraPermissions();
 
     if (!permission) {
@@ -43,7 +38,6 @@ const Camera = () => {
     const handleTakePicture = async () => {
         try {
             const res = await cameraRef.current?.takePictureAsync({ base64: true, exif: true });
-
             if (res) {
                 console.log(res.uri)
                 setMemoImg(res.uri);
@@ -55,50 +49,133 @@ const Camera = () => {
     }
 
     return (
-            <View style={styles.container}>
-                <CameraView
-                    ref={cameraRef}
-                    style={styles.camera} facing={facing}>
-                    <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button}
-                        onPress={handleTakePicture}>
-                        <Text style={styles.text}>Take shot</Text>
-                    </TouchableOpacity>
+        <View style={styles.container}>
+            <CameraView
+                ref={cameraRef}
+                style={styles.camera} 
+                facing={facing}>
+                <View style={styles.controlsContainer}>
+                    <View style={styles.bottomControls}>
+                        <View style={styles.spacer} />
+                        <TouchableOpacity 
+                            style={styles.shutterButton}
+                            onPress={handleTakePicture}
+                            activeOpacity={0.8}>
+                            <View style={styles.shutterInner} />
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            style={styles.flipButton}
+                            onPress={toggleCameraFacing}
+                            activeOpacity={0.8}>
+                            <CameraFlipIcon />
+                        </TouchableOpacity>
                     </View>
-                </CameraView>
-            </View>
-        );
-    }
+                </View>
+            </CameraView>
+        </View>
+    );
+}
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            justifyContent: 'center',
-        },
-        message: {
-            textAlign: 'center',
-            paddingBottom: 10,
-        },
-        camera: {
-            flex: 1,
-        },
-        buttonContainer: {
-            flex: 1,
-            flexDirection: 'row',
-            backgroundColor: 'transparent',
-            margin: 64,
-        },
-        button: {
-            flex: 1,
-            alignSelf: 'flex-end',
-            alignItems: 'center',
-        },
-        text: {
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: 'white',
-        }
-    });
+// Camera Flip Icon Component
+const CameraFlipIcon = () => (
+    <View style={styles.flipIconContainer}>
+        <View style={styles.flipIconOuter}>
+            <View style={styles.flipIconInner} />
+        </View>
+    </View>
+);
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    message: {
+        textAlign: 'center',
+        paddingBottom: 10,
+    },
+    camera: {
+        flex: 1,
+    },
+    controlsContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        paddingHorizontal: 20,
+        paddingVertical: 50,
+    },
+    bottomControls: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    spacer: {
+        width: 50, // Same width as flip button to keep shutter centered
+    },
+    shutterButton: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        borderWidth: 4,
+        borderColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    shutterInner: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: 'white',
+    },
+    flipButton: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    flipIconContainer: {
+        position: 'relative',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    flipIconOuter: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    flipIconInner: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: 'white',
+    },
+    flipArrows: {
+        position: 'absolute',
+        top: -2,
+        right: -8,
+    },
+});
 
 export default Camera;
