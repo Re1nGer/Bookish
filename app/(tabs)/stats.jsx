@@ -20,8 +20,34 @@ const Statistics = () => {
     const originalData = [0, 0, 0, 76, 30, 62, 0];
     const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+    const timeData = [0, 55, 70, 0, 50, 30, 50, 0];
+
+    const timeLabels = ['2', '9', '16', '23', '30', '2'];
+
     // Format data for Gifted Charts
     const barData = originalData.map((value, index) => ({
+        value: value,
+        label: labels[index],
+        frontColor: '#6592E3',
+        spacing: 2,
+        labelWidth: 40,
+        labelTextStyle: {
+            color: '#000',
+            fontSize: 12,
+        },
+        topLabelComponent: () => value > 0 ? (
+            <Text style={{
+                color: '#000',
+                fontSize: 12,
+                fontWeight: '600',
+                textAlign: 'center'
+            }}>
+                {value}
+            </Text>
+        ) : null,
+    }));
+
+    const timeBarData = timeData.map((value, index) => ({
         value: value,
         label: labels[index],
         frontColor: '#6592E3',
@@ -149,7 +175,7 @@ const Statistics = () => {
                             <Text className="text-[#5EBAB9] text-[14px]">47 m</Text>
                         </View>
                         <BarChart
-                            data={isHoursReadOpen ? barData : []}
+                            data={isHoursReadOpen ? timeBarData : []}
                             width={screenWidth - 120}
                             height={isHoursReadOpen ? 250 : 0}
                             barWidth={35}

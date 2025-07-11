@@ -7,11 +7,15 @@ import {
     Button
 } from "react-native";
 
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
+import { UserContext } from '../context/UserContext';
+import { router } from 'expo-router';
 
 const Camera = () => {
 
     const cameraRef = useRef();
+
+    const { setMemoImg } = useContext(UserContext);
 
     const [facing, setFacing] = useState('back');
 
@@ -37,7 +41,17 @@ const Camera = () => {
     }
 
     const handleTakePicture = async () => {
-        const res = await cameraRef.current?.takePictureAsync({ base64: true, exif: true });
+        try {
+            const res = await cameraRef.current?.takePictureAsync({ base64: true, exif: true });
+
+            if (res) {
+                console.log(res.uri)
+                setMemoImg(res.uri);
+                router.back();
+            }
+        } catch(error) {
+            console.log(error);
+        }
     }
 
     return (

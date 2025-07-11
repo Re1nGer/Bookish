@@ -92,6 +92,7 @@ const AuthLayout = () => {
         <Stack.Screen name="books-finished" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
         <Stack.Screen name="book-memory" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
         <Stack.Screen name="add-repetition-group" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
+        <Stack.Screen name="camera" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
 
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />

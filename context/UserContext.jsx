@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, memo, useState } from "react"
 
 export const UserContext = createContext({});
 
@@ -8,7 +8,14 @@ export const UserProvider = ({ children }) => {
 
     const [recoveryEmail, setRecoveryEmail] = useState('');
 
+    const [memoImg, setMemoImg] = useState('');
+
     const [verificationCode, setVerificationCode] = useState('');
+
+    const [repetitionGroup, setRepetitionGroup] = useState({
+        quote: null,
+        notes: []
+    });
 
     const [quote, setQuote] = useState({
         collections: [],
@@ -118,6 +125,8 @@ export const UserProvider = ({ children }) => {
         setBooksSelected,
         noteTypesSelected,
         setNoteTypesSelected,
+        memoImg,
+        setMemoImg,
         //TODO: to remove
         user,
         setUser
