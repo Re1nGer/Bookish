@@ -8,7 +8,10 @@ export const UserProvider = ({ children }) => {
 
     const [recoveryEmail, setRecoveryEmail] = useState('');
 
-    const [memoImg, setMemoImg] = useState('');
+    const [memo, setMemo] = useState({
+        imgBlob: null,
+        imageUri: null
+    });
 
     const [verificationCode, setVerificationCode] = useState('');
 
@@ -55,8 +58,6 @@ export const UserProvider = ({ children }) => {
         gaveUp: false,
         paused: false
     });
-
-    const [notes, setNotes] = useState([]);
 
 
     const [onboarding, setOnboarding] = useState({
@@ -125,8 +126,8 @@ export const UserProvider = ({ children }) => {
         setBooksSelected,
         noteTypesSelected,
         setNoteTypesSelected,
-        memoImg,
-        setMemoImg,
+        memo,
+        setMemo,
         //TODO: to remove
         user,
         setUser

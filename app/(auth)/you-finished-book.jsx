@@ -20,20 +20,22 @@ const YouFinishedBook = () => {
 
     const { imageUrl, id } = useLocalSearchParams();
 
-    const [memo, setMemo] = useState('');
+    const [memoText, setMemoText] = useState('');
 
-    const { memoImg, setMemoImg } = useContext(UserContext);
+    const { memo, setMemo } = useContext(UserContext);
 
     const handleMemoChange = (text) => {
-      setMemo(text)
+      setMemoText(text)
     }
 
     const handleSave = async () => {
       try {
+        console.log(memo);
         const formData = new FormData();
-        formData.append('memo', memo);
+        formData.append('memo', memoText);
         formData.append('bookId', id);
         formData.append('rating', 4); // for file uploads
+        //formData.append('image', memo.imageBlob);
         
         await axios.post('users/books/read-events', formData, {
           headers: {
@@ -50,7 +52,7 @@ const YouFinishedBook = () => {
 
     useEffect(() => {
       return () => {
-        setMemoImg('');
+        setMemo({imageUrl: null, imageBlob: null});
       }
     }, []);
 
@@ -125,8 +127,8 @@ const YouFinishedBook = () => {
                   </Text>
                   <Text className="text-black leading-[19.2px] self-start font-cygreregular mt-2.5">Capture this precious moment, take a photo and write some final thoughts on this book.</Text>
 
-                  { memoImg ? (
-                    <ImageHandler source={memoImg} className="my-6 w-[242px] h-[242px] rounded-full"
+                  { memo.imageUri ? (
+                    <ImageHandler source={memo.imageUri} className="my-6 w-[242px] h-[242px] rounded-full"
                       resizeMode='cover'
                       width={242} height={242} />
                   ) : (
@@ -143,7 +145,7 @@ const YouFinishedBook = () => {
                           placeholder="How do you feel about this book?" 
                           className="border-[#8A8A8A] p-4 justify-start border-[.5px] rounded-[20px] w-full h-full flex-1"
                           textAlignVertical="top"
-                          value={memo}
+                          value={memoText}
                           onChangeText={handleMemoChange}
                       />
                   </View>

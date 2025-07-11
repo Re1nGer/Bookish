@@ -9,10 +9,11 @@ import {
 import { useContext, useRef, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import { router } from 'expo-router';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const Camera = () => {
     const cameraRef = useRef();
-    const { setMemoImg } = useContext(UserContext);
+    const { setMemo } = useContext(UserContext);
     const [facing, setFacing] = useState('back');
     const [permission, requestPermission] = useCameraPermissions();
 
@@ -39,9 +40,24 @@ const Camera = () => {
         try {
             const res = await cameraRef.current?.takePictureAsync({ base64: true, exif: true });
             if (res) {
+
                 console.log(res.uri)
-                setMemoImg(res.uri);
+
+                const response = await fetch(res.uri);
+                
+                // Convert to blob (binary data)
+                const blob = await response.blob();
+
+                console.log('Blob:', blob);
+                // Output: Blob object with size, type, etc.
+                
+                // Now you can upload this blob
+                //uploadBlob(blob);
+
+                setMemo(prev => ({...prev, imageUri: res.uri, imageBlob: blob}));
+
                 router.back();
+
             }
         } catch(error) {
             console.log(error);
@@ -67,7 +83,7 @@ const Camera = () => {
                             style={styles.flipButton}
                             onPress={toggleCameraFacing}
                             activeOpacity={0.8}>
-                            <CameraFlipIcon />
+                            <MaterialIcons name="flip-camera-ios" size={24} color="white" />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -75,15 +91,6 @@ const Camera = () => {
         </View>
     );
 }
-
-// Camera Flip Icon Component
-const CameraFlipIcon = () => (
-    <View style={styles.flipIconContainer}>
-        <View style={styles.flipIconOuter}>
-            <View style={styles.flipIconInner} />
-        </View>
-    </View>
-);
 
 const styles = StyleSheet.create({
     container: {
