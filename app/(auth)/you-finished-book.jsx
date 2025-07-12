@@ -3,8 +3,7 @@ import {
     Text,
     TouchableOpacity,
     TextInput,
-    ScrollView,
-    StyleSheet
+    ScrollView
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,6 +14,7 @@ import ImageHandler from "../../components/ImageHandler";
 import { images } from "../../constants";
 import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
+import { useCameraPermissions } from 'expo-camera';
 
 const YouFinishedBook = () => {
 
@@ -24,18 +24,31 @@ const YouFinishedBook = () => {
 
     const { memo, setMemo } = useContext(UserContext);
 
+    const [permission, requestPermission] = useCameraPermissions();
+
     const handleMemoChange = (text) => {
       setMemoText(text)
     }
 
+    const handleOpeningCamera = () => {
+      requestPermission().then(j => {
+        router.push('camera')
+      });
+    }
+
     const handleSave = async () => {
+
       try {
-        console.log(memo);
+        const blob = memo.imageBlob;
         const formData = new FormData();
         formData.append('memo', memoText);
         formData.append('bookId', id);
-        formData.append('rating', 4); // for file uploads
-        //formData.append('image', memo.imageBlob);
+         formData.append('image', {
+          uri: memo.imageUri,
+          type: blob.type,
+          name: blob?._data?.name,
+        });
+        formData.append('rating', 4);
         
         await axios.post('users/books/read-events', formData, {
           headers: {
@@ -52,7 +65,7 @@ const YouFinishedBook = () => {
 
     useEffect(() => {
       return () => {
-        setMemo({imageUrl: null, imageBlob: null});
+        setMemo({imageUri: null, imageBlob: null});
       }
     }, []);
 
@@ -134,7 +147,7 @@ const YouFinishedBook = () => {
                   ) : (
 
                   <TouchableOpacity
-                      onPress={() => router.push('camera')}
+                      onPress={handleOpeningCamera}
                       className="w-[108px] h-[108px] rounded-full bg-primary items-center justify-center mt-7">
                       <Entypo name="camera" size={40} color="white" />
                   </TouchableOpacity>

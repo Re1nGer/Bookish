@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
     const [recoveryEmail, setRecoveryEmail] = useState('');
 
     const [memo, setMemo] = useState({
-        imgBlob: null,
+        imageBlob: null,
         imageUri: null
     });
 

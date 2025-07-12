@@ -41,18 +41,11 @@ const Camera = () => {
             const res = await cameraRef.current?.takePictureAsync({ base64: true, exif: true });
             if (res) {
 
-                console.log(res.uri)
-
                 const response = await fetch(res.uri);
                 
                 // Convert to blob (binary data)
                 const blob = await response.blob();
 
-                console.log('Blob:', blob);
-                // Output: Blob object with size, type, etc.
-                
-                // Now you can upload this blob
-                //uploadBlob(blob);
 
                 setMemo(prev => ({...prev, imageUri: res.uri, imageBlob: blob}));
 
