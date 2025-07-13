@@ -15,6 +15,7 @@ import { images } from "../../constants";
 import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
 import { useCameraPermissions } from 'expo-camera';
+import { CalendarIcon } from "../../components/Svg";
 
 const YouFinishedBook = () => {
 
@@ -163,6 +164,12 @@ const YouFinishedBook = () => {
                       />
                   </View>
               </View>
+
+            <TouchableOpacity className="bg-black px-8 flex-row justify-between my-6 items-center mx-5 rounded-[20px] max-h-[106px] py-4">
+                <Text className=" font-cygrebold max-w-[98px] text-white">Share your achievement with others!</Text>
+                <CalendarIcon />
+            </TouchableOpacity>
+
           </ScrollView>
         </SafeAreaView>
     );

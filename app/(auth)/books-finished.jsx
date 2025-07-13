@@ -55,6 +55,7 @@ const BooksFinished = () => {
             renderItem={({ item, _ }) => 
                 <BookCard
                     key={item.id}
+                    id={item.id}
                     bookImgSrc={item.imageUrl}
                     name={item.bookName}
                     rating={4}
@@ -65,10 +66,9 @@ const BooksFinished = () => {
 }
 
 
-const BookCard = ({ bookImgSrc, name, rating, memoImgSrc }) => {
-    console.log(memoImgSrc);
+const BookCard = ({ id, bookImgSrc, name, rating, memoImgSrc }) => {
     return <TouchableOpacity
-        onPress={() => router.push('book-memory')}
+        onPress={() => router.push({pathname: 'book-memory', params: { eventId: id }})}
         className="bg-[#fff] border-[.3px] border-[#8A8A8A] justify-between rounded-[20px] pl-4 py-3 pr-7 flex-row flex-1 mb-4">
         <View className="flex-row gap-x-2">
             <ImageHandler source={bookImgSrc} className="max-w-[82px] max-h-[118px]" width={82} height={118} resizeMode='contain' />
