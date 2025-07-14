@@ -45,6 +45,7 @@ const Repetition = () => {
                         <View className="w-full flex-[.5]">
                             <NewGroup />
                             <ExistingGroup name={"Self Development"}
+                                onPress={() => router.push('revise')}
                                 containerStyles={'my-4'} 
                             />
                         </View>
@@ -76,7 +77,7 @@ const NewGroup = () => {
     </View>
 }
 
-const ExistingGroup = ({ name, cardsAmount, selected, onSelect, containerStyles }) => {
+const ExistingGroup = ({ name, cardsAmount, selected, onSelect, onPress, containerStyles }) => {
 
     const breakTitleIfNecessaryAndRender = () => {
         if (name && name.length >= 15) {
@@ -164,7 +165,8 @@ const ExistingGroup = ({ name, cardsAmount, selected, onSelect, containerStyles 
         return <Text className="font-cygrebold bg-[#F7F7F7] px-2 py-1 text-[18px] rounded-[15px] text-black text-center leading-[17.2px]">{name}</Text>
     }
 
-    return <View
+    return <TouchableOpacity
+            onPress={onPress}
             className={`rounded-[17px] overflow-hidden relative bg-[#F8846A] max-w-[171px] w-full h-[114px] px-4 pt-5 pb-2 ${containerStyles}`}>
         <View className="mb-2 flex-wrap">
             {breakTitleIfNecessaryAndRender()}
@@ -176,7 +178,7 @@ const ExistingGroup = ({ name, cardsAmount, selected, onSelect, containerStyles 
         <View className="absolute right-0 -z-10">
             <RepetitionGroupIcon />
         </View>
-    </View>
+    </TouchableOpacity>
 }
 
 export default Repetition;

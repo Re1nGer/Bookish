@@ -11,34 +11,12 @@ const AuthLayout = () => {
       <Stack>
         
 {/*         Onboarding Screens */}
-        <Stack.Screen name="sign-in" options={{ title: "Sign In",
-            headerTitle: () => <HeaderTitle text={"Sign In"} />,
-            headerTransparent: true }} />
+        <Stack.Screen name="sign-in" options={{ title: "Sign In", headerTitle: () => <HeaderTitle text={"Sign In"} />, headerTransparent: true }} />
+        <Stack.Screen name="sign-up" options={{ title: "Sign Up", headerTitle: () => <HeaderTitle text={"Sign Up"} />, headerTransparent: true}} /> 
+        <Stack.Screen name="forgot-password" options={{ title: "Forgot Password", headerTitle: () => <HeaderTitle text={"Forgot Password"} />, headerTransparent: true }} />
+        <Stack.Screen name="verification" options={{ title: "Verification", headerTitle: () => <HeaderTitle text={"Verification"} />, headerTransparent: true }} />
+        <Stack.Screen name="new-password" options={{ title: "New Password", headerTitle: () => <HeaderTitle text={"New Password"} />, headerTransparent: true }} />
 
-        <Stack.Screen
-          name="sign-up"
-          options={{ title: "Sign Up",
-            headerTitle: () => <HeaderTitle text={"Sign Up"} />,
-            headerTransparent: true}} /> 
-
-        <Stack.Screen
-          name="forgot-password"
-          options={{ title: "Forgot Password",
-            headerTitle: () => <HeaderTitle text={"Forgot Password"} />,
-            headerTransparent: true }} />
-
-        <Stack.Screen
-          name="verification"
-          options={{ title: "Verification",
-            headerTitle: () => <HeaderTitle text={"Verification"} />,
-            headerTransparent: true }} />
-
-        <Stack.Screen
-          name="new-password"
-          options={{ title: "New Password",
-            headerTitle: () => <HeaderTitle text={"New Password"} />,
-            headerTransparent: true }} 
-        />
         <Stack.Screen name="password-success" options={{ title: "", headerShown: false }} />
         <Stack.Screen name="welcome" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ title: "", headerBackVisible: false, headerShown: false }} />
@@ -93,6 +71,7 @@ const AuthLayout = () => {
         <Stack.Screen name="book-memory" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
         <Stack.Screen name="add-repetition-group" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
         <Stack.Screen name="camera" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
+        <Stack.Screen name="revise" options={{ title: "", headerTransparent: true, headerBackVisible: false, animation: 'slide_from_bottom', headerShown: false }} /> 
 
       </Stack>
       <StatusBar backgroundColor='#F7F7F7' style='dark' />
