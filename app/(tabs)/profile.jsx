@@ -14,8 +14,13 @@ import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
 import BookPageDropdown from "../../components/BookPageDropdown";
 import ImageHandler from "../../components/ImageHandler";
-import { PremiumBenefitsIcon, QuestionMarkIcon } from "../../components/Svg";
-import { RepetitionGroupIcon } from "../../components/Svg";
+import {
+    PremiumBenefitsIcon,
+    ReadingTravelerIcon,
+    StarShooterIcon,
+    StartWriterIcon,
+    BeastCollectionIcon
+} from "../../components/Svg";
 
 
 const Profile = () => {
@@ -30,7 +35,7 @@ const Profile = () => {
                     <Text className="font-cygrebold text-[24px] leading-[28.8px] text-[#121F16]">Profile</Text>
                 </TouchableOpacity>
             </View>
-            <View className="mx-5">
+            <View className="mx-5 mb-7 max-h-[150px]">
                 <TouchableOpacity
                     onPress={() => router.push('special-offer')}
                     className="bg-[#1C1C1C] mb-6 max-h-[120px] h-full rounded-[20px] border-[.3px] border-[#8A8A8A] flex-row justify-between px-6 items-center">
@@ -40,6 +45,32 @@ const Profile = () => {
                     </View>
                     <View className="mt-2.5">
                         <PremiumBenefitsIcon />
+                    </View>
+                </TouchableOpacity>
+            </View>
+            <View className="flex-1 ml-5 max-h-[200px] mb-8">
+                <Text className="text-black text-[20px] font-cygrebold mb-4">Achievements</Text>
+                <ScrollView className="flex-1" horizontal>
+                    <View className="mr-3 items-center">
+                        <ReadingTravelerIcon />
+                        <Text className="text-black">Reading traveler</Text>
+                    </View>
+                    <View className="mr-3 items-center">
+                        <StartWriterIcon />
+                        <Text className="text-black">Start Writer</Text>
+                    </View>
+                    <View className="items-center">
+                        <StarShooterIcon />
+                        <Text className="text-black">Reading traveler</Text>
+                    </View>
+                </ScrollView>
+            </View>
+
+            <View className="mx-5">
+                <TouchableOpacity className="bg-primary max-h-[106px] items-center px-7 flex-row border-[#8A8A8A] py-5 justify-between rounded-[20px] border-[.3px]">
+                    <Text className="text-[18px] font-cygrebold text-white max-w-[164px]">Your Bookish Beasts Collection</Text>
+                    <View className="items-end h-full">
+                        <BeastCollectionIcon />
                     </View>
                 </TouchableOpacity>
             </View>
