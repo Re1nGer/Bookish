@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ const { width: screenWidth } = Dimensions.get('window');
 const CardSwipe = ({ data, onSwipeLeft, onSwipeRight }) => {
   const pan = useRef(new Animated.ValueXY()).current;
   const rotate = useRef(new Animated.Value(0)).current;
+  const textOpacity = useRef(new Animated.Value(1)).current;
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
@@ -52,6 +53,7 @@ const CardSwipe = ({ data, onSwipeLeft, onSwipeRight }) => {
           // Reset position for next card
           pan.setValue({ x: 0, y: 0 });
           rotate.setValue(0);
+          textOpacity.setValue(1);
         });
       } else {
         // Spring back to center
@@ -64,19 +66,28 @@ const CardSwipe = ({ data, onSwipeLeft, onSwipeRight }) => {
           toValue: 0,
           useNativeDriver: true,
         }).start();
+        
+        Animated.spring(textOpacity, {
+          toValue: 1,
+          useNativeDriver: true,
+        }).start();
       }
     },
   });
 
-  // Update rotation based on translateX
-  useEffect(() => {
+  // Update rotation and text opacity based on translateX
+  React.useEffect(() => {
     const listener = pan.x.addListener(({ value }) => {
       const rotation = (value / screenWidth) * 30;
       rotate.setValue(rotation);
+      
+      // Make text disappear when swiping
+      const opacity = 1 - Math.abs(value) / (screenWidth * 0.4);
+      textOpacity.setValue(Math.max(0, opacity));
     });
     
     return () => pan.x.removeListener(listener);
-  }, [pan.x, rotate]);
+  }, [pan.x, rotate, textOpacity]);
 
   return (
     <Animated.View
@@ -98,20 +109,12 @@ const CardSwipe = ({ data, onSwipeLeft, onSwipeRight }) => {
       ]}
       {...panResponder.panHandlers}
     >
-      <Text style={styles.cardText}>{data.title}</Text>
-      <Animated.Text
-        style={[
-                styles.cardDescription,
-                {
-                    opacity: pan.x.interpolate({
-                        inputRange: [-screenWidth * 0.5, screenWidth * 0.5],
-                        outputRange: [0,1],
-                        extrapolate: 'clamp',
-                    })
-                }
-            ]}>
-            {data.description}
-        </Animated.Text>
+      <Animated.Text style={[styles.cardText, { opacity: textOpacity }]}>
+        {data.title}
+      </Animated.Text>
+      <Animated.Text style={[styles.cardDescription, { opacity: textOpacity }]}>
+        {data.description}
+      </Animated.Text>
       
       {/* Optional: Add visual feedback */}
       <Animated.View 
