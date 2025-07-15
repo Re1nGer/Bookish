@@ -81,10 +81,39 @@ const Profile = () => {
                     <Text className="text-black text-[20px] font-cygrebold mb-4">Settings</Text>
                 </View>
 
-                <View className="mx-5 px-7 py-5 rounded-[15px] border-[.5px] border-[#8A8A8A] max-h-[168px] bg-white h-[300px] mb-4">
+                <View className="mx-5 px-7 py-5 rounded-[15px] border-[.5px] border-[#8A8A8A] max-h-[168px] bg-white mb-4">
                     <Text className="text-[18px] font-cygrebold mb-2">General</Text>
-                    <Setting name={'Notification Settings'} />
-                    <Setting name={'Manage Recommendations'} />
+                    <Setting name={'Notification Settings'} icon={'notifications'} />
+                    <Setting name={'Manage Recommendations'} icon={'star'} />
+                </View>
+
+                <View className="mx-5 px-7 py-5 rounded-[15px] border-[.5px] border-[#8A8A8A] max-h-[223px] bg-white mb-4">
+                    <Text className="text-[18px] font-cygrebold mb-2">Data</Text>
+                    <Setting name={'Import'} icon={'drive-file-move'} />
+                    <Setting name={'Export'} icon={'drive-file-move-rtl'} />
+                    <Setting name={'Reset'} icon={'lock-reset'} />
+                </View>
+
+                <View className="mx-5 px-7 py-5 rounded-[15px] border-[.5px] border-[#8A8A8A] max-h-[223px] bg-white mb-4">
+                    <Text className="text-[18px] font-cygrebold mb-2">Leave a Feedback!</Text>
+                    <Setting name={'Share Us'} icon={'share'} />
+                    <Setting name={'Rate and Review'} icon={'star'} />
+                    <Setting name={'Report a bug'} icon={'bug-report'} />
+                </View>
+
+                <View className="mx-5 px-7 py-5 rounded-[15px] border-[.5px] border-[#8A8A8A] max-h-[161px] bg-white mb-4">
+                    <Text className="text-[18px] font-cygrebold mb-2">Let's Connect!</Text>
+                    <Setting name={'Follow us on Instagram'} icon={'photo-camera'} />
+                    <Setting name={'Follow us on TikTok'} icon={'tiktok'} />
+                </View>
+
+                <View className="mx-5 px-7 py-5 rounded-[15px] border-[.5px] border-[#8A8A8A] max-h-[303px] bg-white mb-8">
+                    <Text className="text-[18px] font-cygrebold mb-2">Let's Connect!</Text>
+                    <Setting name={'Privacy Policy'} icon={'privacy-tip'} />
+                    <Setting name={'Terms of Use'} icon={'tiktok'} />
+                    <Setting name={'Subscription Terms'} icon={'tiktok'} />
+                    <Setting name={'Delete Account'} icon={'delete'} />
+                    <Setting name={'Log Out'} icon={'delete'} />
                 </View>
 
             </ScrollView>
@@ -93,9 +122,9 @@ const Profile = () => {
 }
 
 
-const Setting = ({ Icon, name, className }) => {
+const Setting = ({ icon, name, className }) => {
     return <TouchableOpacity className={`flex-row items-center mb-2`}>
-        <MaterialIcons name="notifications" size={24} color="black" />
+        <MaterialIcons name={icon} size={24} color="black" />
         <View className="border-b-[#EDEDED] border-b-2 py-2 flex-row flex-1 ml-5 justify-between">
             <Text className="text-[14px] font-cygreregular">{name}</Text>
             <View className="rotate-180">
