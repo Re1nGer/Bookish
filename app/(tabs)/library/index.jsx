@@ -8,18 +8,18 @@ import {
     RefreshControl
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "../../constants";
+import { images } from "../../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useRef, useState, useCallback, useContext } from "react";
 import { router, useFocusEffect } from "expo-router";
-import axios from '../../network/axios';
-import { UserContext } from "../../context/UserContext";
-import BookPageDropdown from "../../components/BookPageDropdown";
-import ImageHandler from "../../components/ImageHandler";
+import axios from '../../../network/axios';
+import { UserContext } from "../../../context/UserContext";
+import BookPageDropdown from "../../../components/BookPageDropdown";
+import ImageHandler from "../../../components/ImageHandler";
 
 
-const Library = () => {
+const Index = () => {
 
     const [text, setText] = useState('');
 
@@ -48,7 +48,21 @@ const Library = () => {
     const handleSelect = (option) => {
         setSelectedOption(option);
         setIsOpen(false)
-        router.push(option.toLowerCase())
+        //TODO:refactor
+        switch (option) {
+            case "Notes":
+                router.push('/library/notes');
+                break;
+            case "Quotes":
+                router.push('/library/quotes')
+                break;
+            case "Books":
+                router.push('/library')
+                break;
+            default:
+                return
+
+        }
     }
 
     const renderGifLoader = () => {
@@ -56,7 +70,7 @@ const Library = () => {
             return (
                 <View className="items-center justify-center">
                 <Image
-                    source={require('../../assets/gifs/book-loader.gif')}
+                    source={require('../../../assets/gifs/book-loader.gif')}
                     width={150}
                     height={150}
                     className="max-h-[150px] max-w-[150px]"
@@ -265,7 +279,7 @@ const BookStatus = ({ name, author, progress, tag, imageUrl, onPress, containerS
             height={141}
         /> */}
         <ImageHandler
-            source={imageUrl ? imageUrl : require('../../assets/images/book.png')}
+            source={imageUrl ? imageUrl : require('../../../assets/images/book.png')}
             className="max-w-[99px] max-h-[141px] w-full h-full mr-4"
             width={99}
             height={141}
@@ -286,4 +300,4 @@ const BookStatus = ({ name, author, progress, tag, imageUrl, onPress, containerS
     </TouchableOpacity>
 }
 
-export default Library;
+export default Index;

@@ -4,24 +4,26 @@ import {
     TouchableOpacity,
     Image,
     FlatList,
+    RefreshControl,
     ScrollView
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { images } from "../../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { router, useFocusEffect } from "expo-router";
-import axios from '../../network/axios';
-import BookPageDropdown from "../../components/BookPageDropdown";
+import axios from '../../../network/axios';
+import BookPageDropdown from "../../../components/BookPageDropdown";
 import Feather from '@expo/vector-icons/Feather';
-import ImageHandler from "../../components/ImageHandler";
-import { COLLECTION_ICON_MAP } from "../../components/CollectionSvg";
+import ImageHandler from "../../../components/ImageHandler";
+import { COLLECTION_ICON_MAP } from "../../../components/CollectionSvg";
 
 
-const Notes = () => {
+const Quotes = () => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const [selectedOption, setSelectedOption] = useState('Notes');
+    const [selectedOption, setSelectedOption] = useState('Quotes');
 
     const [bookNotes, setBookNotes] = useState([]);
 
@@ -31,10 +33,19 @@ const Notes = () => {
         setSelectedOption(option);
         setIsOpen(false)
         //TODO:refactor
-        if (option === 'Books') {
-            router.push('library')
-        } else {
-            router.push(option.toLowerCase())
+        switch (option) {
+            case "Notes":
+                router.push('/library/notes');
+                break;
+            case "Quotes":
+                router.push('/library/quotes')
+                break;
+            case "Books":
+                router.push('/library')
+                break;
+            default:
+                return
+
         }
     }
 
@@ -53,7 +64,7 @@ const Notes = () => {
             return (
                 <View className="items-center justify-center">
                 <Image
-                    source={require('../../assets/gifs/book-loader.gif')}
+                    source={require('../../../assets/gifs/book-loader.gif')}
                     width={150}
                     height={150}
                     className="max-h-[150px] max-w-[150px]"
@@ -68,7 +79,7 @@ const Notes = () => {
     const fetchBookNotes = useCallback(async () => {
         try {
             setIsLoading(true);
-            const { data } = await axios.get('users/books/notes');
+            const { data } = await axios.get('users/books/quotes');
             setBookNotes(data);
         } catch (error) {
             console.log(error);
@@ -119,20 +130,17 @@ const Notes = () => {
                 <Text className={`${isFilteredByBooks ? 'text-black' : 'text-[#fff]'} text-sm text-center ml-2`}>By Collections</Text>
             </TouchableOpacity>
         </View>
-{/*         <View className="mx-5 mt-7">
-            <BookNoteCard name={'name'} author={'author'} notesCount={10} />
-        </View> */}
         { isFilteredByBooks ? (
             <FlatList
                 className="mx-5 mt-7"
                 data={bookNotes}
                 ListEmptyComponent={renderGifLoader()}
-                renderItem={({ item }) => <BookNoteCard
+                renderItem={({ item }) => <QuoteCard
                     key={item.id}
-                    onPress={() => router.push({pathname: 'book-notes', params: { name: item.bookName, id: item.id }})}
+                    onPress={() => router.push({pathname: 'book-quotes', params: { name: item.bookName, bookId: item.id }})}
                     name={item.bookName}
                     author={item.author}
-                    notesCount={item.notesCount}   
+                    quotesCount={item.quotesCount}   
                     imageUrl={item.imageUrl}
                     containerStyles={'mb-4'}
                 />}
@@ -141,12 +149,12 @@ const Notes = () => {
     </SafeAreaView>
 }
 
-const BookNoteCard = ({ name, author, notesCount, imageUrl, onPress, containerStyles }) => {
+const QuoteCard = ({ name, author, quotesCount, imageUrl, onPress, containerStyles }) => {
     return <TouchableOpacity
         onPress={onPress}
         className={`max-w-[353px] h-[172px] w-full flex-row border border-[#727272] px-3 py-3 rounded-[15px] ${containerStyles}`}>
         <ImageHandler
-            source={imageUrl ? imageUrl : require('../../assets/images/book.png')}
+            source={imageUrl ? imageUrl : images.book}
             className="max-w-[99px] max-h-[141px] w-full h-full mr-4"
             width={99}
             height={141}
@@ -156,14 +164,14 @@ const BookNoteCard = ({ name, author, notesCount, imageUrl, onPress, containerSt
             <Text className="text-black text-sm font-cygreregular leading-[16.8px] max-w-[210px]">{author}</Text>
             <View className="self-end items-end justify-end flex-1">
                 <View className="bg-[#D5E3FC] w-[63px] h-[63px] items-center justify-center rounded-full">
-                    <Text className="text-black text-[22px] leading-[26.4px]">{notesCount}</Text>
+                    <Text className="text-black text-[22px] leading-[26.4px]">{quotesCount}</Text>
                 </View>
             </View>
         </View>
     </TouchableOpacity>
 }
 
-export default Notes;
+export default Quotes;
 
 function splitArray(arr) {
     const midpoint = Math.ceil(arr.length / 2);
@@ -180,7 +188,7 @@ const NoteCollections = () => {
 
     const fetchCollections = useCallback(async () => {
         try {
-            const { data } = await axios.get('users/note-collections');
+            const { data } = await axios.get('users/quote-collections');
             //console.log(data)
             const [first, second] = splitArray(data);
             //we need collections variable in case there are already selected collections
@@ -208,7 +216,7 @@ const NoteCollections = () => {
                                 key={item.id}
                                 name={item.name}
                                 onSelected={() => router.push({pathname:
-                                     'book-notes', params: { name: item.name, id: item.id, byCollection: true }})}
+                                     'book-quotes', params: { name: item.name, bookId: item.bookId, collectionId: item.id, byCollection: true }})}
                                 selected={item.selected}
                                 notesCount={item.notesCount}
                                 iconId={item.iconId}
@@ -221,7 +229,8 @@ const NoteCollections = () => {
                             <ExistingCollection
                                 key={item.id}
                                 onSelected={() => router.push({pathname:
-                                     'book-notes', params: { name: item.name, id: item.id, byCollection: true }})}
+                                     'book-quotes', params: { name: item.name,
+                                        bookId: item.bookId, collectionId: item.id, byCollection: true }})}
                                 name={item.name} 
                                 selected={item.selected}
                                 notesCount={item.notesCount}
@@ -240,7 +249,7 @@ const NewCollection = ({ containerStyles }) => {
     return <View className={`bg-black rounded-[20px] mb-4 justify-between p-4 max-w-[169px] flex-1 max-h-[174px] ${containerStyles}`}>
         <Text className="font-cygrebold mb-7 text-[22px] leading-[26.4px] font-bold text-[#ffffff]" numberOfLines={2} ellipsizeMode="tail">New Collection</Text>
         <TouchableOpacity
-            onPress={() => router.push({pathname: '/create-note-collection', params: { fromSelect: true }})}
+            onPress={() => router.push({pathname: '/create-quote-collection', params: { fromSelect: true }})}
             className="items-center self-end bg-[#fff] max-w-[61px] max-h-[62px] rounded-full justify-center p-4">
             <MaterialIcons name="add" size={30} />
         </TouchableOpacity>
