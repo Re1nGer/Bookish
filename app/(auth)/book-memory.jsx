@@ -82,12 +82,14 @@ const BookMemory = () => {
             </View>
         </View>
 
-        <View className="mx-5 border-[#8A8A8A] items-center justify-center p-4 border-[.5px] rounded-[20px] max-w-[353px] mb-7">
-            <ImageHandler source={book.imageId ? `http://10.0.2.2:5085/users/memo/image/${book.imageId}` : ''}
-                className="my-6 w-[242px] h-[242px] rounded-full"
-                resizeMode='cover'
-                width={242} height={242}
-            />
+        <View className="mx-5 border-[#8A8A8A] items-center justify-center p-4 border-[.5px] rounded-[20px] max-w-[353px] mb-7 flex-1">
+            { book.imageId ? (
+                <ImageHandler source={book.imageId ? `http://10.0.2.2:5085/users/memo/image/${book.imageId}` : ''}
+                    className="my-6 w-[242px] h-[242px] rounded-full"
+                    resizeMode='cover'
+                    width={242} height={242}
+                />
+            ) : <></> }
             <Text className="text-[14px] text-black font-cygreregular">{book?.memo}</Text>
         </View>
         <TouchableOpacity className="bg-black px-8 flex-row justify-between my-6 items-center mx-5 rounded-[20px] max-h-[106px] py-4">
