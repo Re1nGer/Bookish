@@ -12,6 +12,7 @@ import { BarChart } from "react-native-gifted-charts";
 import { MaterialIcons } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
 import { useState } from "react";
+import { router } from "expo-router";
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -88,14 +89,16 @@ const Statistics = () => {
             </View>
             <ScrollView>
                 <View className="mx-5 mb-4 max-h-[110px]">
-                    <View className="bg-[#1C1C1C] mb-6 max-h-[106px] h-full rounded-[20px] border-[.3px] border-[#8A8A8A] flex-row justify-between px-6 items-center">
+                    <TouchableOpacity
+                        onPress={() => router.push('daily-goal')}
+                        className="bg-[#1C1C1C] mb-6 max-h-[106px] h-full rounded-[20px] border-[.3px] border-[#8A8A8A] flex-row justify-between px-6 items-center">
                         <View className="py-4 max-w-[60%]">
                             <Text className="font-cygrebold leading-[19.2px] text-white">Set your daily Reading Goal</Text>
                         </View>
                         <View className="mt-2.5">
                             <StatisticsIcon />
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 
                 <View className="mx-5 mb-7 max-h-[110px]">
