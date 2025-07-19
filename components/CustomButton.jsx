@@ -24,7 +24,7 @@ const PrimaryButton = ({ title, handlePress, containerStyles, textStyles }) => {
     <TouchableOpacity
         onPress={handlePress}
         activeOpacity={0.7}
-        className={`bg-secondary min-h-[52px] justify-center items-center ${containerStyles}`}>
+        className={`bg-secondary min-h-[42px] justify-center items-center ${containerStyles}`}>
       <Text className={`text-white font-cygresemibold text-[18px] ${textStyles}`}>{title}</Text>
     </TouchableOpacity>
   )
