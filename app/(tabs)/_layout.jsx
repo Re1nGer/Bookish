@@ -25,20 +25,22 @@ const TabIcon = ({ icon, color, name, focused }) => {
 
 const TabsLayout = () => {
   return (
-    <>
         <Tabs
+            className="bg-transparent"
             screenOptions={{ 
+                tabBarBackground: () => <View className="bg-transparent" />,
                 tabBarShowLabel: false,
                 tabBarActiveTintColor: '#F9F9F9',
                 tabBarInactiveTintColor: '#CDCDE0',
                 tabBarStyle:
                 {
+                    position:'absolute',
                     backgroundColor: '#0D0C0CD6', 
                     borderRadius: 44,
                     borderTopWidth: 1,
-                    width: '95%',
-                    margin: 'auto',
                     marginBottom: 20,
+                    marginRight: 16,
+                    marginLeft: 16,
                     borderTopColor: '#232533',
                     height: Platform.select({
                         ios: 88, 
@@ -116,7 +118,6 @@ const TabsLayout = () => {
                  }}
             ></Tabs.Screen>
         </Tabs>
-    </>
   )
 }
 
