@@ -72,6 +72,9 @@ const Statistics = () => {
     const [isPagesReadOpen, setIsPagesReadOpen] = useState(false);
     const [isHoursReadOpen, setIsHoursReadOpen] = useState(false);
     const [isBooksReadOpen, setIsBooksReadOpen] = useState(false);
+    const [quotesCount, setQuotesCount] = useState(0);
+    const [notesCount, setNotesCount] = useState(0);
+    const [isTopReadOpen, setIsTopReadOpen] = useState(false);
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
@@ -265,7 +268,66 @@ const Statistics = () => {
                         />
                     </View>
                 </View>
+                <View className="px-5 mb-5 flex-row justify-between">
+                    <View className="rounded-[20px] max-w-[176px] h-[105px] flex-1 bg-primary items-center justify-center">
+                        <Text className="text-white font-cygrebold">Quotes Saved</Text>
+                        <Text className="text-white text-[34px] font-cygrebold">{quotesCount}</Text>
+                    </View>
+                    <View className="rounded-[20px] max-w-[176px] h-[105px] flex-1 bg-[#D5E3FC] items-center justify-center">
+                        <Text className="text-[#1D192B] font-cygrebold">Notes Saved</Text>
+                        <Text className="text-[#1D192B] text-[34px] font-cygrebold">{notesCount}</Text>
+                    </View>
+                </View>
+                <View className="px-5 mb-5">
+                    <View style={styles.chartContainer}>
+                        <View className="flex-row justify-between mb-4">
+                            <View className="">
+                                <Text className="text-[18px] mr-1.5 font-cygreregular">Your top categories were</Text>
+                                <Text className="text-[18px] text-primary font-cygrebold">Psychology, Fantasy</Text>
+                            </View>
+                            <TouchableOpacity onPress={() => setIsTopReadOpen(!isTopReadOpen)}>
+                                <MaterialIcons name="arrow-drop-up" size={30} />
+                            </TouchableOpacity>
+                        </View>
+                        { isTopReadOpen ?  
+                            <>
+                                <View>
+                                    <Text className="text-[14px] pl-1">Psychology</Text>
+                                    <View className="flex-row items-center justify-between">
+                                        <View className="bg-[#D8E6FF] rounded-[13px] h-[8px] relative flex-[.9] w-full">
+                                            <View className='absolute bg-[#6592E3] h-full rounded-[13px]' style={{ width: `${100}%` }}></View>
+                                        </View>
+                                        <Text className="text-[14px] flex-[.2] text-right">1 book</Text>
+                                    </View>
+                                </View>
+                                <View>
+                                    <Text className="text-[14px] pl-1">Fantasy</Text>
+                                    <View className="flex-row items-center justify-between">
+                                        <View className="bg-[#D8E6FF] rounded-[13px] h-[8px] relative flex-[.9] w-full">
+                                            <View className='absolute bg-[#6592E3] h-full rounded-[13px]' style={{ width: `${100}%` }}></View>
+                                        </View>
+                                        <Text className="text-[14px] flex-[.2] text-right">2 book</Text>
+                                    </View>
+                                </View>
+                            </> : <></>
+                        }
+                    </View>
+                </View>
 
+                <View className="px-5 mb-12">
+                    <View style={styles.chartContainer}>
+                        <View className="flex-row justify-between mb-4">
+                            <View className="">
+                                <Text className="text-[18px] mr-1.5 font-cygreregular">Your top authors were</Text>
+                                <Text className="text-[18px] text-primary font-cygrebold">Daniel Kahneman, Neil Gaiman</Text>
+                            </View>
+                            <TouchableOpacity>
+                                <MaterialIcons name="arrow-drop-up" size={30} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                </View>
             </ScrollView>
             
         </SafeAreaView>
@@ -277,14 +339,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         borderRadius: 16,
         padding: 16,
-        shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 2,
         },
         shadowOpacity: 0.1,
         shadowRadius: 3.84,
-        elevation: 3
+        elevation: 1
     }
 });
 

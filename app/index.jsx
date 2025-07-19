@@ -37,7 +37,7 @@ LocaleConfig.defaultLocale = 'en';
 export default function App() {
 
     return (
-        <SafeAreaView className="bg-transparent h-full">
+        <SafeAreaView className="h-full bg-[#F7F7F7]">
                 <View className="py-5 w-full flex-[.2]">
                     <Text className="font-cygrebold color-[#000000] pb-2 text-center text-[24px]">Welcome To Bookish Beasts !</Text>
                     <View className="font-cygreregular leading-[20px] text-center px-8 w-full"> 
