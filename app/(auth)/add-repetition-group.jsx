@@ -1,12 +1,9 @@
 import {
-    TextInput,
     View,
     Text,
     TouchableOpacity,
-    Image,
     ScrollView,
     Alert,
-    StyleSheet,
     Switch,
     Linking
 } from "react-native";
@@ -17,19 +14,15 @@ import { router } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
 import FormField from "../../components/FormField";
 import Entypo from '@expo/vector-icons/Entypo';
-import { Calendar } from 'react-native-calendars';
 import WheelPicker from '@quidone/react-native-wheel-picker';
 import { PrimaryButton } from "../../components/CustomButton";
 import * as Notifications from 'expo-notifications';
+import RadioButton from "../../components/RadioButton";
 
 
 const AddRepetitionGroup = () => {
 
     const [hasNotificationPermission, setNotificationPermission] = useState(false);
-
-    const theme = {
-      dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-    }
 
     const hours = [...Array(12).keys()].map((index, val) => ({
         value: val + 1,
@@ -46,13 +39,13 @@ const AddRepetitionGroup = () => {
         label: val,
     }));
 
+    const [selectedOption, setSelectedOption] = useState('Light');
+
     const [hour, setHour] = useState(0);
 
     const [minute, setMinute] = useState(0);
 
     const [timeFormats, setTimeFormats] = useState("AM");
-
-    const [selectedDateTime, setSelectedDateTime] = useState([]);
 
     const handleNotificationTogglePermission = async () => {
         const currentPermissions = await Notifications.getPermissionsAsync();
@@ -74,28 +67,6 @@ const AddRepetitionGroup = () => {
             ]
         );
     };
-
-    const [selectedDates, setSelectedDates] = useState({});
-
-    const onDayPress = (day) => {
-
-        const dateString = day.dateString;
-
-        const newSelectedDates = { ...selectedDates };
-        
-        if (newSelectedDates[dateString]) {
-            // Remove if already selected
-            delete newSelectedDates[dateString];
-        } else {
-            // Add if not selected
-                newSelectedDates[dateString] = {
-                selected: true,
-            };
-        }
-        
-        setSelectedDates(newSelectedDates);
-    };
-
 
     const handleAddDateTime = () => {
 
@@ -164,7 +135,7 @@ const AddRepetitionGroup = () => {
                     </TouchableOpacity>
                 </View>
                 <View className="px-4 max-h-[160px] mb-2.5">
-                    <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">When To Repeat</Text>
+                    <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Get Notified</Text>
                     <View className="border-[2px] border-[#6592E3] bg-white rounded-[13px]">
                         <View className="flex-row justify-between items-center p-5">
                             <View className="justify-center flex-1">
@@ -188,21 +159,40 @@ const AddRepetitionGroup = () => {
                 <View className="px-4 max-h-[50px] mb-7">
                     <Text className="text-black font-cygreregular leading-[19.2px]">Reviewing your notes at systematic intervals: firstly after 1 day, then 3 days, 1 week, 2 weeks etc.</Text>
                 </View>
-                <View className="px-4 max-h-[450px] mb-10">
-                    <Calendar
-                        theme={theme}
-                        headerStyle={styles.headerStyle}
-                        onDayPress={onDayPress}
-                        markedDates={selectedDates}
-                        onPressArrowLeft={subtractMonth => subtractMonth()}
-                        onPressArrowRight={addMonth => addMonth()}
-                        style={styles.calendar}
-                        dayComponent={DayComponent}
-                        hideExtraDays
-                        showSixWeeks={false}
+                <View className="px-4 max-h-[50px]">
+                    <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px]">Repetition Mode</Text>
+                </View>
+                <View className="px-4 max-h-[450px] mb-7">
+                    <OptionRow
+                        isSelected={selectedOption === 'Light'}
+                        name={'Light'}
+                        desc={'Minimal commitment for soft recall'}
+                        intervalDesc={'0, 2, 7, 21, 45, 90, 180'}
+                        setIsSelected={() => setSelectedOption('Light')}
+                    />
+                    <OptionRow
+                        isSelected={selectedOption === 'Standard'}
+                        name={'Standard'}
+                        desc={'Balanced, long-term memory'}
+                        intervalDesc={'0, 1, 6, 14, 30, 66, 150, 360'}
+                        setIsSelected={() => setSelectedOption('Standard')}
+                    />
+                    <OptionRow
+                        isSelected={selectedOption === 'Intensive'}
+                        name={'Intensive'}
+                        desc={'Quicker ramp-up with tighter intervals'}
+                        intervalDesc={'0, 1, 3, 7, 15, 35, 90, 240'}
+                        setIsSelected={() => setSelectedOption('Intensive')}
+                    />
+                    <OptionRow
+                        isSelected={selectedOption === 'Cram it in'}
+                        name={'Cram it in'}
+                        desc={'High-frequency reviews to force memory before an exam/talk'}
+                        intervalDesc={'0, 1, 2, 4, 7, 14, 30'}
+                        setIsSelected={() => setSelectedOption('Cram it in')}
                     />
                 </View>
-                <View className="items-center flex-1 relative gap-6 flex-row justify-center max-h-[250px] border border-[#8A8A8A] rounded-[15px] mx-4 mb-7">
+                <View className="items-center flex-1 relative gap-x-6 flex-row justify-center max-h-[250px] border border-[#8A8A8A] rounded-[15px] mx-4 mb-7">
                     <WheelPicker
                         value={hour}
                         onValueChanged={(v) => setHour(v.item.value)}
@@ -246,6 +236,42 @@ const AddRepetitionGroup = () => {
 export default AddRepetitionGroup;
 
 
+const OptionRow = ({ isSelected, setIsSelected, name, desc, intervalDesc }) => {
+    return (
+        <>
+            <OptionCard
+                isSelected={isSelected}
+                setIsSelected={setIsSelected} 
+                name={name}
+                desc={desc}
+            />
+            { isSelected ? (
+                <View className="flex-row items-center mt-2">
+                    <Text className="text-primary font-cygrebold">Reviews on Day: </Text>
+                    <Text className="text-primary font-cygreregular">{intervalDesc}</Text>
+                </View>
+            ) : <></> }
+        </>
+    )
+}
+
+const OptionCard = ({ isSelected, name, desc, setIsSelected, containerStyles }) => {
+
+    //unknown rounding
+    return <View
+        className={`max-w-[353px] max-h-[88px] mt-4 w-full h-full items-center bg-[#ffffff] flex-row justify-between rounded-[15px] border ${isSelected ? 'border-[#6592E3] border-[2px]' : 'border-[#1C1C1C]'} px-[30px] ${containerStyles} `}>
+            <View className="max-w-[80%]">
+                <Text className={`font-semibold text-[18px] leading-[21px] font-cygrebold ${isSelected ? 'text-[#6592E3]' : 'text-[#1C1C1C]' }`}>{name}</Text>
+                <Text className={`leading-[21px] ${isSelected ? 'text-[#6592E3]' : 'text-[#1C1C1C]' }`}>{desc}</Text>
+            </View>
+        <RadioButton
+            size={42}
+            selected={isSelected}
+            onPress={setIsSelected}
+        />
+    </View>
+}
+
 const DayTimeSelectedChip = () => {
 
 
@@ -256,36 +282,3 @@ const DayTimeSelectedChip = () => {
         </TouchableOpacity>
     </View>
 }
-
-const DayComponent = ({ date, state, marking, onPress, ...rest }) => {
-  // Check if the day is selected from marking prop
-  const isSelected = marking?.selected || false;
-  
-  return (
-    <TouchableOpacity 
-      className='relative h-[45px]' 
-      onPress={() => onPress(date)} // Important: call onPress
-    >
-      <View className={isSelected ? "w-[30px] h-[30px] rounded-full bg-black justify-center" : ""}>
-        <Text className={`text-center ${isSelected ? 'text-white' : ''}`}>
-          {date.day}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-const styles = StyleSheet.create({
-  calendar: {
-    borderRadius: 20,
-    borderColor: '#8A8A8A',
-    borderWidth: 0.3,
-    maxHeight: 450
-  },
-  headerStyle: {
-    backgroundColor: 'transparent',
-    shadowColor: 'transparent',
-    tintColor: "transparent",
-    width: "100%",
-  }
-});
