@@ -11,14 +11,17 @@ import { StatisticsIcon, Statistics2Icon } from "../../components/Svg";
 import { BarChart } from "react-native-gifted-charts";
 import { MaterialIcons } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { router } from "expo-router";
+import axios from '../../network/axios';
 
 const screenWidth = Dimensions.get('window').width;
 
 const Statistics = () => {
+
     // Original data values
     const originalData = [0, 0, 0, 76, 30, 62, 0];
+
     const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
     const timeData = [0, 55, 70, 0, 50, 30, 50, 0];
@@ -71,11 +74,37 @@ const Statistics = () => {
     }));
 
     const [isPagesReadOpen, setIsPagesReadOpen] = useState(false);
+
     const [isHoursReadOpen, setIsHoursReadOpen] = useState(false);
+
     const [isBooksReadOpen, setIsBooksReadOpen] = useState(false);
+
     const [quotesCount, setQuotesCount] = useState(0);
+
     const [notesCount, setNotesCount] = useState(0);
+
     const [isTopReadOpen, setIsTopReadOpen] = useState(false);
+
+    const [stats, setStats] = useState({});
+
+    const fetchStats = async () => {
+        try {
+            const { data } = await axios.get('users/stats');
+            setStats(data);
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchStats();
+    }, []);
+
+    const { pagesRead, booksRead, quotesSaved, notesSaved, topCategories, topAuthors} = stats;
+
+    const topCategoryNames = topCategories?.map(item => item.name)?.join(', ');
+
+    const topAuthorNames = topAuthors?.map(item => item.name)?.join(', ');
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
@@ -117,17 +146,17 @@ const Statistics = () => {
                         <View className="flex-row justify-between">
                             <View className="flex-row">
                                 <Text className="text-[18px] mr-1.5 font-cygreregular">You've read</Text>
-                                <Text className="text-[18px] text-primary font-cygrebold">168 pages</Text>
+                                <Text className="text-[18px] text-primary font-cygrebold">{pagesRead} pages</Text>
                             </View>
-                            <TouchableOpacity onPress={() => setIsPagesReadOpen(!isPagesReadOpen)}>
+{/*                             <TouchableOpacity onPress={() => setIsPagesReadOpen(!isPagesReadOpen)}>
                                 <MaterialIcons name="arrow-drop-up" size={30} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                         <View className="flex-row">
                             <Feather name="arrow-up-right" size={24} color="#5EBAB9" />
                             <Text className="text-[#5EBAB9] text-[14px]">32 pages</Text>
                         </View>
-                        <BarChart
+{/*                         <BarChart
                             data={isPagesReadOpen ? barData : []}
                             width={screenWidth - 120}
                             height={isPagesReadOpen ? 250 : 0}
@@ -162,10 +191,10 @@ const Statistics = () => {
                                 fontSize: 12,
                                 fontWeight: '600',
                             }}
-                        />
+                        /> */}
                     </View>
                 </View>
-                <View className="px-5 mb-5">
+{/*                 <View className="px-5 mb-5">
                     <View style={styles.chartContainer}>
                         <View className="flex-row justify-between">
                             <View className="flex-row">
@@ -217,23 +246,23 @@ const Statistics = () => {
                             }}
                         />
                     </View>
-                </View>
+                </View> */}
                 <View className="px-5 mb-5">
                     <View style={styles.chartContainer}>
                         <View className="flex-row justify-between">
                             <View className="flex-row">
                                 <Text className="text-[18px] mr-1.5 font-cygreregular">You've finished</Text>
-                                <Text className="text-[18px] text-black font-cygrebold">1 book</Text>
+                                <Text className="text-[18px] text-black font-cygrebold">{booksRead}</Text>
                             </View>
-                            <TouchableOpacity onPress={() => setIsBooksReadOpen(!isBooksReadOpen)}>
+{/*                             <TouchableOpacity onPress={() => setIsBooksReadOpen(!isBooksReadOpen)}>
                                 <MaterialIcons name="arrow-drop-up" size={30} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                         <View className="flex-row">
                             <Feather name="arrow-up-right" size={24} color="#5EBAB9" />
                             <Text className="text-[#5EBAB9] text-[14px]">1 book</Text>
                         </View>
-                        <BarChart
+{/*                         <BarChart
                             data={isBooksReadOpen ? barData : []}
                             width={screenWidth - 120}
                             height={isBooksReadOpen ? 250 : 0}
@@ -268,17 +297,17 @@ const Statistics = () => {
                                 fontSize: 12,
                                 fontWeight: '600',
                             }}
-                        />
+                        /> */}
                     </View>
                 </View>
                 <View className="px-5 mb-5 flex-row justify-between">
                     <View className="rounded-[20px] max-w-[176px] h-[105px] flex-1 bg-primary items-center justify-center">
                         <Text className="text-white font-cygrebold">Quotes Saved</Text>
-                        <Text className="text-white text-[34px] font-cygrebold">{quotesCount}</Text>
+                        <Text className="text-white text-[34px] font-cygrebold">{quotesSaved}</Text>
                     </View>
                     <View className="rounded-[20px] max-w-[176px] h-[105px] flex-1 bg-[#D5E3FC] items-center justify-center">
                         <Text className="text-[#1D192B] font-cygrebold">Notes Saved</Text>
-                        <Text className="text-[#1D192B] text-[34px] font-cygrebold">{notesCount}</Text>
+                        <Text className="text-[#1D192B] text-[34px] font-cygrebold">{notesSaved}</Text>
                     </View>
                 </View>
                 <View className="px-5 mb-5">
@@ -286,7 +315,7 @@ const Statistics = () => {
                         <View className="flex-row justify-between mb-4">
                             <View className="">
                                 <Text className="text-[18px] mr-1.5 font-cygreregular">Your top categories were</Text>
-                                <Text className="text-[18px] text-primary font-cygrebold">Psychology, Fantasy</Text>
+                                <Text className="text-[18px] text-primary font-cygrebold">{topCategoryNames}</Text>
                             </View>
                             <TouchableOpacity onPress={() => setIsTopReadOpen(!isTopReadOpen)}>
                                 <MaterialIcons name="arrow-drop-up" size={30} />
@@ -322,7 +351,7 @@ const Statistics = () => {
                         <View className="flex-row justify-between mb-4">
                             <View className="">
                                 <Text className="text-[18px] mr-1.5 font-cygreregular">Your top authors were</Text>
-                                <Text className="text-[18px] text-primary font-cygrebold">Daniel Kahneman, Neil Gaiman</Text>
+                                <Text className="text-[18px] text-primary font-cygrebold">{topAuthorNames}</Text>
                             </View>
                             <TouchableOpacity>
                                 <MaterialIcons name="arrow-drop-up" size={30} />
