@@ -9,8 +9,16 @@ import { LaptopIcon, TimerIcon, QuoteIcon, NoteIcon } from '../../components/Svg
 import { router } from 'expo-router';
 import axios from '../../network/axios';
 import ImageHandler from '../../components/ImageHandler';
+import useSpacedRepetition from '../hooks/useSpacedRepetition';
 
 const Home = () => {
+
+  const { getPushToken } = useSpacedRepetition();
+
+
+  useEffect(() => {
+    getPushToken();
+  }, []);
 
 
   return <SafeAreaView className="bg-[#F7F7F7]" style={{ flex: 1 }}>
@@ -211,8 +219,8 @@ const BookCalendar = () => {
         </TouchableOpacity>
       </View>
     </View>
-    <Image
-      source={images.welcomeSm}
+    <ImageHandler
+      source={'http://10.0.2.2:5085/users/memo/image/68530fb4766a4ec89f85fbad'}
       resizeMode='cover'
       width={103}
       height={100} />
