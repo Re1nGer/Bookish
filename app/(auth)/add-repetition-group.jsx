@@ -18,6 +18,8 @@ import WheelPicker from '@quidone/react-native-wheel-picker';
 import { PrimaryButton } from "../../components/CustomButton";
 import * as Notifications from 'expo-notifications';
 import RadioButton from "../../components/RadioButton";
+import useSpacedRepetition from "../hooks/useSpacedRepetition";
+import axios from '../../network/axios';
 
 
 const AddRepetitionGroup = () => {
@@ -47,6 +49,8 @@ const AddRepetitionGroup = () => {
 
     const [timeFormats, setTimeFormats] = useState("AM");
 
+    const [groupName, setGroupName] = useState('');
+
     const handleNotificationTogglePermission = async () => {
         const currentPermissions = await Notifications.getPermissionsAsync();
         if (!currentPermissions.granted) {
@@ -68,8 +72,7 @@ const AddRepetitionGroup = () => {
         );
     };
 
-    const handleAddDateTime = () => {
-
+    const handleAddDateTime = async () => {
     }
 
     const handleSelectQuotesRedirect = () => {
@@ -78,6 +81,25 @@ const AddRepetitionGroup = () => {
 
     const handleSelectNotesRedirect = () => {
         router.push('select-notes')
+    }
+
+    const getFiveMinutesAhead = () => {
+        const now = new Date();
+        const fiveMinutesLater = new Date(now.getTime() + 1 * 60 * 1000);
+        return fiveMinutesLater.toISOString();
+};
+
+    const handleSave = async () => {
+        try {
+            await axios.post('users/repetition-group', {
+                name: groupName,
+                quoteIds: [],
+                noteIds: [],
+                scheduledTimes: [getFiveMinutesAhead()]
+            });
+        } catch(error) {
+            console.log(error);
+        }
     }
 
     useEffect(() => {
@@ -99,6 +121,7 @@ const AddRepetitionGroup = () => {
                 </TouchableOpacity>
                 <Text className="text-black font-cygrebold flex-1 text-[22px] font-bold">Create Group</Text>
                 <TouchableOpacity
+                    onPress={handleSave}
                     className="bg-primary flex-1 mt-2.5 max-w-[110px] w-full items-center justify-center max-h-[48px] h-full rounded-[30px]">
                     <Text className="text-[#FEFEFC] text-[18px] leading-[22px] font-semibold">Save</Text>
                 </TouchableOpacity>
@@ -107,6 +130,8 @@ const AddRepetitionGroup = () => {
                 <View className="px-4 mb-10">
                     <FormField
                         title={'Name'}
+                        value={groupName}
+                        handleChangeText={(e) => setGroupName(e)}
                         placeholder={'Enter name for this group'}
                         placeholderTextColor={'#8A8A8A'}
                         textInputContainerStyles={'rounded-[15px]'}
@@ -216,16 +241,7 @@ const AddRepetitionGroup = () => {
                     <PrimaryButton title={'Add Time'} containerStyles={'rounded-[47px]'} />
                 </View>
                 <View className="px-4 flex-row gap-2 justify-between mb-5">
-                    <View className="flex-[.5]">
-                        <DayTimeSelectedChip />
-                        <DayTimeSelectedChip />
-                        <DayTimeSelectedChip />
-                    </View>
-                    <View className="flex-[.5]">
-                        <DayTimeSelectedChip />
-                        <DayTimeSelectedChip />
-                        <DayTimeSelectedChip />
-                    </View>
+                    <DayTimeSelectedChip hour={hour} minute={minute < 10 ? minute.toString().padStart('2', '0') : minute} zone={timeFormats} />
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -259,7 +275,7 @@ const OptionCard = ({ isSelected, name, desc, setIsSelected, containerStyles }) 
 
     //unknown rounding
     return <View
-        className={`max-w-[353px] max-h-[88px] mt-4 w-full h-full items-center bg-[#ffffff] flex-row justify-between rounded-[15px] border ${isSelected ? 'border-[#6592E3] border-[2px]' : 'border-[#1C1C1C]'} px-[30px] ${containerStyles} `}>
+        className={`max-h-[88px] mt-4 w-full h-full items-center bg-[#ffffff] flex-row justify-between rounded-[15px] border ${isSelected ? 'border-[#6592E3] border-[2px]' : 'border-[#1C1C1C]'} px-[30px] ${containerStyles} `}>
             <View className="max-w-[80%]">
                 <Text className={`font-semibold text-[18px] leading-[21px] font-cygrebold ${isSelected ? 'text-[#6592E3]' : 'text-[#1C1C1C]' }`}>{name}</Text>
                 <Text className={`leading-[21px] ${isSelected ? 'text-[#6592E3]' : 'text-[#1C1C1C]' }`}>{desc}</Text>
@@ -272,11 +288,11 @@ const OptionCard = ({ isSelected, name, desc, setIsSelected, containerStyles }) 
     </View>
 }
 
-const DayTimeSelectedChip = () => {
+const DayTimeSelectedChip = ({ hour, minute, zone }) => {
 
 
-    return <View className="rounded-[5px] bg-[#121F16] h-[32px] m-1 w-full max-w-[200px] justify-between items-center px-2 py-1 flex-row">
-        <Text className="text-white text-[14px] font-cygrebold mr-2 leading-[16.8px]">28.08 AT 8:00 PM</Text>
+    return <View className="rounded-[5px] bg-[#121F16] h-[32px] m-1 w-full justify-between items-center px-2 py-1 flex-row">
+        <Text className="text-white text-[14px] font-cygrebold mr-2 leading-[16.8px]">AT {hour}:{minute} {zone}</Text>
         <TouchableOpacity className="bg-white rounded-full p-.0.5 justify-center items-center">
             <MaterialIcons name="close" />
         </TouchableOpacity>
