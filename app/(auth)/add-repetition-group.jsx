@@ -72,6 +72,44 @@ const AddRepetitionGroup = () => {
         );
     };
 
+    const dayOffsets = [0, 2, 7, 21, 45, 90, 180];
+    const lightOffsets = [0, 2, 7, 21, 45, 90, 180]
+    const standardOffsets = [0, 1, 6, 14, 30, 66, 150, 360]
+    const intensiveOffsets = [0, 1, 3, 7, 15, 35, 90, 240]
+    const cramItInOffsets = [0, 1, 2, 4, 7, 14, 30]
+
+    
+    const generateTimestamps = () => {
+        const timestamps = [];
+        
+        dayOffsets.forEach(offset => {
+            // Get today's date
+            const today = new Date();
+            
+            // Add the offset days
+            const targetDate = new Date(today);
+            targetDate.setDate(today.getDate() + offset);
+            
+            // Convert 12-hour format to 24-hour format
+            let hour24 = hour;
+            if (timeFormat === "AM" && hour === 12) {
+                hour24 = 0;
+            } else if (timeFormat === "PM" && hour !== 12) {
+                hour24 = hour + 12;
+            }
+            
+            // Set the time
+            targetDate.setHours(hour24, minute, 0, 0);
+            
+            // Generate ISO string
+            const isoString = targetDate.toISOString();
+            
+            timestamps.push(isoString);
+        });
+        
+        return timestamps;
+    };
+
     const handleAddDateTime = async () => {
     }
 
@@ -90,12 +128,13 @@ const AddRepetitionGroup = () => {
 };
 
     const handleSave = async () => {
+        console.log(generateTimestamps())
         try {
             await axios.post('users/repetition-group', {
                 name: groupName,
                 quoteIds: [],
                 noteIds: [],
-                scheduledTimes: [getFiveMinutesAhead()]
+                scheduledTimes: [generateTimestamps()]
             });
         } catch(error) {
             console.log(error);
