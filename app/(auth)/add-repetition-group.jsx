@@ -72,23 +72,26 @@ const AddRepetitionGroup = () => {
         );
     };
 
-    const dayOffsets = [0, 2, 7, 21, 45, 90, 180];
-    const lightOffsets = [0, 2, 7, 21, 45, 90, 180]
-    const standardOffsets = [0, 1, 6, 14, 30, 66, 150, 360]
-    const intensiveOffsets = [0, 1, 3, 7, 15, 35, 90, 240]
-    const cramItInOffsets = [0, 1, 2, 4, 7, 14, 30]
+    const OFFSETS = {
+        LIGHT: [2, 7, 21, 45, 90, 180],
+        STANDARD: [1, 6, 14, 30, 66, 150, 360],
+        INTENSIVE: [1, 3, 7, 15, 35, 90, 240],
+        CRAM: [1, 2, 4, 7, 14, 30]
+    }
+
+    const [offset, setOffset] = useState(OFFSETS.LIGHT);
 
     
     const generateTimestamps = () => {
         const timestamps = [];
         
-        dayOffsets.forEach(offset => {
+        offset.forEach(a => {
             // Get today's date
             const today = new Date();
             
             // Add the offset days
             const targetDate = new Date(today);
-            targetDate.setDate(today.getDate() + offset);
+            targetDate.setDate(today.getDate() + a);
             
             // Convert 12-hour format to 24-hour format
             let hour24 = hour;
@@ -110,9 +113,6 @@ const AddRepetitionGroup = () => {
         return timestamps;
     };
 
-    const handleAddDateTime = async () => {
-    }
-
     const handleSelectQuotesRedirect = () => {
         router.push('quote-to-connect');
     }
@@ -121,21 +121,36 @@ const AddRepetitionGroup = () => {
         router.push('select-notes')
     }
 
-    const getFiveMinutesAhead = () => {
-        const now = new Date();
-        const fiveMinutesLater = new Date(now.getTime() + 1 * 60 * 1000);
-        return fiveMinutesLater.toISOString();
-};
+    const handleLightMode = () => {
+        setOffset(OFFSETS.LIGHT)
+        setSelectedOption("Light");
+    };
+
+    const handleStandardMode = () => {
+        setOffset(OFFSETS.STANDARD);
+        setSelectedOption("Standard")
+    };
+
+    const handleIntensiveMode = () => {
+        setOffset(OFFSETS.INTENSIVE);
+        setSelectedOption("Intensive");
+    };
+
+    const handleCramMode = () => {
+        setOffset(OFFSETS.CRAM);
+        setSelectedOption("Cram it in");
+    }
 
     const handleSave = async () => {
-        console.log(generateTimestamps())
+        //console.log(generateTimestamps())
         try {
             await axios.post('users/repetition-group', {
                 name: groupName,
                 quoteIds: [],
                 noteIds: [],
-                scheduledTimes: [generateTimestamps()]
+                scheduledTimes: generateTimestamps()
             });
+
         } catch(error) {
             console.log(error);
         }
@@ -232,28 +247,28 @@ const AddRepetitionGroup = () => {
                         name={'Light'}
                         desc={'Minimal commitment for soft recall'}
                         intervalDesc={'0, 2, 7, 21, 45, 90, 180'}
-                        setIsSelected={() => setSelectedOption('Light')}
+                        setIsSelected={handleLightMode}
                     />
                     <OptionRow
                         isSelected={selectedOption === 'Standard'}
                         name={'Standard'}
                         desc={'Balanced, long-term memory'}
                         intervalDesc={'0, 1, 6, 14, 30, 66, 150, 360'}
-                        setIsSelected={() => setSelectedOption('Standard')}
+                        setIsSelected={handleStandardMode}
                     />
                     <OptionRow
                         isSelected={selectedOption === 'Intensive'}
                         name={'Intensive'}
                         desc={'Quicker ramp-up with tighter intervals'}
                         intervalDesc={'0, 1, 3, 7, 15, 35, 90, 240'}
-                        setIsSelected={() => setSelectedOption('Intensive')}
+                        setIsSelected={handleIntensiveMode}
                     />
                     <OptionRow
                         isSelected={selectedOption === 'Cram it in'}
                         name={'Cram it in'}
                         desc={'High-frequency reviews to force memory before an exam/talk'}
                         intervalDesc={'0, 1, 2, 4, 7, 14, 30'}
-                        setIsSelected={() => setSelectedOption('Cram it in')}
+                        setIsSelected={handleCramMode}
                     />
                 </View>
                 <View className="items-center flex-1 relative gap-x-6 flex-row justify-center max-h-[250px] border border-[#8A8A8A] rounded-[15px] mx-4 mb-7">
