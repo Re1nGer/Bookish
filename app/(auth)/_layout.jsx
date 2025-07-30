@@ -44,6 +44,8 @@ const AuthLayout = () => {
 
         <Stack.Screen name="select-genres" options={{ title: "", headerTransparent: true, headerShown: false,  animation: 'slide_from_bottom' }} /> 
         <Stack.Screen name="select-notes" options={{ title: "", headerTransparent: true, headerShown: false,  animation: 'slide_from_bottom' }} /> 
+        <Stack.Screen name="select-notes-many" options={{ title: "", headerTransparent: true, headerShown: false,  animation: 'slide_from_bottom' }} /> 
+        <Stack.Screen name="select-quotes-many" options={{ title: "", headerTransparent: true, headerShown: false,  animation: 'slide_from_bottom' }} /> 
         <Stack.Screen name="select-collections" options={{ title: "", headerTransparent: true, headerBackVisible: false, headerShown: false, animation: 'slide_from_bottom' }} /> 
         <Stack.Screen name="select-note-collections" options={{ title: "", headerTransparent: true, headerBackVisible: false, headerShown: false, animation: 'slide_from_bottom' }} /> 
         <Stack.Screen name="select-quote-collections" options={{ title: "", headerTransparent: true, headerBackVisible: false, headerShown: false, animation: 'slide_from_bottom' }} /> 

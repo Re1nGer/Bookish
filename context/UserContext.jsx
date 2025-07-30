@@ -16,7 +16,7 @@ export const UserProvider = ({ children }) => {
     const [verificationCode, setVerificationCode] = useState('');
 
     const [repetitionGroup, setRepetitionGroup] = useState({
-        quote: null,
+        quotes: [],
         notes: []
     });
 
@@ -128,6 +128,8 @@ export const UserProvider = ({ children }) => {
         setNoteTypesSelected,
         memo,
         setMemo,
+        repetitionGroup,
+        setRepetitionGroup,
         //TODO: to remove
         user,
         setUser

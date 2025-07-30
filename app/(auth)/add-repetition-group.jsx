@@ -5,9 +5,10 @@ import {
     ScrollView,
     Alert,
     Switch,
-    Linking
+    Linking,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState, Fragment } from "react";
+import { Feather } from "@expo/vector-icons";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
@@ -20,6 +21,7 @@ import * as Notifications from 'expo-notifications';
 import RadioButton from "../../components/RadioButton";
 import useSpacedRepetition from "../hooks/useSpacedRepetition";
 import axios from '../../network/axios';
+import { UserContext } from "../../context/UserContext";
 
 
 const AddRepetitionGroup = () => {
@@ -50,6 +52,8 @@ const AddRepetitionGroup = () => {
     const [timeFormats, setTimeFormats] = useState("AM");
 
     const [groupName, setGroupName] = useState('');
+
+    const { repetitionGroup: { notes, quotes } } = useContext(UserContext);
 
     const handleNotificationTogglePermission = async () => {
         const currentPermissions = await Notifications.getPermissionsAsync();
@@ -114,11 +118,11 @@ const AddRepetitionGroup = () => {
     };
 
     const handleSelectQuotesRedirect = () => {
-        router.push('quote-to-connect');
+        router.push('select-quotes-many');
     }
 
     const handleSelectNotesRedirect = () => {
-        router.push('select-notes')
+        router.push('select-notes-many')
     }
 
     const handleLightMode = () => {
@@ -191,16 +195,16 @@ const AddRepetitionGroup = () => {
                         textInputContainerStyles={'rounded-[15px]'}
                     />
                 </View>
-                <View className="px-4 max-h-[160px] mb-5">
-                    <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Add Quotes to repeat</Text>
-                    <TouchableOpacity
-                        onPress={handleSelectQuotesRedirect}
-                        className="bg-[#1C1C1C] max-h-[116px] h-full items-center justify-center rounded-[20px]"> 
-                        <View className="justify-center items-center">
-                            <Entypo name="plus" size={54} color="white" />
-                            <Text className="text-white font-cygreregular text-center">Add Quotes</Text>
-                        </View>
-                    </TouchableOpacity>
+            <View className="px-4 max-h-[160px] mb-5">
+                <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Add Quotes to repeat</Text>
+                <TouchableOpacity
+                    onPress={handleSelectQuotesRedirect}
+                    className="bg-[#1C1C1C] max-h-[116px] h-full items-center justify-center rounded-[20px]"> 
+                    <View className="justify-center items-center">
+                        <Entypo name="plus" size={54} color="white" />
+                        <Text className="text-white font-cygreregular text-center">Add Quotes</Text>
+                    </View>
+                </TouchableOpacity>
                 </View>
                 <View className="px-4 max-h-[160px] mb-14">
                     <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Add Notes to repeat</Text>
@@ -351,4 +355,107 @@ const DayTimeSelectedChip = ({ hour, minute, zone }) => {
             <MaterialIcons name="close" />
         </TouchableOpacity>
     </View>
+}
+
+const Note = ({ id, content, typeName, onDeleteButtonPress, color, icon, createdAt, containerStyles }) => {
+
+    const confirmDelete = () => {
+        Alert.alert(
+            "Delete Note",
+            "Are you sure you want to delete this note? This action cannot be undone.",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { 
+                    text: "Delete", 
+                    onPress: async () => {
+                        await onDeleteButtonPress(id);
+                    },
+                    style: "destructive" // This will make it red on iOS
+                }
+            ]
+        );
+    }
+
+    return (
+        <View className={`flex-row flex-1 w-full max-w-[361px] ${containerStyles}`}>
+            <View className="w-full max-h-[267px] h-full border-[.5px] rounded-[20px] p-5">
+                <View className="flex-row items-center mb-4">
+                    <View
+                        style={{backgroundColor: color}}
+                        className="p-2 rounded-[13px] max-h-[40px] h-full flex-row items-center justify-center mr-2.5">
+                        <Text className="text-[12px] mr-0.5">{icon}</Text>
+                        <Text className="text-sm text-[#fff] font-cygresemibold leading-[16.8px]" numberOfLines={1} ellipsizeMode="tail">{typeName}</Text>
+                    </View>
+                    <View className="p-2 bg-[#EEEEEE] rounded-[13px] max-h-[40px] h-full items-center justify-center">
+                        <Text className="text-sm text-black font-cygresemibold leading-[16.8px] text-center">{new Date(createdAt)?.toLocaleDateString('de-DE') ?? '30.09.2024'}</Text>
+                    </View>
+                    <View className="flex-1 items-end">
+                        <TouchableOpacity
+                            onPress={confirmDelete}
+                            className="bg-black rounded-full p-2 ">
+                                <MaterialIcons name="delete" size={24} color="white" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View className="rounded-[8px] bg-[#EEEEEE] pt-3 px-4 max-w-[327px] max-h-[130px] h-full w-full">
+                    <Text className="text-black font-cygreregular leading-[19.2px] font-medium">
+                        {content}
+                    </Text>
+                </View>
+            </View>
+        </View>
+    );
+}
+
+const Quote = ({ id, text, book, onDeleteButtonPress, containerStyles }) => {
+
+    const confirmDelete = () => {
+        Alert.alert(
+            "Delete Quote",
+            "Are you sure you want to delete this note? This action cannot be undone.",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { 
+                    text: "Delete", 
+                    onPress: async () => {
+                        await onDeleteButtonPress(id);
+                    },
+                    style: "destructive" // This will make it red on iOS
+                }
+            ]
+        );
+    }
+
+    return (
+        <View className={`flex-row flex-1 w-full max-w-[361px] ${containerStyles}`}>
+            <View className="w-full max-h-[267px] h-full border-[.5px] rounded-[20px] p-5">
+                <View className="flex-row items-center mb-4">
+                    <View className="p-2 bg-black flex-row rounded-[13px] max-h-[40px] h-full items-center justify-center">
+                        <Feather name="book" size={16} color="white" />
+                        <Text className="text-sm text-white ml-1 font-cygresemibold text-center leading-[16.8px]"
+                            numberOfLines={1}
+                            ellipsizeMode="trail">{book}</Text>
+                    </View>
+                    <View className="flex-1 items-end">
+                        <TouchableOpacity
+                            onPress={confirmDelete}
+                            className="bg-black rounded-full p-2 ">
+                                <MaterialIcons name="delete" size={24} color="white" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View className="rounded-[8px] bg-[#EEEEEE] pt-3 px-4 max-w-[327px] max-h-[130px] h-full w-full">
+                    <Text className="text-black font-cygreregular leading-[19.2px] font-medium">
+                        {text}
+                    </Text>
+                </View>
+            </View>
+        </View>
+    )
 }
