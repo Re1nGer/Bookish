@@ -180,7 +180,7 @@ const SavedBook = () => {
                     <Entypo name="dots-three-vertical" size={24} color="#fff" />
             </TouchableOpacity>
         </View>
-        <ScrollView>
+        <ScrollView className="flex-1">
 
             <View className="mx-5 border-[#8A8A8A] flex-row p-4 border-[.5px] rounded-[20px] max-w-[353px]">
                 <ImageHandler source={getBookImage()} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" />
@@ -320,7 +320,7 @@ const SavedBook = () => {
                             />) }
                     </ScrollView>
                 </View>
-            ) : <Fragment>
+            ) : <View className="flex-1 mb-7">
                     <View className="mx-5 mb-3 mt-8 flex-row justify-between">
                         <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold">Quotes</Text>
                         <TouchableOpacity>
@@ -337,7 +337,7 @@ const SavedBook = () => {
                         </View>
                         <QuoteStarsIcon />
                     </TouchableOpacity>
-                </Fragment>
+                </View>
             }
             
 
@@ -374,7 +374,6 @@ const SavedBook = () => {
                     </View>
                 </View>
             ) : <></> }
-            <View className="h-8"></View>
         </ScrollView>
     </SafeAreaView>
 }
