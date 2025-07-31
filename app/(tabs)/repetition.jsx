@@ -5,20 +5,45 @@ import {
     ScrollView
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "../../constants";
 import { MaterialIcons } from '@expo/vector-icons';
-import Entypo from '@expo/vector-icons/Entypo';
-import { useRef, useState, useCallback, useContext } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { router } from "expo-router";
 import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
-import BookPageDropdown from "../../components/BookPageDropdown";
-import ImageHandler from "../../components/ImageHandler";
 import { QuestionMarkIcon } from "../../components/Svg";
-import { RepetitionGroupIcon } from "../../components/Svg";
+import { COLLECTION_ICON_MAP } from "../../components/CollectionSvg";
 
+function splitArray(arr) {
+    const midpoint = Math.ceil(arr.length / 2);
+    const firstHalf = arr.slice(0, midpoint);
+    const secondHalf = arr.slice(midpoint);
+    return [firstHalf, secondHalf];
+}
 
 const Repetition = () => {
+
+    const [firstHalfCollections, setFirstHalfCollections] = useState([]);
+
+    const [secondHalfCollections, setSecondtHalfCollections] = useState([]);
+
+    const fetchCollections = useCallback(async () => {
+        try {
+            const { data } = await axios.get('users/repetition-groups');
+            const [first, second] = splitArray(data);
+            //we need collections variable in case there are already selected collections
+/*             const firstMapped = first.map(item => ({...item, selected: collections
+                ?.some(j => j.id === item.id) ? true : false })); //probably wiser to receiver from backed selected false
+            const secondMapped = second.map(item => ({...item, selected: collections ?.some(j => j.id === item.id) ? true : false })); */
+            setFirstHalfCollections(first);
+            setSecondtHalfCollections(second);
+        } catch (error) {
+            console.log(error);
+        }
+    }, [])
+
+    useEffect(() => {
+        fetchCollections();
+    }, [])
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
@@ -30,7 +55,7 @@ const Repetition = () => {
                     <Text className="font-cygrebold text-[24px] leading-[28.8px] text-[#121F16]">Spaced Repetition</Text>
                 </TouchableOpacity>
             </View>
-            <View className="mx-5">
+            <View className="mx-5 flex-1">
                 <View className="bg-[#1C1C1C] mb-6 max-h-[106px] h-full rounded-[20px] border-[.3px] border-[#8A8A8A] flex-row justify-between px-6 items-center">
                     <View className="py-4 max-w-[60%]">
                         <Text className="font-cygrebold leading-[19.2px] text-white">Spaced Repetition Technique</Text>
@@ -41,22 +66,27 @@ const Repetition = () => {
                     </View>
                 </View>
                 <ScrollView className="flex-1">
-                    <View className="flex-row justify-between space-x-3 w-full">
+                    <View className="flex-row justify-between w-full">
                         <View className="w-full flex-[.5]">
                             <NewGroup />
-                            <ExistingGroup name={"Self Development"}
-                                onPress={() => router.push('revise')}
-                                containerStyles={'my-4'} 
-                            />
+                            { secondHalfCollections.map(item => 
+                                <ExistingGroup
+                                    key={item.id}
+                                    name={item.name}
+                                    cardsCount={item.cardsCount}
+                                    iconId={item.iconId}
+                            />) }
                         </View>
                         <View className="w-full flex-[.5]">
-                            <ExistingGroup name={"Anatomy Midterm"} />
-                            <ExistingGroup name={"For Business Ideas"}
-                                containerStyles={'my-4'} 
-                            />
+                            { firstHalfCollections.map(item =>
+                            <ExistingGroup
+                                key={item.id}
+                                name={item.name} 
+                                cardsCount={item.cardsCount}
+                                iconId={item.iconId}
+                            />) }
                         </View>
                     </View>
-
                 </ScrollView>
             </View>
         </SafeAreaView>
@@ -65,7 +95,7 @@ const Repetition = () => {
 
 const NewGroup = () => {
 
-    return <View className="rounded-[17px] flex-row rounded-br-[44px] bg-black max-w-[171px] w-full h-[114px] p-4">
+    return <View className="rounded-[17px] flex-row rounded-br-[44px] mb-4 bg-black max-w-[171px] w-full h-[114px] p-4">
         <Text className="font-cygrebold max-w-[83px] text-[18px] text-[#fff] leading-[21.6px]">Add new group</Text>
         <TouchableOpacity
             onPress={() => router.push('add-repetition-group')}
@@ -77,7 +107,7 @@ const NewGroup = () => {
     </View>
 }
 
-const ExistingGroup = ({ name, cardsAmount, selected, onSelect, onPress, containerStyles }) => {
+const ExistingGroup = ({ name, cardsCount, iconId, onPress, containerStyles }) => {
 
     const breakTitleIfNecessaryAndRender = () => {
         if (name && name.length >= 15) {
@@ -165,18 +195,22 @@ const ExistingGroup = ({ name, cardsAmount, selected, onSelect, onPress, contain
         return <Text className="font-cygrebold bg-[#F7F7F7] px-2 py-1 text-[18px] rounded-[15px] text-black text-center leading-[17.2px]">{name}</Text>
     }
 
+    const IconElement = COLLECTION_ICON_MAP[iconId];
+
     return <TouchableOpacity
             onPress={onPress}
-            className={`rounded-[17px] overflow-hidden relative bg-[#F8846A] max-w-[171px] w-full h-[114px] px-4 pt-5 pb-2 ${containerStyles}`}>
+            className={`rounded-[17px] overflow-hidden relative bg-[#F8846A] max-w-[171px] w-full h-[114px] mb-4 p-4 ${containerStyles}`}>
         <View className="mb-2 flex-wrap">
             {breakTitleIfNecessaryAndRender()}
         </View>
+        { cardsCount ? (
+            <View className="items-end self-end bg-[#F7F7F7] rounded-[21px]">
+                    <Text className="px-2.5 py-1 text-[12px] font-medium">{cardsCount}</Text>
+            </View>
+        ) :<></> }
         <View
-            className="items-end self-end bg-[#F7F7F7] rounded-[21px]">
-                <Text className="px-2.5 py-1 text-[12px] font-medium">20 cards</Text>
-        </View>
-        <View className="absolute right-0 -z-10">
-            <RepetitionGroupIcon />
+            className="items-center  self-end max-w-[61px] bottom-0 relative -right-1 -z-10 max-h-[61px] rounded-full justify-center">
+                <IconElement />
         </View>
     </TouchableOpacity>
 }
