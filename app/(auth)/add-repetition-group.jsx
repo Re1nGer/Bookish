@@ -60,8 +60,6 @@ const AddRepetitionGroup = () => {
 
     const [groupName, setGroupName] = useState('');
 
-    const { repetitionGroup: { notes, quotes } } = useContext(UserContext);
-
     const handleNotificationTogglePermission = async () => {
         const currentPermissions = await Notifications.getPermissionsAsync();
         if (!currentPermissions.granted) {
@@ -169,6 +167,9 @@ const AddRepetitionGroup = () => {
         checkPermissions();
     }, []);
 
+    const { repetitionGroup: { quotes } } = useContext(UserContext);
+
+
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-7">
@@ -195,17 +196,43 @@ const AddRepetitionGroup = () => {
                         textInputContainerStyles={'rounded-[15px]'}
                     />
                 </View>
-            <View className="px-4 max-h-[160px] mb-5">
-                <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Add Quotes to repeat</Text>
-                <TouchableOpacity
-                    onPress={handleSelectQuotesRedirect}
-                    className="bg-[#1C1C1C] max-h-[116px] h-full items-center justify-center rounded-[20px]"> 
-                    <View className="justify-center items-center">
-                        <Entypo name="plus" size={54} color="white" />
-                        <Text className="text-white font-cygreregular text-center">Add Quotes</Text>
+                { quotes.length === 0 ? (
+                    <View className="px-4 max-h-[160px] mb-5">
+                        <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Add Quotes to repeat</Text>
+                        <TouchableOpacity
+                            onPress={handleSelectQuotesRedirect}
+                            className="bg-[#1C1C1C] max-h-[116px] h-full items-center justify-center rounded-[20px]"> 
+                            <View className="justify-center items-center">
+                                <Entypo name="plus" size={54} color="white" />
+                                <Text className="text-white font-cygreregular text-center">Add Quotes</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                </View>
+                ) : <ScrollView 
+                        showsHorizontalScrollIndicator={false}
+                        className="mx-4 max-h-[250px] mb-5"
+                        contentInsetAdjustmentBehavior="automatic"
+                        initialNumToRender={10}
+                        horizontal>
+                            <View className="flex-1">
+                                <TouchableOpacity
+                                    onPress={handleSelectQuotesRedirect}
+                                    className="w-[97px] bg-[#1C1C1C] items-center justify-center max-h-[97px] h-full rounded-[20px] mr-3">
+                                    <Text className="text-white text-[50px] pb-3">+</Text>
+                                </TouchableOpacity>
+                            </View>
+                            { quotes.map(item =>
+                                <Quote
+                                    key={item.id}
+                                    id={item.id}
+                                    book={item.book}
+                                    text={item.text}
+                                    showRadioButton={false}
+                                    onDeleteButtonPress={() => handleQuoteDelete(item.id)}
+                                    containerStyles={'mr-4 max-w-[361px] w-full flex-1'}
+                            />) }
+                    </ScrollView>
+                  }
                 <View className="px-4 max-h-[160px] mb-14">
                     <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Add Notes to repeat</Text>
                     <TouchableOpacity
@@ -295,12 +322,6 @@ const AddRepetitionGroup = () => {
                         width={40}
                     />
                 </View>
-{/*                 <View className="px-4 mb-8">
-                    <PrimaryButton title={'Add Time'} containerStyles={'rounded-[47px]'} />
-                </View> */}
-{/*                 <View className="px-4 flex-row gap-2 justify-between mb-5">
-                    <DayTimeSelectedChip hour={hour} minute={minute < 10 ? minute.toString().padStart('2', '0') : minute} zone={timeFormats} />
-                </View> */}
             </ScrollView>
         </SafeAreaView>
     );
@@ -404,7 +425,7 @@ const Quote = ({ id, text, book, onDeleteButtonPress, containerStyles }) => {
     const confirmDelete = () => {
         Alert.alert(
             "Delete Quote",
-            "Are you sure you want to delete this note? This action cannot be undone.",
+            "Are you sure you want to delete this quote? This action cannot be undone.",
             [
                 {
                     text: "Cancel",
