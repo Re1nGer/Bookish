@@ -28,14 +28,14 @@ const SelectNotes = () => {
     const { setRepetitionGroup, repetitionGroup } = useContext(UserContext);
 
     const getSelectedState = (id) => {
-        return repetitionGroup.notes.find(item => item.id === id)?.selected ?? false;
+        return repetitionGroup.quotes.find(item => item.id === id)?.selected ?? false;
     }
 
     //fetch from api
-    const [notes, setNotes] = useState([]);
+    const [quotes, setQuotes] = useState([]);
 
     const handleQuoteSelection = (selectedId) => {
-        setNotes(prev => 
+        setQuotes(prev => 
             prev.map(note => 
                 note.id === selectedId
                     ? { ...note, selected: !note.selected }
@@ -44,7 +44,7 @@ const SelectNotes = () => {
         );
     };
 
-    const fetchNotes = async () => {
+    const fetchQuotes = async () => {
         try {
             const { data } = await axios.get(`users/quotes`);
             const mappedNotes = data.map(item => ({
@@ -53,7 +53,7 @@ const SelectNotes = () => {
                 book: item.bookName,
                 selected: getSelectedState(item.id)
             }));
-            setNotes(mappedNotes);
+            setQuotes(mappedNotes);
         } catch (error) {
             console.log(error);
         }
@@ -61,14 +61,14 @@ const SelectNotes = () => {
 
 
     const handleSave = () => {
-        const selectedNotes = notes.filter(item => item.selected === true);
+        const selectedNotes = quotes.filter(item => item.selected === true);
         setRepetitionGroup(prev => ({...prev, quotes: selectedNotes}))
         router.back();
     }
 
 
     useEffect(() => {
-        fetchNotes();
+        fetchQuotes();
     }, []);
 
     //fetch quotes set to notes object 
@@ -112,7 +112,7 @@ const SelectNotes = () => {
                 </KeyboardAvoidingView>
                 <FlatList
                     className="mx-5 flex-1"
-                    data={notes}
+                    data={quotes}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => <NoteCard
                         book={item.book}
