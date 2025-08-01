@@ -365,11 +365,11 @@ const SavedBook = () => {
             ) : <></> }
 
             { collections.length > 0 ? (
-                <View className="mt-5 mb-3 mx-5 max-h-[160px]">
+                <View className="mt-5 mb-3 mx-5">
                     <Text className="text-black text-[22px] leading-[26.4px] font-cygrebold mb-2">Collections</Text>
-                    <View className="flex-wrap p-5 border bg-black max-h-[126px] w-full h-full flex-row items-center rounded-[20px]">
+                    <View className="flex-wrap p-5 border flex-1 bg-black  w-full h-full flex-row items-center rounded-[20px]">
     {/*                     <Genre name={'For psychology classes'} containerStyles={'max-w-[200px] w-full'} showCloseBtn={false} /> */}
-                        { collections?.slice(0, 4)?.map(item =>
+                        { collections?.map(item =>
                             <Genre key={item.id} name={item.name} showCloseBtn={false} />) }
                     </View>
                 </View>
