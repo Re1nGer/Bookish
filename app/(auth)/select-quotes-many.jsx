@@ -17,7 +17,7 @@ import axios from '../../network/axios'
 
 
 
-const SelectNotes = () => {
+const SelectQuotes = () => {
 
     const [text, setText] = useState('')
 
@@ -129,7 +129,7 @@ const SelectNotes = () => {
 
 
 
-export default SelectNotes;
+export default SelectQuotes;
 
 
 
