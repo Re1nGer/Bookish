@@ -24,6 +24,13 @@ import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
 
 
+const OFFSETS = {
+    LIGHT: [2, 7, 21, 45, 90, 180],
+    STANDARD: [1, 6, 14, 30, 66, 150, 360],
+    INTENSIVE: [1, 3, 7, 15, 35, 90, 240],
+    CRAM: [1, 2, 4, 7, 14, 30]
+}
+
 const AddRepetitionGroup = () => {
 
     const [hasNotificationPermission, setNotificationPermission] = useState(false);
@@ -75,13 +82,6 @@ const AddRepetitionGroup = () => {
             ]
         );
     };
-
-    const OFFSETS = {
-        LIGHT: [2, 7, 21, 45, 90, 180],
-        STANDARD: [1, 6, 14, 30, 66, 150, 360],
-        INTENSIVE: [1, 3, 7, 15, 35, 90, 240],
-        CRAM: [1, 2, 4, 7, 14, 30]
-    }
 
     const [offset, setOffset] = useState(OFFSETS.LIGHT);
 
@@ -154,7 +154,7 @@ const AddRepetitionGroup = () => {
                 noteIds: [],
                 scheduledTimes: generateTimestamps()
             });
-
+            router.push('repetition');
         } catch(error) {
             console.log(error);
         }
@@ -167,7 +167,7 @@ const AddRepetitionGroup = () => {
         };
         
         checkPermissions();
-    }, [])
+    }, []);
 
     return (
         <SafeAreaView className="bg-[#F7F7F7] h-full flex-1">
@@ -295,12 +295,12 @@ const AddRepetitionGroup = () => {
                         width={40}
                     />
                 </View>
-                <View className="px-4 mb-8">
+{/*                 <View className="px-4 mb-8">
                     <PrimaryButton title={'Add Time'} containerStyles={'rounded-[47px]'} />
-                </View>
-                <View className="px-4 flex-row gap-2 justify-between mb-5">
+                </View> */}
+{/*                 <View className="px-4 flex-row gap-2 justify-between mb-5">
                     <DayTimeSelectedChip hour={hour} minute={minute < 10 ? minute.toString().padStart('2', '0') : minute} zone={timeFormats} />
-                </View>
+                </View> */}
             </ScrollView>
         </SafeAreaView>
     );
@@ -343,17 +343,6 @@ const OptionCard = ({ isSelected, name, desc, setIsSelected, containerStyles }) 
             selected={isSelected}
             onPress={setIsSelected}
         />
-    </View>
-}
-
-const DayTimeSelectedChip = ({ hour, minute, zone }) => {
-
-
-    return <View className="rounded-[5px] bg-[#121F16] h-[32px] m-1 w-full justify-between items-center px-2 py-1 flex-row">
-        <Text className="text-white text-[14px] font-cygrebold mr-2 leading-[16.8px]">AT {hour}:{minute} {zone}</Text>
-        <TouchableOpacity className="bg-white rounded-full p-.0.5 justify-center items-center">
-            <MaterialIcons name="close" />
-        </TouchableOpacity>
     </View>
 }
 
