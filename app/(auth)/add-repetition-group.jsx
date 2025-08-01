@@ -35,6 +35,8 @@ const AddRepetitionGroup = () => {
 
     const [hasNotificationPermission, setNotificationPermission] = useState(false);
 
+    const { repetitionGroup: { quotes, notes }, setRepetitionGroup } = useContext(UserContext);
+
     const hours = [...Array(12).keys()].map((index, val) => ({
         value: val + 1,
         label: val + 1,
@@ -165,9 +167,12 @@ const AddRepetitionGroup = () => {
         };
         
         checkPermissions();
+
+        return () => {
+            setRepetitionGroup({ quotes: [], notes: [] })
+        }
     }, []);
 
-    const { repetitionGroup: { quotes } } = useContext(UserContext);
 
 
     return (
@@ -232,18 +237,48 @@ const AddRepetitionGroup = () => {
                                     containerStyles={'mr-4 max-w-[361px] w-full flex-1'}
                             />) }
                     </ScrollView>
-                  }
-                <View className="px-4 max-h-[160px] mb-14">
-                    <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Add Notes to repeat</Text>
-                    <TouchableOpacity
-                        onPress={handleSelectNotesRedirect}
-                        className="bg-[#1C1C1C] max-h-[116px] h-full items-center justify-center rounded-[20px]"> 
-                        <View className="justify-center items-center">
-                            <Entypo name="plus" size={54} color="white" />
-                            <Text className="text-white font-cygreregular text-center">Add Notes</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                }
+                { notes.length === 0 ? (
+                    <View className="px-4 max-h-[160px] mb-14">
+                        <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Add Notes to repeat</Text>
+                        <TouchableOpacity
+                            onPress={handleSelectNotesRedirect}
+                            className="bg-[#1C1C1C] max-h-[116px] h-full items-center justify-center rounded-[20px]"> 
+                            <View className="justify-center items-center">
+                                <Entypo name="plus" size={54} color="white" />
+                                <Text className="text-white font-cygreregular text-center">Add Notes</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                ) : (
+                    <ScrollView 
+                        showsHorizontalScrollIndicator={false}
+                        className="mx-4 max-h-[250px] mb-5"
+                        contentInsetAdjustmentBehavior="automatic"
+                        initialNumToRender={10}
+                        horizontal>
+                            <View className="flex-1">
+                                <TouchableOpacity
+                                    onPress={handleSelectNotesRedirect}
+                                    className="w-[97px] bg-[#1C1C1C] items-center justify-center max-h-[97px] h-full rounded-[20px] mr-3">
+                                    <Text className="text-white text-[50px] pb-3">+</Text>
+                                </TouchableOpacity>
+                            </View>
+                            { notes.map(item =>
+                                <Note
+                                    key={item.id}
+                                    id={item.id}
+                                    createdAt={item.createdAt}
+                                    icon={item.noteTypeIcon}
+                                    typeName={item.noteTypeName}
+                                    color={item.noteTypeColor}
+                                    content={item.text}
+                                    showRadioButton={false}
+                                    //onDeleteButtonPress={() => handleNote(item.id)}
+                                    containerStyles={'mr-4 max-w-[361px] w-full flex-1'}
+                            />) }
+                    </ScrollView>
+                ) }
                 <View className="px-4 max-h-[160px] mb-2.5">
                     <Text className="text-[#1C1C1C] text-[20px] font-cygrebold leading-[24px] mb-4">Get Notified</Text>
                     <View className="border-[2px] border-[#6592E3] bg-white rounded-[13px]">
