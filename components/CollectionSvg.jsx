@@ -696,3 +696,14 @@ export const COLLECTION_ICON_MAP = {
     38: Collection38,
     39: Collection39
 };
+
+export const COLOR_MAP = {
+  0: '#F8846A',
+  1: '#FBCEC4', 
+  2: '#005756',
+  3: '#519999',
+  4: '#FFCA57',
+  5: '#FCE5B3',
+  6: '#6592E3', 
+  7: '#D5E3FC'
+}

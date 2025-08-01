@@ -11,7 +11,7 @@ import { router } from "expo-router";
 import axios from '../../network/axios';
 import { UserContext } from "../../context/UserContext";
 import { QuestionMarkIcon } from "../../components/Svg";
-import { COLLECTION_ICON_MAP } from "../../components/CollectionSvg";
+import { COLLECTION_ICON_MAP, COLOR_MAP } from "../../components/CollectionSvg";
 
 function splitArray(arr) {
     const midpoint = Math.ceil(arr.length / 2);
@@ -30,10 +30,6 @@ const Repetition = () => {
         try {
             const { data } = await axios.get('users/repetition-groups');
             const [first, second] = splitArray(data);
-            //we need collections variable in case there are already selected collections
-/*             const firstMapped = first.map(item => ({...item, selected: collections
-                ?.some(j => j.id === item.id) ? true : false })); //probably wiser to receiver from backed selected false
-            const secondMapped = second.map(item => ({...item, selected: collections ?.some(j => j.id === item.id) ? true : false })); */
             setFirstHalfCollections(first);
             setSecondtHalfCollections(second);
         } catch (error) {
@@ -75,6 +71,7 @@ const Repetition = () => {
                                     name={item.name}
                                     cardsCount={item.cardsCount}
                                     iconId={item.iconId}
+                                    colorId={item.colorId}
                             />) }
                         </View>
                         <View className="w-full flex-[.5]">
@@ -84,6 +81,7 @@ const Repetition = () => {
                                 name={item.name} 
                                 cardsCount={item.cardsCount}
                                 iconId={item.iconId}
+                                colorId={item.colorId}
                             />) }
                         </View>
                     </View>
@@ -107,7 +105,7 @@ const NewGroup = () => {
     </View>
 }
 
-const ExistingGroup = ({ name, cardsCount, iconId, onPress, containerStyles }) => {
+const ExistingGroup = ({ name, cardsCount, iconId, colorId, onPress, containerStyles }) => {
 
     const breakTitleIfNecessaryAndRender = () => {
         if (name && name.length >= 15) {
@@ -199,9 +197,12 @@ const ExistingGroup = ({ name, cardsCount, iconId, onPress, containerStyles }) =
 
     return <TouchableOpacity
             onPress={onPress}
-            className={`rounded-[17px] overflow-hidden relative bg-[#F8846A] max-w-[171px] w-full h-[114px] mb-4 p-4 ${containerStyles}`}>
+            style={{ backgroundColor: COLOR_MAP[colorId] }}
+            className={`rounded-[17px] overflow-hidden relative max-w-[171px] w-full h-[114px] mb-4 p-4 ${containerStyles}`}>
         <View className="mb-2 flex-wrap">
-            {breakTitleIfNecessaryAndRender()}
+            <Text className="font-cygrebold self-start bg-[#F7F7F7] px-2 py-1 text-[18px] rounded-[15px] text-black leading-[17.2px]">
+                {name}
+            </Text>
         </View>
         { cardsCount ? (
             <View className="items-end self-end bg-[#F7F7F7] rounded-[21px]">
