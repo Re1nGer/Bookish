@@ -7,10 +7,11 @@ import {
   Animated,
   PanResponder,
 } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const CardSwipe = ({ data, onSwipeLeft, onSwipeRight }) => {
+const CardSwipe = ({ data, onSwipeLeft, onSwipeRight, visualFeedBack = true }) => {
   const pan = useRef(new Animated.ValueXY()).current;
   const rotate = useRef(new Animated.Value(0)).current;
   const textOpacity = useRef(new Animated.Value(1)).current;
@@ -109,45 +110,52 @@ const CardSwipe = ({ data, onSwipeLeft, onSwipeRight }) => {
       ]}
       {...panResponder.panHandlers}
     >
-      <Animated.Text style={[styles.cardText, { opacity: textOpacity }]}>
-        {data.title}
+      <Animated.Text
+        style={[styles.cardText, { opacity: textOpacity }]}>
+          <MaterialIcons name="book" color={'white'} size={15} />
+          {data.title}
       </Animated.Text>
-      <Animated.Text style={[styles.cardDescription, { opacity: textOpacity }]}>
+      <Animated.Text
+        style={[styles.cardDescription, { opacity: textOpacity }]}>
         {data.description}
       </Animated.Text>
       
       {/* Optional: Add visual feedback */}
-      <Animated.View 
-        style={[
-          styles.overlay,
-          styles.leftOverlay,
-          {
-            opacity: pan.x.interpolate({
-              inputRange: [-screenWidth * 0.5, 0],
-              outputRange: [1, 0],
-              extrapolate: 'clamp',
-            }),
-          },
-        ]}
-      >
-        <Text style={styles.overlayText}>Revise</Text>
-      </Animated.View>
-      
-      <Animated.View 
-        style={[
-          styles.overlay,
-          styles.rightOverlay,
-          {
-            opacity: pan.x.interpolate({
-              inputRange: [0, screenWidth * 0.5],
-              outputRange: [0, 1],
-              extrapolate: 'clamp',
-            }),
-          },
-        ]}
-      >
-        <Text style={styles.overlayText}>Remember</Text>
-      </Animated.View>
+      { visualFeedBack ? (
+        <>
+          <Animated.View 
+            style={[
+              styles.overlay,
+              styles.leftOverlay,
+              {
+                opacity: pan.x.interpolate({
+                  inputRange: [-screenWidth * 0.5, 0],
+                  outputRange: [1, 0],
+                  extrapolate: 'clamp',
+                }),
+              },
+            ]}
+          >
+            <Text style={styles.overlayText}>Revise</Text>
+          </Animated.View>
+          
+          <Animated.View 
+            style={[
+              styles.overlay,
+              styles.rightOverlay,
+              {
+                opacity: pan.x.interpolate({
+                  inputRange: [0, screenWidth * 0.5],
+                  outputRange: [0, 1],
+                  extrapolate: 'clamp',
+                }),
+              },
+            ]}
+          >
+            <Text style={styles.overlayText}>Remember</Text>
+          </Animated.View>
+        </>
+      ) :<></> }
     </Animated.View>
   );
 };
@@ -164,9 +172,9 @@ const styles = StyleSheet.create({
   },
   card: {
     width: screenWidth * 0.85,
-    height: 500,
+    height: 430,
     backgroundColor: 'white',
-    position: 'absolute',
+    //position: 'absolute',
     borderRadius: 20,
     padding: 20,
     shadowColor: '#000',
@@ -174,22 +182,33 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.3,
+    //shadowOpacity: 0.3,
     shadowRadius: 4.65,
-    elevation: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderColor: '#8A8A8A',
+    borderWidth: .5,
+    //elevation: 8,
+    justifyContent: 'start',
+    //alignItems: 'center',
   },
   cardText: {
-    fontSize: 28,
+    fontSize: 14,
     fontWeight: 'bold',
+    fontFamily: 'Cygre-SemiBold',
+    backgroundColor: '#1C1C1C',
     marginBottom: 20,
-    color: '#333',
+    color: '#fff',
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    alignSelf: 'flex-start',
+    justifyContent: 'center',
   },
   cardDescription: {
-    fontSize: 18,
+    fontFamily: 'Cygre-Regular',
+    fontSize: 16,
     textAlign: 'center',
-    color: '#666',
+    fontWeight: 500,
+    color: '#1D1D1D',
     lineHeight: 24,
   },
   overlay: {

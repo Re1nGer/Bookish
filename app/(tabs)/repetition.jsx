@@ -29,7 +29,6 @@ const Repetition = () => {
     const fetchCollections = useCallback(async () => {
         try {
             const { data } = await axios.get('users/repetition-groups');
-            console.log(data);
             const [first, second] = splitArray(data);
             setFirstHalfCollections(first);
             setSecondtHalfCollections(second);
@@ -73,6 +72,7 @@ const Repetition = () => {
                                     cardsCount={item.cardCount}
                                     iconId={item.iconId}
                                     colorId={item.colorId}
+                                    onPress={() => router.push({ pathname: 'repetition-group', params: { groupName: item.name, groupId: item.id } })}
                             />) }
                         </View>
                         <View className="w-full flex-[.5]">
@@ -83,6 +83,7 @@ const Repetition = () => {
                                 cardsCount={item.cardCount}
                                 iconId={item.iconId}
                                 colorId={item.colorId}
+                                onPress={() => router.push({ pathname: 'repetition-group', params: { groupName: item.name, groupId: item.id } })}
                             />) }
                         </View>
                     </View>
