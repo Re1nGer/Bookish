@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Entypo from '@expo/vector-icons/Entypo';
 import { useMemo, useState, useEffect } from "react";
@@ -31,16 +31,24 @@ const Revise = () => {
 
     const progress = ((currentSwipingIndex) / cardCount) * 100;
 
+    const [isFinished, setIsFinished] = useState(false);
+
     const handleSwipeLeft = () => {
         setCurrentIndex((prev) => (prev + 1) % cardCount);
         setCurrentSwipingIndex(prev => prev + 1);
         setToRevise(prev => prev + 1);
+        if (currentSwipingIndex + 1 === cardCount) {
+            setIsFinished(true)
+        }
     };
 
     const handleSwipeRight = () => {
         setCurrentIndex((prev) => (prev + 1) % cardCount);
         setCurrentSwipingIndex(prev => prev + 1);
         setToRem(prev => prev + 1);
+        if (currentSwipingIndex + 1 === cardCount) {
+            setIsFinished(true)
+        }
     };
 
     const fetchGroupNotesAndQuotes = async () => {
@@ -53,7 +61,24 @@ const Revise = () => {
         }
     }
 
-    const handleQuit = () => {}
+    const handleQuit = () => {
+        Alert.alert(
+            "Are you sure",
+            "Do you really want to leave without finishing the repetition?",
+            [
+                {
+                    text: "Continue",
+                    style: "default"
+                },
+                { 
+                    text: "Leave", 
+                    onPress: () => router.back(),
+                    style: "destructive" // This will make it red on iOS
+                }
+            ]
+        );
+
+    }
 
     useEffect(() => {
         fetchGroupNotesAndQuotes();
@@ -80,7 +105,7 @@ const Revise = () => {
             </View>
 
             <View className="items-center mb-12">
-                <Text className="text-[#646464] text-[14px] font-cygreregular">{`${currentIndex + 1} / ${cardCount}`}</Text>
+                <Text className="text-[#646464] text-[14px] font-cygreregular">{`${currentSwipingIndex} / ${cardCount}`}</Text>
             </View>
 
             <View className="justify-between w-full flex-row mb-12">

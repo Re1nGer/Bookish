@@ -22,14 +22,13 @@ const RepetitionGroup = () => {
 
     const [cardCount, setCardCount] = useState(0);
 
-
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const [groups, setGroups] = useState([{ title: '' }]);
 
     const [isBottomDrawerOpen, setIsBottomDrawerOpen] = useState(false);
 
-    const progress = ((currentIndex) / cardCount) * 100;
+    const progress = ((currentIndex + 1) / cardCount) * 100;
 
     const handleSwipeLeft = () => {
         setCurrentIndex((prev) => (prev + 1) % cardCount);
