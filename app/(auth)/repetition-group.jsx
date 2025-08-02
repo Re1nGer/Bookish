@@ -8,6 +8,9 @@ import { router } from "expo-router";
 import CardSwipe from "../../components/CardSwipe";
 import axios from '../../network/axios';
 import { PrimaryButton } from "../../components/CustomButton";
+import BottomDrawer from '../../components/BottomDrawer';
+import Fontisto from '@expo/vector-icons/Fontisto';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 
 
@@ -24,13 +27,7 @@ const RepetitionGroup = () => {
 
     const [groups, setGroups] = useState([{ title: '' }]);
 
-    const cards = [
-        { id: 1, title: 'Card 1', description: 'Swipe left or right!' },
-        { id: 2, title: 'Card 2', description: 'Try swiping this card' },
-        { id: 3, title: 'Card 3', description: 'Another card to swipe' },
-        { id: 4, title: 'Card 4', description: 'Keep swiping!' },
-        { id: 5, title: 'Card 5', description: 'Last card' },
-    ];
+    const [isBottomDrawerOpen, setIsBottomDrawerOpen] = useState(false);
 
     const progress = ((currentIndex) / cardCount) * 100;
 
@@ -68,8 +65,9 @@ const RepetitionGroup = () => {
                     <Text className="text-black font-cygrebold text-[22px] font-bold">{groupName}</Text>
                 </View>
                 <TouchableOpacity
-                    className="bg-primary rounded-[10px] flex-1 mt-2.5 max-w-[44px] items-center justify-center max-h-[44px] h-full">
-                        <Entypo name="shuffle" size={24} color="white" />
+                    onPress={() => setIsBottomDrawerOpen(true)}
+                    className="bg-primary flex-1 mt-2.5 mr-2.5 max-w-[44px] w-full items-center justify-center max-h-[44px] h-full rounded-[10px]">
+                        <MaterialIcons name="edit-note" size={27} color={'#fff'} />
                 </TouchableOpacity>
             </View>
 
@@ -91,6 +89,41 @@ const RepetitionGroup = () => {
             <View className="mx-5">
                 <PrimaryButton containerStyles={'min-h-[48px] rounded-[30px] mb-4'} title={'Repeat Group'} textStyles={'text-[16px]'} />
             </View>
+            <BottomDrawer
+                height="45%"
+                isBottomSheetOpen={isBottomDrawerOpen}
+                setIsBottomSheetOpen={setIsBottomDrawerOpen}
+            >
+                    <Text className="text-[#000000] my-4 font-cygrebold text-[22px] leading-[26.4px]">Add Cards</Text>
+                    <TouchableOpacity
+                        onPress={() => setIsBottomSheetOpen(false)}
+                        className="rounded-[15px] bg-[#1C1C1C] max-h-[56px] w-full h-full flex-row items-center px-7 max-w-[360px] mb-2">
+                        <Fontisto name="quote-a-left" size={20} color="white" />
+                        <Text className="text-[#FEFEFC] font-cygrebold leading-[19.2px] ml-6">Existing Quotes</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => setIsBottomSheetOpen(false)}
+                        className="rounded-[15px] bg-[#1C1C1C] max-h-[56px] w-full h-full flex-row items-center px-7 max-w-[360px] mb-2">
+                        <Fontisto name="quote-a-right" size={20} color="white" />
+                        <Text className="text-[#FEFEFC] font-cygrebold leading-[19.2px] ml-6">New Quote</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => setIsBottomSheetOpen(false)}
+                        className="rounded-[15px] bg-[#1C1C1C] max-h-[56px] w-full h-full flex-row items-center px-7 max-w-[360px] mb-2">
+                        <FontAwesome6 name="notes-medical" size={20} color="white" />
+                        <Text className="text-[#FEFEFC] font-cygrebold leading-[19.2px] ml-6">Existing Notes</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => setIsBottomSheetOpen(false)}
+                        className="rounded-[15px] bg-[#1C1C1C] max-h-[56px] w-full h-full flex-row items-center px-7 max-w-[360px] mb-2">
+                        <FontAwesome6 name="sticky-note" size={20} color="white" />
+                        <Text className="text-[#FEFEFC] font-cygrebold leading-[19.2px] ml-6">New Note</Text>
+                    </TouchableOpacity>
+
+            </BottomDrawer>
     </SafeAreaView>
 }
 
