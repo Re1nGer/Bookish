@@ -42,7 +42,6 @@ const RepetitionGroup = () => {
     const fetchGroupNotesAndQuotes = async () => {
         try {
             const { data } = await axios.get(`users/repetition-group/${groupId}`);
-            console.log(data)
             setCardCount(data.length);
             setGroups(data.map(item => ({ id: item.id, title: item.bookName, description: item.text })));
         } catch(error) {
@@ -87,7 +86,12 @@ const RepetitionGroup = () => {
                 <Text className="text-[#646464] text-[18px] font-cygrebold">{`${currentIndex + 1} / ${cardCount}`}</Text>
             </View>
             <View className="mx-5">
-                <PrimaryButton containerStyles={'min-h-[48px] rounded-[30px] mb-4'} title={'Repeat Group'} textStyles={'text-[16px]'} />
+                <PrimaryButton
+                    containerStyles={'min-h-[48px] rounded-[30px] mb-4'}
+                    title={'Repeat Group'}
+                    textStyles={'text-[16px]'} 
+                    handlePress={() => router.push({ pathname: 'revise', params: { groupName, groupId } })}
+                />
             </View>
             <BottomDrawer
                 height="45%"

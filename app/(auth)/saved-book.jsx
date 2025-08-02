@@ -184,7 +184,6 @@ const SavedBook = () => {
 
             <View className="mx-5 border-[#8A8A8A] flex-row p-4 border-[.5px] rounded-[20px] max-w-[353px]">
                 <ImageHandler source={getBookImage()} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" />
-{/*                 <Image source={getBookImage()} width={114} height={163} className="max-h-[163px] max-w-[114px] mr-5" /> */}
                 <View className="relative">
                     <Text className="text-black text-[18px] mb-0.5 leading-[21.6px] font-cygrebold max-w-[150px]"
                         numberOfLines={1}
