@@ -81,7 +81,9 @@ const Revise = () => {
 
     useEffect(() => {
         if (cardCount > 0 && currentSwipingIndex === cardCount) {
-            router.replace({ pathname: 'repetition-group-success', params: { scorred: countRef.current, total: cardCount } })
+            setTimeout(() => {
+                router.replace({ pathname: 'repetition-group-success', params: { scorred: countRef.current, total: cardCount } })
+            }, 300)
         }
     }, [currentSwipingIndex, cardCount]);
 
