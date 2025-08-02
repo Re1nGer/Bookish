@@ -7,7 +7,7 @@ import {
     Switch,
     Linking,
 } from "react-native";
-import { useContext, useEffect, useState, Fragment } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -145,13 +145,17 @@ const AddRepetitionGroup = () => {
         setSelectedOption("Cram it in");
     }
 
+    const getNoteIds = () => notes.map(item => item.id);
+
+    const getQuoteIds = () => quotes.map(item => item.id);
+
     const handleSave = async () => {
         //console.log(generateTimestamps())
         try {
             await axios.post('users/repetition-group', {
                 name: groupName,
-                quoteIds: [],
-                noteIds: [],
+                quoteIds: getQuoteIds(),
+                noteIds: getNoteIds(),
                 scheduledTimes: generateTimestamps()
             });
             router.push('repetition');
@@ -168,9 +172,11 @@ const AddRepetitionGroup = () => {
         
         checkPermissions();
 
-        return () => {
-            setRepetitionGroup({ quotes: [], notes: [] })
-        }
+    }, []);
+
+
+    useEffect(() => {
+        return () => setRepetitionGroup({ quotes: [], notes: [] })
     }, []);
 
 
@@ -199,6 +205,7 @@ const AddRepetitionGroup = () => {
                         placeholder={'Enter name for this group'}
                         placeholderTextColor={'#8A8A8A'}
                         textInputContainerStyles={'rounded-[15px]'}
+                        error={!groupName}
                     />
                 </View>
                 { quotes.length === 0 ? (

@@ -29,6 +29,7 @@ const Repetition = () => {
     const fetchCollections = useCallback(async () => {
         try {
             const { data } = await axios.get('users/repetition-groups');
+            console.log(data);
             const [first, second] = splitArray(data);
             setFirstHalfCollections(first);
             setSecondtHalfCollections(second);
@@ -69,7 +70,7 @@ const Repetition = () => {
                                 <ExistingGroup
                                     key={item.id}
                                     name={item.name}
-                                    cardsCount={item.cardsCount}
+                                    cardsCount={item.cardCount}
                                     iconId={item.iconId}
                                     colorId={item.colorId}
                             />) }
@@ -79,7 +80,7 @@ const Repetition = () => {
                             <ExistingGroup
                                 key={item.id}
                                 name={item.name} 
-                                cardsCount={item.cardsCount}
+                                cardsCount={item.cardCount}
                                 iconId={item.iconId}
                                 colorId={item.colorId}
                             />) }
@@ -196,23 +197,27 @@ const ExistingGroup = ({ name, cardsCount, iconId, colorId, onPress, containerSt
     const IconElement = COLLECTION_ICON_MAP[iconId];
 
     return <TouchableOpacity
-            onPress={onPress}
-            style={{ backgroundColor: COLOR_MAP[colorId] }}
-            className={`rounded-[17px] overflow-hidden relative max-w-[171px] w-full h-[114px] mb-4 p-4 ${containerStyles}`}>
-        <View className="mb-2 flex-wrap">
-            <Text className="font-cygrebold self-start bg-[#F7F7F7] px-2 py-1 text-[18px] rounded-[15px] text-black leading-[17.2px]">
-                {name}
-            </Text>
-        </View>
-        { cardsCount ? (
-            <View className="items-end self-end bg-[#F7F7F7] rounded-[21px]">
-                    <Text className="px-2.5 py-1 text-[12px] font-medium">{cardsCount}</Text>
+                onPress={onPress}
+                style={{ backgroundColor: COLOR_MAP[colorId] }}
+                className={`rounded-[17px] overflow-hidden justify-between relative max-w-[171px] w-full h-[114px] mb-4 p-4 ${containerStyles}`}
+            >
+
+            <View className="mb-2">
+                <Text className="font-cygrebold self-start bg-[#F7F7F7] px-2 py-1 text-[18px] rounded-[15px] text-black leading-[17.2px]">
+                    {name}
+                </Text>
             </View>
-        ) :<></> }
-        <View
-            className="items-center  self-end max-w-[61px] bottom-0 relative -right-1 -z-10 max-h-[61px] rounded-full justify-center">
+
+            { cardsCount ? (
+                <View className="items-end self-end mt-3 bg-[#F7F7F7] rounded-[21px]">
+                    <Text className="px-2.5 py-1 text-[12px] font-medium">{`${cardsCount} cards`}</Text>
+                </View>
+            ) : <></> }
+
+            <View className="items-center self-end max-w-[61px] absolute -z-10 rounded-full justify-center">
                 <IconElement />
-        </View>
+            </View>
+
     </TouchableOpacity>
 }
 
