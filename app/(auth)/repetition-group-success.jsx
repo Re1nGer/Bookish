@@ -38,7 +38,7 @@ const RepetitionGroupSuccess = () => {
                     <RepettitionSuccessIcon />
                 </View>
 
-                <Text className="text-white text-[14px] font-cygreregular max-w-[207px]">
+                <Text className="text-white text-[14px] ml-4 font-cygreregular max-w-[207px]">
                     You are on the right path! Keep practicing to strengthen this connection and ensure the info won’t be forgotten in 5 mins 
                 </Text>
 
