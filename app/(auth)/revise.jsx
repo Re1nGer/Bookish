@@ -2,7 +2,7 @@ import { useLocalSearchParams } from "expo-router";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Entypo from '@expo/vector-icons/Entypo';
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { MaterialIcons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import CardSwipe from "../../components/CardSwipe";
@@ -31,24 +31,19 @@ const Revise = () => {
 
     const progress = ((currentSwipingIndex) / cardCount) * 100;
 
-    const [isFinished, setIsFinished] = useState(false);
+    const countRef = useRef(0);
 
     const handleSwipeLeft = () => {
         setCurrentIndex((prev) => (prev + 1) % cardCount);
         setCurrentSwipingIndex(prev => prev + 1);
         setToRevise(prev => prev + 1);
-        if (currentSwipingIndex + 1 === cardCount) {
-            setIsFinished(true)
-        }
     };
 
     const handleSwipeRight = () => {
         setCurrentIndex((prev) => (prev + 1) % cardCount);
         setCurrentSwipingIndex(prev => prev + 1);
         setToRem(prev => prev + 1);
-        if (currentSwipingIndex + 1 === cardCount) {
-            setIsFinished(true)
-        }
+        countRef.current+=1;
     };
 
     const fetchGroupNotesAndQuotes = async () => {
@@ -83,6 +78,12 @@ const Revise = () => {
     useEffect(() => {
         fetchGroupNotesAndQuotes();
     }, []);
+
+    useEffect(() => {
+        if (cardCount > 0 && currentSwipingIndex === cardCount) {
+            router.replace({ pathname: 'repetition-group-success', params: { scorred: countRef.current, total: cardCount } })
+        }
+    }, [currentSwipingIndex, cardCount]);
 
     return <SafeAreaView className="bg-[#F7F7F7] h-full">
             <View className="max-h-[60px] justify-between items-center flex-row h-full mx-5 mb-4">
