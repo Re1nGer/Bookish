@@ -9,9 +9,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useState, useCallback, useEffect } from "react";
 import { router } from "expo-router";
 import axios from '../../network/axios';
-import { UserContext } from "../../context/UserContext";
-import { QuestionMarkIcon } from "../../components/Svg";
+import { QuestionMarkIcon, SpaceHintIcon } from "../../components/Svg";
 import { COLLECTION_ICON_MAP, COLOR_MAP } from "../../components/CollectionSvg";
+import OverlayModal from "../../components/OverlayModal";
 
 function splitArray(arr) {
     const midpoint = Math.ceil(arr.length / 2);
@@ -25,6 +25,8 @@ const Repetition = () => {
     const [firstHalfCollections, setFirstHalfCollections] = useState([]);
 
     const [secondHalfCollections, setSecondtHalfCollections] = useState([]);
+
+    const [isOverlayOpen, setIsOverlayOpen] = useState(false);
 
     const fetchCollections = useCallback(async () => {
         try {
@@ -52,7 +54,9 @@ const Repetition = () => {
                 </TouchableOpacity>
             </View>
             <View className="mx-5 flex-1">
-                <View className="bg-[#1C1C1C] mb-6 max-h-[106px] h-full rounded-[20px] border-[.3px] border-[#8A8A8A] flex-row justify-between px-6 items-center">
+                <TouchableOpacity
+                    onPress={() => setIsOverlayOpen(true)}
+                    className="bg-[#1C1C1C] mb-6 max-h-[106px] h-full rounded-[20px] border-[.3px] border-[#8A8A8A] flex-row justify-between px-6 items-center">
                     <View className="py-4 max-w-[60%]">
                         <Text className="font-cygrebold leading-[19.2px] text-white">Spaced Repetition Technique</Text>
                         <Text className="text-[12px] font-cygreregular text-white">Tap to see how and why it works</Text>
@@ -60,7 +64,16 @@ const Repetition = () => {
                     <View className="mt-2.5">
                         <QuestionMarkIcon />
                     </View>
-                </View>
+                </TouchableOpacity>
+                <OverlayModal
+                    visible={isOverlayOpen}
+                    onClose={() => setIsOverlayOpen(false)}
+                >
+                    <View className="items-center mb-7">
+                        <SpaceHintIcon />
+                    </View>
+                    <Text className="text-[##1C1C1C] text-[14px] font-cygreregular text-center">It is a learning technique that helps you retain information more effectively by revisiting content at specific intervals. </Text>
+                </OverlayModal>
                 <ScrollView className="flex-1">
                     <View className="flex-row justify-between w-full">
                         <View className="w-full flex-[.5]">
